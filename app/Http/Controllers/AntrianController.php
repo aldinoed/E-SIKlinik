@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PasienTable;
+use App\Models\AntrianTable;
 use Illuminate\Http\Request;
 
-class PasienController extends Controller
+class AntrianController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $pasien = PasienTable::all();
-
-        return response()->json(['message' => 'Succes tampil Pasien', 'pasien'=> $pasien]);
+        $antrian = AntrianTable::all();
+        return response()->json(['message' => 'Succes input antrian', 'antrian'=> $antrian]);
     }
 
     /**
@@ -22,9 +21,8 @@ class PasienController extends Controller
      */
     public function create()
     {
-        $pasien = PasienTable::all();
-
-        return response()->json(['message' => 'Succes tampil Pasien', 'pasien'=> $pasien]);
+        $antrian = AntrianTable::all();
+        return response()->json(['message' => 'Succes input antrian', 'antrian'=> $antrian]);
     }
 
     /**
@@ -32,18 +30,13 @@ class PasienController extends Controller
      */
     public function store(Request $request)
     {
-        $pasien = PasienTable::create([
-            'pasien_id'=>$request->pasien_id,
-            'nama'=>$request->nama,
-            'gender'=>$request->gender,
-            'tanggal_lahir'=>$request->tanggal_lahir,
-            'alamat'=>$request->alamat,
-            'nomor_hp'=>$request->nomor_hp,
-            'nomor_wali'=>$request->nomor_wali,
-            'prodi_id'=>$request->prodi_id
+        $antrian = AntrianTable::create([
+            'pasien_id'=> $request->pasien_id,
+            'waktu_masuk'=> $request->waktu_masuk,
+            'no_antrian'=> $request->no_antrian
         ]);
-
-        return response()->json(['message' => 'Succes input Pasien', 'pasien'=> $pasien]);
+        
+        return response()->json(['message' => 'Succes input antrian', 'antrian'=> $antrian]);
     }
 
     /**

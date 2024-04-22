@@ -12,6 +12,7 @@ class PasienTable extends Model
     protected $table = 'pasien';
 
     protected $fillable =[
+        'pasien_id',
         'nama',
         'gender',
         'tanggal_lahir',
@@ -21,7 +22,11 @@ class PasienTable extends Model
         'prodi_id'
     ];
 
-    public function pasien() {
+    public function pasienToProdi() {
         return $this->belongsTo(ProdiTable::class);
+    }
+
+    public function pasienToAntrian(){
+        return $this->belongsTo(AntrianTable::class);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AntrianController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\ProdiController;
 use Illuminate\Http\Request;
@@ -29,3 +30,6 @@ Route::post('/pasien', [PasienController::class, 'store'])->name('pasien.store')
 Route::get('/prodi', [ProdiController::class, 'create'])->name('prodi.index');
 Route::post('/prodi', [ProdiController::class, 'store'])->name('prodi.store');
 
+//ANTRIAN
+Route::get('/antrian', [AntrianController::class, 'create'])->name('antrian.index');
+Route::post('/antrian', [AntrianController::class, 'store'])->name('antrian.store');

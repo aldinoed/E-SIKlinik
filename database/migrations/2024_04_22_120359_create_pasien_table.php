@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pasien', function (Blueprint $table) {
-            $table->id('pasien_id');
+            $table->string('pasien_id')->primary();
             $table->string('nama');
             $table->string('gender');
             $table->date('tanggal_lahir');
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('nomor_hp');
             $table->string('nomor_wali');
             $table->unsignedBigInteger('prodi_id'); // Tambahkan kolom 'prodi_id' di sini
-            $table->foreign('prodi_id')->references('prodi_id')->on('prodi')->onUpdate('cascade');
+            $table->foreign('prodi_id')->references('prodi_id')->on('prodi')->constraint('fk_pasien_antrian')->onUpdate('cascade');
             //Prod
             $table->timestamps();
         });

@@ -5,26 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProdiTable extends Model
+class AntrianTable extends Model
 {
     use HasFactory;
 
-    protected $table = 'prodi';
+    protected $table = 'antrian';
 
     protected $fillable = [
-        'nama',
+        'pasien_id',
+        'no_antrian',
+        'waktu_masuk'
     ];
 
-
-
-
-    public function prodi()
-    {
+    public function antrian() {
         return $this->hasMany(PasienTable::class);
     }
-
-
-
-
-
 }
