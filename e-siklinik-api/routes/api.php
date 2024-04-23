@@ -24,7 +24,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //PASIEN
 Route::get('/pasien', [PasienController::class, 'create'])->name('pasien.index');
 Route::post('/pasien', [PasienController::class, 'store'])->name('pasien.store');
-
+Route::get('/pasien/show/{id}', [PasienController::class, 'show'])->name('pasien.show');
+Route::put('/pasien/update/{id}', [PasienController::class, 'update'])->name('pasien.update');
+Route::delete('/pasien/delete/{id}', [PasienController::class, 'destroy'])->name('pasien.destroy');
 
 // PRODI
 Route::get('/prodi', [ProdiController::class, 'create'])->name('prodi.index');
