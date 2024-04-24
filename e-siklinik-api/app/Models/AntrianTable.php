@@ -18,6 +18,9 @@ class AntrianTable extends Model
     ];
 
     public function antrian() {
-        return $this->hasMany(PasienTable::class);
+        return $this->belongsTo(PasienTable::class);
+    }
+    public function antrianToCheckUpResult() {
+        return $this->belongsTo(CheckUpResult::class);
     }
 }

@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('antrian', function (Blueprint $table) {
+        Schema::create('jadwal_dokters', function (Blueprint $table) {
             $table->id();
-            $table->string('pasien_id');
-            $table->foreign('pasien_id')->references('pasien_id')->on('pasien')->onUpdate('cascade');
-            $table->integer('no_antrian');
-            $table->timestamp('waktu_masuk');
+            $table->unsignedBigInteger('dokter_id');
+            $table->dateTime('jadwal_tugas');
+            $table->foreign('dokter_id')->references('id')->on('dokters')->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('antrian');
+        Schema::dropIfExists('jadwal_dokters');
     }
 };

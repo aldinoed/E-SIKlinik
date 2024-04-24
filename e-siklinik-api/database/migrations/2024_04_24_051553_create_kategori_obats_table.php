@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('antrian', function (Blueprint $table) {
+        Schema::create('kategori_obats', function (Blueprint $table) {
             $table->id();
-            $table->string('pasien_id');
-            $table->foreign('pasien_id')->references('pasien_id')->on('pasien')->onUpdate('cascade');
-            $table->integer('no_antrian');
-            $table->timestamp('waktu_masuk');
+            $table->string('nama_kategori');
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('antrian');
+        Schema::dropIfExists('kategori_obats');
     }
 };

@@ -15,15 +15,12 @@ class ProdiTable extends Model
         'nama',
     ];
 
-
-
-
     public function prodi()
     {
         return $this->hasMany(PasienTable::class);
     }
 
-    
+
 
 
 
