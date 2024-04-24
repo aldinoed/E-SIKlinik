@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AntrianController;
+use App\Http\Controllers\DokterController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\ProdiController;
 use Illuminate\Http\Request;
@@ -35,3 +36,10 @@ Route::post('/prodi', [ProdiController::class, 'store'])->name('prodi.store');
 //ANTRIAN
 Route::get('/antrian', [AntrianController::class, 'create'])->name('antrian.index');
 Route::post('/antrian', [AntrianController::class, 'store'])->name('antrian.store');
+
+//DOKTER
+Route::get('/dokter', [DokterController::class, 'create'])->name('dokter.index');
+Route::post('/dokter', [DokterController::class, 'store'])->name('dokter.store');
+Route::get('/dokter/show/{id}', [DokterController::class, 'show'])->name('dokter.show');
+Route::put('/dokter/update/{id}', [DokterController::class, 'update'])->name('dokter.update');
+Route::delete('/dokter/delete/{id}', [DokterController::class, 'destroy'])->name('dokter.destroy');

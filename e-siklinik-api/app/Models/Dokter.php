@@ -11,6 +11,13 @@ class Dokter extends Model
 
     protected $table = 'dokters';
 
+    protected $fillable =[
+        'nama',
+        'gender',
+        'tanggal_lahir',
+        'alamat',
+        'nomor_hp'];
+
     public function dokterToAntrianTable()
     {
         return $this->hasMany(CheckUpResult::class);
