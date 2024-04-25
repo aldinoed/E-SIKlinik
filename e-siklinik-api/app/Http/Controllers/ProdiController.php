@@ -37,32 +37,44 @@ class ProdiController extends Controller
         ]);
 
         $prodi = ProdiTable::all();
-
-        return response()->json(['message' => 'Succes tampil Prodi', 'prodi'=> $prodi]);
+        return response()->json(['message' => 'Succes input Prodi', 'prodi'=> $prodi]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $prodi_id)
     {
-        //
+        $prodi = ProdiTable::find($prodi_id);
+
+        return response()->json(['message' => 'Succes show Prodi', 'prodi'=> $prodi]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
+    public function edit($id)
+{
+    $prodi = ProdiTable::find($id);
+
+        return response()->json(['message' => 'Succes show Prodi', 'prodi'=> $prodi]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'nama' => 'required'
+    ]);
+
+    $prodi = ProdiTable::findOrFail($id);
+    $prodi->update([
+        'nama' => $request->nama
+    ]);
+
+        return response()->json(['message' => 'Succes update Prodi', 'prodi'=> $prodi]);
     }
 
     /**
@@ -70,6 +82,8 @@ class ProdiController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $prodi = ProdiTable::find($id);
+        $prodi->delete();
+        return response()->json(['message' => 'Succes tampil Prodi']);
     }
 }

@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('detail_resep_obats', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('obat_id');
-            $table->foreign('obat_id')->references('id')->on('obats')->onUpdate('cascade');
-            $table->unsignedBigInteger('checkup_id');
-            $table->foreign('checkup_id')->references('id')->on('check_up_results')->onUpdate('cascade');
+            $table->foreignId('obat_id')->constrained('obats')->cascadeOnUpdate();
+            $table->foreignId('chekup_id')->constrained('check_up_results')->cascadeOnUpdate();
             $table->string('jumlah pemakaian');
             $table->string('waktu_pemakaian');
             $table->timestamps();

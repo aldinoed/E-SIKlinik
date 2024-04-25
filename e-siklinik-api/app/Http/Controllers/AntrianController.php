@@ -13,7 +13,7 @@ class AntrianController extends Controller
     public function index()
     {
         $antrian = AntrianTable::all();
-        return response()->json(['message' => 'Succes input antrian', 'antrian'=> $antrian]);
+        return response()->json(['message' => 'Succes tampil antrian', 'antrian'=> $antrian]);
     }
 
     /**
@@ -35,7 +35,7 @@ class AntrianController extends Controller
             'waktu_masuk'=> $request->waktu_masuk,
             'no_antrian'=> $request->no_antrian
         ]);
-        
+
         return response()->json(['message' => 'Succes input antrian', 'antrian'=> $antrian]);
     }
 

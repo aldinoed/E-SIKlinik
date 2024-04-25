@@ -12,16 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pasien', function (Blueprint $table) {
-            $table->string('pasien_id')->primary();
+            $table->id();
+            $table->string('nrp');
             $table->string('nama');
             $table->string('gender');
             $table->date('tanggal_lahir');
             $table->string('alamat');
             $table->string('nomor_hp');
             $table->string('nomor_wali');
-            $table->unsignedBigInteger('prodi_id'); // Tambahkan kolom 'prodi_id' di sini
-            $table->foreign('prodi_id')->references('prodi_id')->on('prodi')->constraint('fk_pasien_antrian')->onUpdate('cascade');
-            //Prod
+            $table->foreignId('prodi_id')->constrained('prodi')->cascadeOnUpdate();
             $table->timestamps();
         });
     }

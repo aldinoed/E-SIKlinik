@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('antrian', function (Blueprint $table) {
             $table->id();
-            $table->string('pasien_id');
-            $table->foreign('pasien_id')->references('pasien_id')->on('pasien')->onUpdate('cascade');
+            $table->foreignId('pasien_id')->constrained('pasien')->cascadeOnUpdate();
             $table->integer('no_antrian');
             $table->timestamp('waktu_masuk');
             $table->timestamps();

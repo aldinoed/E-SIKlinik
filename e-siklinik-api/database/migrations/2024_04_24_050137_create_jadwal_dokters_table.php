@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('jadwal_dokters', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('dokter_id');
             $table->dateTime('jadwal_tugas');
-            $table->foreign('dokter_id')->references('id')->on('dokters')->onUpdate('cascade');
+            $table->foreignId('dokter_id')->constrained('dokter')->cascadeOnUpdate();
             $table->timestamps();
         });
     }

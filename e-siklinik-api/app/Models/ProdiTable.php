@@ -12,8 +12,11 @@ class ProdiTable extends Model
     protected $table = 'prodi';
 
     protected $fillable = [
-        'nama',
+        'nama'
     ];
+
+
+
 
     public function prodi()
     {

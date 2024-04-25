@@ -17,8 +17,7 @@ return new class extends Migration
             $table->date('tanggal_kadaluarsa');
             $table->integer('stock');
             $table->bigInteger('harga');
-            $table->unsignedBigInteger('kategori_id');
-            $table->foreign('kategori_id')->references('id')->on('kategori_obats')->onUpdate('cascade');
+            $table->foreignId('kategori_id')->constrained('kategori_obats')->cascadeOnUpdate();
             $table->timestamps();
         });
     }

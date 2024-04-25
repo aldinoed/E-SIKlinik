@@ -24,18 +24,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //PASIEN
 Route::get('/pasien', [PasienController::class, 'create'])->name('pasien.index');
-Route::post('/pasien', [PasienController::class, 'store'])->name('pasien.store');
+Route::post('/pasien/create', [PasienController::class, 'store'])->name('pasien.store');
 Route::get('/pasien/show/{id}', [PasienController::class, 'show'])->name('pasien.show');
-Route::put('/pasien/update/{id}', [PasienController::class, 'update'])->name('pasien.update');
+Route::post('/pasien/update/{id}', [PasienController::class, 'update'])->name('pasien.update');
 Route::delete('/pasien/delete/{id}', [PasienController::class, 'destroy'])->name('pasien.destroy');
 
 // PRODI
-Route::get('/prodi', [ProdiController::class, 'create'])->name('prodi.index');
-Route::post('/prodi', [ProdiController::class, 'store'])->name('prodi.store');
+Route::get('/prodi', [ProdiController::class, 'create'])->name('prodi.create');
+Route::post('/prodi/create', [ProdiController::class, 'store'])->name('prodi.store');
+Route::get('/prodi/show/{id}', [ProdiController::class, 'show'])->name('prodi.show');
+Route::post('/prodi/update/{id}', [ProdiController::class, 'update'])->name('prodi.update');
+Route::delete('/prodi/delete/{id}', [ProdiController::class, 'destroy'])->name('prodi.destroy');
 
 //ANTRIAN
 Route::get('/antrian', [AntrianController::class, 'create'])->name('antrian.index');
-Route::post('/antrian', [AntrianController::class, 'store'])->name('antrian.store');
+Route::post('/antrian/create', [AntrianController::class, 'store'])->name('antrian.store');
+//Route::post('/antrian', [AntrianController::class, 'upadte'])->name('antrian.upadte');
 
 //DOKTER
 Route::get('/dokter', [DokterController::class, 'create'])->name('dokter.index');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PasienTable;
+use App\Models\ProdiTable;
 use Illuminate\Http\Request;
 
 class PasienController extends Controller
@@ -33,7 +34,7 @@ class PasienController extends Controller
     public function store(Request $request)
     {
         $pasien = PasienTable::create([
-            'pasien_id'=>$request->pasien_id,
+            'nrp'=>$request->nrp,
             'nama'=>$request->nama,
             'gender'=>$request->gender,
             'tanggal_lahir'=>$request->tanggal_lahir,
@@ -49,9 +50,9 @@ class PasienController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $pasien_id)
+    public function show( $id)
     {
-        $pasien = PasienTable::find($pasien_id);
+        $pasien = PasienTable::find($id);
 
 
         return response()->json(['message' => 'Success tampil data Pasien', 'pasien' => $pasien]);
@@ -60,7 +61,7 @@ class PasienController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit( $id)
     {
         $pasien = PasienTable::findOrFail($id);
 
@@ -70,63 +71,52 @@ class PasienController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
 {
-    // Temukan data pasien berdasarkan ID
     $pasien = PasienTable::find($id);
 
-    // Periksa apakah pasien ditemukan
     if (!$pasien) {
         return response()->json(['message' => 'Pasien not found'], 404);
     }
 
-    // Lakukan pembaruan hanya pada atribut yang diberikan dalam request
+    if ($request->has('nrp')) {
+        $pasien->nrp = $request->nrp;
+    }
+
     if ($request->has('nama')) {
         $pasien->nama = $request->nama;
     }
-
-    // Lakukan pembaruan hanya pada atribut yang diberikan dalam request
     if ($request->has('gender')) {
         $pasien->gender = $request->gender;
     }
-
-    // Lakukan pembaruan hanya pada atribut yang diberikan dalam request
     if ($request->has('tanggal_lahir')) {
         $pasien->tanggal_lahir = $request->tanggal_lahir;
     }
-
-    // Lakukan pembaruan hanya pada atribut yang diberikan dalam request
     if ($request->has('alamat')) {
         $pasien->alamat = $request->alamat;
     }
-
-    // Lakukan pembaruan hanya pada atribut yang diberikan dalam request
     if ($request->has('nomor_hp')) {
         $pasien->nomor_hp = $request->nomor_hp;
     }
-
-    // Lakukan pembaruan hanya pada atribut yang diberikan dalam request
     if ($request->has('nomor_wali')) {
         $pasien->nomor_wali = $request->nomor_wali;
     }
-
-    // Lakukan pembaruan hanya pada atribut yang diberikan dalam request
     if ($request->has('prodi_id')) {
         $pasien->prodi_id = $request->prodi_id;
     }
 
-    // Simpan perubahan
     $pasien->save();
 
-    // Berikan respons JSON yang sesuai
     return response()->json(['message' => 'Success update data Pasien', 'pasien' => $pasien]);
 }
+
+
 
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy( $id)
     {
         $pasien = PasienTable::findOrFail($id);
         $pasien->delete();

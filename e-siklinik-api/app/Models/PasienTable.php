@@ -10,9 +10,9 @@ class PasienTable extends Model
     use HasFactory;
 
     protected $table = 'pasien';
-    protected $primaryKey = 'pasien_id';
+
     protected $fillable =[
-        'pasien_id',
+        'nrp',
         'nama',
         'gender',
         'tanggal_lahir',
@@ -27,9 +27,6 @@ class PasienTable extends Model
     }
 
     public function pasienToAntrian(){
-        return $this->hasMany(AntrianTable::class);
-    }
-    public function pasienToCheckUpResult(){
-        return $this->hasMany(CheckUpResult::class);
+        return $this->belongsTo(AntrianTable::class);
     }
 }
