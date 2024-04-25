@@ -17,7 +17,7 @@ class AntrianTable extends Model
         'waktu_masuk'
     ];
 
-    public function antrian() {
+    public function antrianToPasien() {
         return $this->hasMany(PasienTable::class);
     }
 }

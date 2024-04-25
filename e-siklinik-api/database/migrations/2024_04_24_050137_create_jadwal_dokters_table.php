@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('jadwal_dokters', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('jadwal_tugas');
+            $table->string('hari');
+            $table->time('jadwal_mulai_tugas');
+            $table->time('jadwal_selesai_tugas');
             $table->foreignId('dokter_id')->constrained('dokter')->cascadeOnUpdate();
             $table->timestamps();
         });

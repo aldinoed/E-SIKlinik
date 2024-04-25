@@ -45,5 +45,10 @@ Route::post('/antrian/create', [AntrianController::class, 'store'])->name('antri
 Route::get('/dokter', [DokterController::class, 'create'])->name('dokter.index');
 Route::post('/dokter', [DokterController::class, 'store'])->name('dokter.store');
 Route::get('/dokter/show/{id}', [DokterController::class, 'show'])->name('dokter.show');
-Route::put('/dokter/update/{id}', [DokterController::class, 'update'])->name('dokter.update');
+Route::post('/dokter/update/{id}', [DokterController::class, 'update'])->name('dokter.update');
 Route::delete('/dokter/delete/{id}', [DokterController::class, 'destroy'])->name('dokter.destroy');
+
+//JADWAL DOKTER
+Route::get('/jadwal_dokter', [DokterController::class, 'indexJadwal'])->name('jadwal_dokter.index');
+Route::post('/jadwal_dokter/create', [DokterController::class,'storeJadwal'])->name('jadwal_dokter.store');
+Route::delete('/jadwal_dokter/delete/{id}', [DokterController::class, 'deleteJadwal'])->name('jadwal_dokter.destroy');

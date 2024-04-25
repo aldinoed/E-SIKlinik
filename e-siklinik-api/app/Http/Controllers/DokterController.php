@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dokter;
+use App\Models\JadwalDokter;
 use Illuminate\Http\Request;
 
 class DokterController extends Controller
@@ -110,5 +111,35 @@ class DokterController extends Controller
         $dokter = Dokter::findOrFail($id);
         $dokter->delete();
         return response()->json(['message' => 'Success delete data dokter']);
+    }
+
+
+
+    // Jadwal Dokter
+
+    public function indexJadwal()
+{
+    $jadwal_dokter = JadwalDokter::with('jadwalToDokter')->get();
+
+    return response()->json(['message' => 'Success tampil jadwal dokter', 'jadwal_dokter'=> $jadwal_dokter]);
+}
+
+
+    public function storeJadwal(Request $request){
+
+        $jadwal_dokter = JadwalDokter::create([
+            'dokter_id' => $request->dokter_id,
+            'hari'=> $request->hari,
+            'jadwal_mulai_tugas' => $request->jadwal_mulai_tugas,
+            'jadwal_selesai_tugas' => $request->jadwal_selesai_tugas
+        ]);
+
+        return response()->json(['message' => 'Succes input jadwal dokter', 'jadwal_dokter'=> $jadwal_dokter]);
+    }
+
+    public function deleteJadwal($id){
+        $jadwal_dokter = JadwalDokter::find($id);
+        $jadwal_dokter->delete();
+        return response()->json(['message' => 'Success delete data jadwal dokter']);
     }
 }

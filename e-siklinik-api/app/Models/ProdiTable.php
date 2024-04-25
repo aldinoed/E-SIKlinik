@@ -14,11 +14,7 @@ class ProdiTable extends Model
     protected $fillable = [
         'nama'
     ];
-
-
-
-
-    public function prodi()
+    public function prodiToPasien()
     {
         return $this->hasMany(PasienTable::class);
     }
