@@ -19,11 +19,12 @@ class PasienTable extends Model
         'alamat',
         'nomor_hp',
         'nomor_wali',
-        'prodi_id'
+        'prodi_id',
+        'image'
     ];
 
     public function pasienToProdi() {
-        return $this->belongsTo(ProdiTable::class);
+        return $this->belongsTo(ProdiTable::class, 'prodi_id');
     }
 
     public function pasienToAntrian(){

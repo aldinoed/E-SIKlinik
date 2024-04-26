@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('alamat');
             $table->string('nomor_hp');
             $table->string('nomor_wali');
+            $table->string('image');
             $table->foreignId('prodi_id')->constrained('prodi')->cascadeOnUpdate();
             $table->timestamps();
         });

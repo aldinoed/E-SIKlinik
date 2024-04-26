@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PasienTable;
 use App\Models\ProdiTable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PasienController extends Controller
 {
@@ -13,10 +14,13 @@ class PasienController extends Controller
      */
     public function index()
     {
-        $pasien = PasienTable::all();
+        $pasien = PasienTable::with('pasienToProdi')->get();
 
-        return response()->json(['message' => 'Succes tampil Pasien', 'pasien'=> $pasien]);
+
+        //return view ('pasien_index')->with('pasien', $pasien);
+       return response()->json(['message' => 'Success tampil Pasien', 'pasien'=> $pasien]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -33,6 +37,12 @@ class PasienController extends Controller
      */
     public function store(Request $request)
     {
+        $file = $request->file('image');
+        $path = time() . '_' . $request->name . '.' . $file->getClientOriginalExtension();
+
+        Storage::disk('local')->put('public/' . $path, file_get_contents($file));
+
+
         $pasien = PasienTable::create([
             'nrp'=>$request->nrp,
             'nama'=>$request->nama,
@@ -41,8 +51,10 @@ class PasienController extends Controller
             'alamat'=>$request->alamat,
             'nomor_hp'=>$request->nomor_hp,
             'nomor_wali'=>$request->nomor_wali,
-            'prodi_id'=>$request->prodi_id
+            'prodi_id'=>$request->prodi_id,
+            'image' => $path
         ]);
+
 
         return response()->json(['message' => 'Succes input Pasien', 'pasien'=> $pasien]);
     }
@@ -52,7 +64,7 @@ class PasienController extends Controller
      */
     public function show( $id)
     {
-        $pasien = PasienTable::find($id);
+        $pasien = PasienTable::with('pasienToProdi')->find($id);
 
 
         return response()->json(['message' => 'Success tampil data Pasien', 'pasien' => $pasien]);
@@ -74,6 +86,22 @@ class PasienController extends Controller
     public function update(Request $request, $id)
 {
     $pasien = PasienTable::find($id);
+
+    if ($request->hasFile('image')) {
+        $file = $request->file('image');
+        $path = time() . '_' . $request->name . '.' . $file->getClientOriginalExtension();
+
+
+        $file->storeAs('public', $path);
+
+
+        if ($pasien->image) {
+            Storage::disk('local')->delete('public/' . $pasien->image);
+        }
+
+        
+        $pasien->image = $path;
+    }
 
     if (!$pasien) {
         return response()->json(['message' => 'Pasien not found'], 404);
@@ -104,6 +132,7 @@ class PasienController extends Controller
     if ($request->has('prodi_id')) {
         $pasien->prodi_id = $request->prodi_id;
     }
+
 
     $pasien->save();
 

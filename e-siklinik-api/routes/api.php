@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //PASIEN
-Route::get('/pasien', [PasienController::class, 'create'])->name('pasien.index');
+Route::get('/pasien', [PasienController::class, 'index'])->name('pasien.index');
 Route::post('/pasien/create', [PasienController::class, 'store'])->name('pasien.store');
 Route::get('/pasien/show/{id}', [PasienController::class, 'show'])->name('pasien.show');
 Route::post('/pasien/update/{id}', [PasienController::class, 'update'])->name('pasien.update');
@@ -42,7 +42,8 @@ Route::post('/antrian/create', [AntrianController::class, 'store'])->name('antri
 //Route::post('/antrian', [AntrianController::class, 'upadte'])->name('antrian.upadte');
 
 //DOKTER
-Route::get('/dokter', [DokterController::class, 'create'])->name('dokter.index');
+Route::get('/dokter', [DokterController::class, 'index'])->name('dokter.index');
+Route::get('/dokter/create', [DokterController::class, 'create'])->name('dokter.create');
 Route::post('/dokter', [DokterController::class, 'store'])->name('dokter.store');
 Route::get('/dokter/show/{id}', [DokterController::class, 'show'])->name('dokter.show');
 Route::post('/dokter/update/{id}', [DokterController::class, 'update'])->name('dokter.update');

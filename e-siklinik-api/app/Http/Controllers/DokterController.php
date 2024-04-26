@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Dokter;
 use App\Models\JadwalDokter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DokterController extends Controller
 {
@@ -15,7 +16,9 @@ class DokterController extends Controller
     {
         $dokter = Dokter::all();
 
-        return response()->json(['message' => 'Succes tampil dokter', 'pasien'=> $dokter]);
+        return view('dokter_index')->with('dokter', $dokter);
+
+        //return response()->json(['message' => 'Succes tampil dokter', 'pasien'=> $dokter]);
     }
 
     /**
@@ -33,12 +36,18 @@ class DokterController extends Controller
      */
     public function store(Request $request)
     {
+        $file = $request->file('image');
+        $path = time() . '_' . $request->name . '.' . $file->getClientOriginalExtension();
+
+        Storage::disk('local')->put('public/' . $path, file_get_contents($file));
+
         $dokter = Dokter::create([
             'nama'=> $request->nama,
             'gender'=> $request->gender,
             'tanggal_lahir'=> $request->tanggal_lahir,
             'alamat'=> $request->alamat,
-            'nomor_hp' => $request->nomor_hp
+            'nomor_hp' => $request->nomor_hp,
+            'image'=> $path
 
         ]);
 
@@ -75,6 +84,22 @@ class DokterController extends Controller
 
     if (!$dokter) {
         return response()->json(['message' => 'Dokter not found'], 404);
+    }
+
+    if ($request->hasFile('image')) {
+        $file = $request->file('image');
+        $path = time() . '_' . $request->name . '.' . $file->getClientOriginalExtension();
+
+
+        $file->storeAs('public', $path);
+
+
+        if ($dokter->image) {
+            Storage::disk('local')->delete('public/' . $dokter->image);
+        }
+
+
+        $dokter->image = $path;
     }
 
     if ($request->has('nama')) {

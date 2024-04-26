@@ -16,7 +16,8 @@ class Dokter extends Model
         'gender',
         'tanggal_lahir',
         'alamat',
-        'nomor_hp'];
+        'nomor_hp',
+        'image'];
 
     public function dokterToAntrianTable()
     {
