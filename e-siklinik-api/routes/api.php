@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AntrianController;
 use App\Http\Controllers\DokterController;
+use App\Http\Controllers\ObatController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\ProdiController;
 use Illuminate\Http\Request;
@@ -53,3 +54,9 @@ Route::delete('/dokter/delete/{id}', [DokterController::class, 'destroy'])->name
 Route::get('/jadwal_dokter', [DokterController::class, 'indexJadwal'])->name('jadwal_dokter.index');
 Route::post('/jadwal_dokter/create', [DokterController::class,'storeJadwal'])->name('jadwal_dokter.store');
 Route::delete('/jadwal_dokter/delete/{id}', [DokterController::class, 'deleteJadwal'])->name('jadwal_dokter.destroy');
+
+//OBAT Controller
+Route::get('/obat', [ObatController::class, 'index'])->name('obat.index');
+Route::post('/obat/insert-obat', [ObatController::class, 'store'])->name('obat.store');
+Route::get('/obat/{id}/show-obat', [ObatController::class, 'show'])->name('obat.show');
+Route::post('/obat/{id}/update-obat', [ObatController::class, 'update'])->name('obat.update');

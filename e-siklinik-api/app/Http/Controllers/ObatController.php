@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+// use App\Models\Obat;
+
+use App\Models\Obat;
+use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class ObatController extends Controller
@@ -11,7 +16,21 @@ class ObatController extends Controller
      */
     public function index()
     {
-        //
+        // $obatData = [];
+        // try {
+        // $obatData = DB::table('obats')->select('*')->join('kategori_obats', 'kategori_obats.id', 'obats.id')->get();
+        // $obatData = Obat::with('obatToKategoriObat')->get();
+        $obatData = Obat::all();
+
+        // if ($obatData->isNotEmpty()) {
+        // ddd($obatData);
+        return response()->json(['message' => 'Data berhasil ditampilkan', 'dataObat' => $obatData]);
+        // } else {
+        //     return response()->json(['code' => 403, 'message' => 'Tidak ada data']);
+        // }
+        // } catch (Exception $err) {
+        //     return response()->json(['code' => 500, 'message' => $err]);
+        // }
     }
 
     /**
@@ -19,7 +38,6 @@ class ObatController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -27,7 +45,9 @@ class ObatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $storeBuilder = DB::table('obats')->insert([
+            'nama_obat' => $request->nama_obat,
+        ]);
     }
 
     /**

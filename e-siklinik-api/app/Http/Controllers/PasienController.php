@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\PasienTable;
 use App\Models\ProdiTable;
+use Exception;
+// use App\Http\Controllers\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class PasienController extends Controller
@@ -99,44 +102,69 @@ class PasienController extends Controller
             Storage::disk('local')->delete('public/' . $pasien->image);
         }
 
-        
+
         $pasien->image = $path;
     }
 
     if (!$pasien) {
         return response()->json(['message' => 'Pasien not found'], 404);
+    }else{
+        try{
+            // $pasien->pasien_id = $request->pasien_id;
+            $pasien->nama = $request->nama;
+            $pasien->gender = $request->gender;
+            $pasien->tanggal_lahir = $request->tanggal_lahir;
+            $pasien->alamat = $request->alamat;
+            $pasien->nomor_hp = $request->nomor_hp;
+            $pasien->nomor_wali = $request->nomor_wali;
+            $pasien->prodi_id = $request->prodi_id;
+            $pasien->save();
+            return response()->json(['message'=>'Sukse Update']);
+        }catch(Exception $err){
+            return response()->json(['message'=>$err]);
+        }
     }
 
-    if ($request->has('nrp')) {
-        $pasien->nrp = $request->nrp;
-    }
+    // // Lakukan pembaruan hanya pada atribut yang diberikan dalam request
+    // if ($request->has('nama')) {
+    //     $pasien->nama = $request->nama;
+    // }
 
-    if ($request->has('nama')) {
-        $pasien->nama = $request->nama;
-    }
-    if ($request->has('gender')) {
-        $pasien->gender = $request->gender;
-    }
-    if ($request->has('tanggal_lahir')) {
-        $pasien->tanggal_lahir = $request->tanggal_lahir;
-    }
-    if ($request->has('alamat')) {
-        $pasien->alamat = $request->alamat;
-    }
-    if ($request->has('nomor_hp')) {
-        $pasien->nomor_hp = $request->nomor_hp;
-    }
-    if ($request->has('nomor_wali')) {
-        $pasien->nomor_wali = $request->nomor_wali;
-    }
-    if ($request->has('prodi_id')) {
-        $pasien->prodi_id = $request->prodi_id;
-    }
+    // // Lakukan pembaruan hanya pada atribut yang diberikan dalam request
+    // if ($request->has('gender')) {
+    //     $pasien->gender = $request->gender;
+    // }
 
+    // // Lakukan pembaruan hanya pada atribut yang diberikan dalam request
+    // if ($request->has('tanggal_lahir')) {
+    //     $pasien->tanggal_lahir = $request->tanggal_lahir;
+    // }
 
-    $pasien->save();
+    // // Lakukan pembaruan hanya pada atribut yang diberikan dalam request
+    // if ($request->has('alamat')) {
+    //     $pasien->alamat = $request->alamat;
+    // }
 
-    return response()->json(['message' => 'Success update data Pasien', 'pasien' => $pasien]);
+    // // Lakukan pembaruan hanya pada atribut yang diberikan dalam request
+    // if ($request->has('nomor_hp')) {
+    //     $pasien->nomor_hp = $request->nomor_hp;
+    // }
+
+    // // Lakukan pembaruan hanya pada atribut yang diberikan dalam request
+    // if ($request->has('nomor_wali')) {
+    //     $pasien->nomor_wali = $request->nomor_wali;
+    // }
+
+    // // Lakukan pembaruan hanya pada atribut yang diberikan dalam request
+    // if ($request->has('prodi_id')) {
+    //     $pasien->prodi_id = $request->prodi_id;
+    // }
+
+    // Simpan perubahan
+    // $pasien->save();
+
+    // Berikan respons JSON yang sesuai
+    // return response()->json(['message' => 'Success update data Pasien', 'pasien' => $pasien]);
 }
 
 
