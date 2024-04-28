@@ -61,6 +61,6 @@ Route::get('/kategori-obat', [ObatController::class, 'getKategori']);
 Route::post('/obat/insert', [ObatController::class, 'store'])->name('obat.store');
 Route::get('/obat/{id}/show', [ObatController::class, 'show'])->name('obat.show');
 Route::post('/obat/{id}/update', [ObatController::class, 'update'])->name('obat.update');
-Route::post('/kategori-obat/{id}/update', [ObatController::class, 'updateKategoriObat']);
+Route::put('/kategori-obat/{id}/update', [ObatController::class, 'updateKategoriObat']);
 Route::delete('/obat/{id}/delete', [ObatController::class, 'destroy'])->name('obat.destroy');
 Route::delete('/kategori-obat/{id}/delete', [ObatController::class, 'destroyKategoriObat']);

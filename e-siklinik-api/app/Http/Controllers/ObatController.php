@@ -17,31 +17,17 @@ class ObatController extends Controller
      */
     public function index()
     {
-        // $obatData = [];
-        // try {
-        // $obatData = DB::table('obats')->select('*')->join('kategori_obats', 'kategori_obats.id', 'obats.id')->get();
-        // $obatData = Obat::with('obatToKategoriObat')->get();
-        $obatData = Obat::all();
-
-        // if ($obatData->isNotEmpty()) {
-        // ddd($obatData);
-        return response()->json(['message' => 'Data berhasil ditampilkan', 'obat' => $obatData]);
-        // } else {
-        //     return response()->json(['code' => 403, 'message' => 'Tidak ada data']);
-        // }
-        // } catch (Exception $err) {
-        //     return response()->json(['code' => 500, 'message' => $err]);
-        // }
+        try{
+            $obatData = DB::table('obats')->join('kategori_obats', 'obats.kategori_id', '=', 'kategori_obats.id')->get();
+            if($obatData->isNotEmpty()){
+                return response()->json(['status' => 200, 'obats'=> $obatData]);
+            }else{
+                throw new Exception('Belum ada data');
+            }
+        }catch(Exception $exception){
+            return response()->json(["status" => 500, "messasge" => "Error: " . $exception]);
+        }
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-
-    }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -99,12 +85,33 @@ class ObatController extends Controller
     /**
      * Show data kategori obat
      */
-    public function getKategori(){
+    public function getKategori()
+    {
         $kategori = KategoriObat::all();
-        if($kategori->isNotEmpty()){
+        if ($kategori->isNotEmpty()) {
             return response()->json(['message' => 'Data berhasil ditampilkan', 'kategori' => $kategori]);
-        }else{
+        } else {
             return response()->json(['message' => 'Belum ada data']);
+        }
+    }
+    /**
+     * Show data kategori obat
+     */
+    public function updateKategoriObat(Request $request, int $id)
+    {
+        try {
+            $kategori = KategoriObat::find($id);
+            if ($kategori != null) {
+                $kategori->nama_kategori = $request->namaKategori;
+                $response = $kategori->save();
+                if ($response == true) {
+                    return response()->json(["status" => 200, "message" => "Berhasil update kategori obat"]);
+                }
+            } else {
+                throw new Exception('Data kategori obat tidak ditemukan.');
+            }
+        } catch (Exception $exception) {
+            return response()->json(["status" => 500, "messasge" => "Error: " . $exception]);
         }
     }
     /**
