@@ -52,11 +52,15 @@ Route::delete('/dokter/delete/{id}', [DokterController::class, 'destroy'])->name
 
 //JADWAL DOKTER
 Route::get('/jadwal_dokter', [DokterController::class, 'indexJadwal'])->name('jadwal_dokter.index');
-Route::post('/jadwal_dokter/create', [DokterController::class,'storeJadwal'])->name('jadwal_dokter.store');
+Route::post('/jadwal_dokter/create', [DokterController::class, 'storeJadwal'])->name('jadwal_dokter.store');
 Route::delete('/jadwal_dokter/delete/{id}', [DokterController::class, 'deleteJadwal'])->name('jadwal_dokter.destroy');
 
 //OBAT Controller
 Route::get('/obat', [ObatController::class, 'index'])->name('obat.index');
-Route::post('/obat/insert-obat', [ObatController::class, 'store'])->name('obat.store');
-Route::get('/obat/{id}/show-obat', [ObatController::class, 'show'])->name('obat.show');
-Route::post('/obat/{id}/update-obat', [ObatController::class, 'update'])->name('obat.update');
+Route::get('/kategori-obat', [ObatController::class, 'getKategori']);
+Route::post('/obat/insert', [ObatController::class, 'store'])->name('obat.store');
+Route::get('/obat/{id}/show', [ObatController::class, 'show'])->name('obat.show');
+Route::post('/obat/{id}/update', [ObatController::class, 'update'])->name('obat.update');
+Route::post('/kategori-obat/{id}/update', [ObatController::class, 'updateKategoriObat']);
+Route::delete('/obat/{id}/delete', [ObatController::class, 'destroy'])->name('obat.destroy');
+Route::delete('/kategori-obat/{id}/delete', [ObatController::class, 'destroyKategoriObat']);
