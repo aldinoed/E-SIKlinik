@@ -17,6 +17,7 @@ return new class extends Migration
             $table->date('tanggal_kadaluarsa');
             $table->integer('stock');
             $table->bigInteger('harga');
+            $table->string('image');
             $table->foreignId('kategori_id')->constrained('kategori_obats')->cascadeOnUpdate();
             $table->timestamps();
         });

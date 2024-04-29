@@ -10,7 +10,7 @@ class Obat extends Model
     use HasFactory;
     protected $table = 'obats';
 
-    protected $fillable = ['nama_obat', 'tanggal_kadaluarsa', 'stock', 'harga', 'kategori_id'];
+    protected $fillable = ['nama_obat', 'tanggal_kadaluarsa', 'stock', 'harga', 'kategori_id', 'image'];
 
     public function obatToKategoriObat(){
         return $this->belongsTo(KategoriObat::class);
