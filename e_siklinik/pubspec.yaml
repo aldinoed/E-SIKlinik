@@ -38,6 +38,10 @@ dependencies:
   salomon_bottom_bar: ^3.3.2
   http: ^1.2.1
   molten_navigationbar_flutter: ^1.0.1
+  image_picker: ^1.0.7
+  loading_animation_widget: ^1.2.0
+  font_awesome_flutter: ^9.1.0
+  awesome_snackbar_content: ^0.0.5
 
 dev_dependencies:
   flutter_test:
