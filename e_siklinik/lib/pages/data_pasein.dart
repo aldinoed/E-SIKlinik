@@ -17,7 +17,7 @@ class _DataPasienState extends State<DataPasien> {
         elevation: 2,
         shadowColor: Colors.black,
         centerTitle: true,
-        title: const Text("Pasien"),
+        title: const Text("Data Pasien", style: TextStyle(fontWeight: FontWeight.w600),),
       ),
       body: const Center(child: Text("Haloooo")),
     );

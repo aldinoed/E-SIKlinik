@@ -20,7 +20,7 @@ class _DashboardState extends State<Dashboard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               Container(
@@ -76,13 +76,13 @@ class _DashboardState extends State<Dashboard> {
                               image: AssetImage('assets/images/Schedule.png'),
                               fit: BoxFit.fill)),
                       child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             "Andru Falah Arifin",
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w600),
+                                fontSize: 18, fontWeight: FontWeight.w600),
                           ),
                           Text(
                             "3122500038",
@@ -91,8 +91,8 @@ class _DashboardState extends State<Dashboard> {
                           Row(
                             children: [
                               Icon(
-                                CupertinoIcons.time,
-                                color: Color(0xFFB7D1FF),
+                                Icons.timer_outlined,
+                                color: Color(0xFF234DF0),
                                 size: 18,
                               ),
                               SizedBox(
@@ -120,13 +120,20 @@ class _DashboardState extends State<Dashboard> {
                     title: 'Check Up',
                     desc: 'Tambahkan Hasil Check Up Pasien',
                     bgimage: 'assets/images/Utilities1.png',
-                    icon: 'assets/images/Checkup.png', onTapBox: (){},
+                    icon: const Icon(
+                      Icons.data_saver_on,
+                      size: 25,
+                      color: Color(0xFF234DF0),
+                    ),
+                    onTapBox: () {},
                   ),
                   Box(
                     title: 'Jadwal Antrean',
                     desc: 'Mengatur Jadwal Antrean Pasien',
                     bgimage: 'assets/images/Utilities2.png',
-                    icon: 'assets/images/Vector.png', onTapBox: () {  },
+                    icon: const Icon(Icons.people_alt,
+                        size: 25, color: Color(0xFF234DF0)),
+                    onTapBox: () {},
                   ),
                 ],
               ),

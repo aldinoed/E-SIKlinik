@@ -4,7 +4,7 @@ class Box extends StatelessWidget {
   final String bgimage;
   final String title;
   final String desc;
-  final String icon;
+  final icon;
   final VoidCallback onTapBox;
   const Box({super.key, required this.title, required this.desc, required this.bgimage, required this.icon, required this.onTapBox});
 
@@ -38,13 +38,7 @@ class Box extends StatelessWidget {
                 Column(
                   children: [
                     Container(
-                      width: 25,
-                      height: 25,
-                      margin: const EdgeInsets.only(top: 5),
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(icon),
-                              fit: BoxFit.fill)),
+                      child: icon,
                     ),
                   ],
                 ),
@@ -73,7 +67,7 @@ class Box extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 5,)
+        const SizedBox(height: 15,)
       ],
     );
   }
