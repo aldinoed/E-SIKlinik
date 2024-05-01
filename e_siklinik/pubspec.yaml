@@ -42,6 +42,7 @@ dependencies:
   loading_animation_widget: ^1.2.0
   font_awesome_flutter: ^9.1.0
   awesome_snackbar_content: ^0.0.5
+  fluttericon: ^2.0.0
 
 dev_dependencies:
   flutter_test:

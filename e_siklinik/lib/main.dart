@@ -5,6 +5,7 @@ import 'package:e_siklinik/pages/search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:molten_navigationbar_flutter/molten_navigationbar_flutter.dart';
+import 'package:fluttericon/font_awesome_icons.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,8 +31,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-      drawer: const Drawer(),
-      appBar: const Header(),
+        drawer: const Drawer(),
+        appBar: const Header(),
         body: _children[_selectedIndex],
         // backgroundColor: Colors.deepPurple[400],
         // you can use the molten bar in the scaffold's bottomNavigationBar
@@ -40,7 +41,7 @@ class _MyAppState extends State<MyApp> {
           borderSize: 1,
           selectedIndex: _selectedIndex,
           domeHeight: 25,
-          domeCircleColor: const Color(0xFFB7D1FF),
+          domeCircleColor: const Color(0xFF234DF0),
           // specify what will happen when a tab is clicked
           onTabChange: (clickedIndex) {
             setState(() {
@@ -61,10 +62,10 @@ class _MyAppState extends State<MyApp> {
               // selectedColor: Colors.yellow,
             ),
             MoltenTab(
-              icon: const Icon(Icons.document_scanner_rounded),
-              title: const Text('Data')
-              // selectedColor: Colors.yellow,
-            ),
+                icon: const Icon(FontAwesome.database),
+                title: const Text('Data')
+                // selectedColor: Colors.yellow,
+                ),
           ],
         ),
       ),
