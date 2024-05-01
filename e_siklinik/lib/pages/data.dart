@@ -1,7 +1,7 @@
 import 'package:e_siklinik/components/box.dart';
 import 'package:e_siklinik/pages/data_dokter.dart';
 import 'package:e_siklinik/pages/data_obat.dart';
-import 'package:e_siklinik/pages/data_pasein.dart';
+import 'package:e_siklinik/testing/listPasien.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:fluttericon/rpg_awesome_icons.dart';
@@ -59,7 +59,7 @@ class _DataState extends State<Data> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const DataPasien()));
+                              builder: (context) => const ListPasienPage()));
                     },
                   ),
                   Box(
