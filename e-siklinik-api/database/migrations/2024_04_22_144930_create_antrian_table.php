@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('pasien_id')->constrained('pasien')->cascadeOnUpdate();
             $table->integer('no_antrian');
-            $table->timestamp('waktu_masuk');
             $table->timestamps();
         });
     }
