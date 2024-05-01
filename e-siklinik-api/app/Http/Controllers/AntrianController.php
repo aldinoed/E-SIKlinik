@@ -35,9 +35,11 @@ class AntrianController extends Controller
         $antrianNumberChecker = $this->nomorAntrianChecker($request);
 
         try {
+            if ($antrianNumberChecker === 0) {
+                return response()->json(['status' => 400, 'message' => 'Tidak bisa input tanggal kemarin!']);
+            }
             AntrianTable::create([
                 'pasien_id' => $request->pasien_id,
-                'waktu_masuk' => $request->waktu_masuk,
                 'no_antrian' => $antrianNumberChecker,
             ]);
             return response()->json(["status" => 200, "messasge" => "Nomor antrian $antrianNumberChecker"]);
@@ -78,15 +80,19 @@ class AntrianController extends Controller
         //
     }
 
-    private function nomorAntrianChecker(Request $currentAntrian): int
+    private function nomorAntrianChecker(): int
     {
         $latestAntrian = AntrianTable::latest()->first();
-        $latestAntrianDate = date("Y-m-d", strtotime($latestAntrian->waktu_masuk));
-        $currentAntrianDate = date("Y-m-d", strtotime($currentAntrian->waktu_masuk));
+        $latestAntrianDate = '';
+        if ($latestAntrian !== null) {
+            $latestAntrianDate = date("Y-m-d", strtotime($latestAntrian->created_at));
+        }
 
-        if ($latestAntrian === null || $currentAntrianDate > $latestAntrianDate) {
+        if ($latestAntrian === null || date('Y-m-d') > $latestAntrianDate) {
             $nomorAntrian = 1;
-            return 1;
+            return $nomorAntrian;
+        } else if ($latestAntrian === null || date('Y-m-d') < $latestAntrianDate) {
+            return 0;
         } else {
             $nomorAntrian = $latestAntrian->no_antrian + 1;
             return $nomorAntrian;
