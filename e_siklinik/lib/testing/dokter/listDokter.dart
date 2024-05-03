@@ -33,7 +33,7 @@ class _ListDokterPageState extends State<ListDokterPage> {
           print("No data received from API");
         }
       } else {
-        print("Failed to load pasien");
+        print("Failed to load Data");
       }
     } catch (error) {
       print('Error : $error');
