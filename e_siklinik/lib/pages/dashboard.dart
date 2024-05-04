@@ -13,6 +13,8 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+            backgroundColor: Color(0xFFF9F9FB),
+
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),

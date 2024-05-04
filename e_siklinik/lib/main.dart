@@ -31,6 +31,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Color(0xFFF9F9FB),
         drawer: const Drawer(),
         appBar: const Header(),
         body: _children[_selectedIndex],

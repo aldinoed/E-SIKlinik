@@ -26,6 +26,7 @@ class _AddPasienPageState extends State<AddPasienPage> {
   final String apiGetAllProdi = "http://10.0.2.2:8000/api/prodi";
 
   List<dynamic> prodiList = [];
+
   File? _imageFile;
 
   @override
@@ -77,54 +78,75 @@ class _AddPasienPageState extends State<AddPasienPage> {
 
       var response = await request.send();
 
-      if (response.statusCode == 200) {
-        final pasien =
-            json.decode(await response.stream.bytesToString())['pasien'];
-        SnackBar(content: Text('Pasien berhasil ditambahkan'));
-        print('Pasien berhasil ditambahkan: $pasien');
-      } else {
-        print('Gagal menambahkan pasien');
-      }
-    } catch (error) {
-      print('Error: $error');
+     if (response.statusCode == 200) {
+      // Handle respon dari server
+      final pasien =
+          json.decode(await response.stream.bytesToString())['pasien'];
+      print('Pasien berhasil ditambahkan: $pasien');
+
+      // Menampilkan snackbar untuk memberi tahu pengguna bahwa pasien berhasil ditambahkan
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Pasien berhasil ditambahkan')),
+      );
+
+      namaController.clear();
+      nrpController.clear();
+      genderController.clear();
+      tanggalLahirController.clear();
+      alamatController.clear();
+      noHpController.clear();
+      noWaliController.clear();
+      imageController.clear();
+      prodiController.clear();
+      _imageFile = null;
+     
+    } else {
+      print('Gagal menambahkan pasien');
     }
+  } catch (error) {
+    print('Error: $error');
+  }
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(
-          "Add Pasien",
-          style: TextStyle(
-            fontSize: 22.0,
-            color: Colors.black,
-          ),
+        leading: IconButton(onPressed: () {
+      Navigator.pop((context));
+    },icon: const Icon(Icons.arrow_back_ios)),
+        backgroundColor: Colors.white,
+        elevation: 2,
+        shadowColor: Colors.black,
+        centerTitle: true,
+        title: const Text(
+          "Data Pasien",
+          style: TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Form(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
                 controller: namaController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Nama",
                 ),
               ),
               TextFormField(
                 controller: nrpController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "NRP",
                 ),
               ),
               TextFormField(
                 controller: genderController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Gender",
                 ),
               ),
@@ -144,33 +166,33 @@ class _AddPasienPageState extends State<AddPasienPage> {
                     });
                   }
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Tanggal Lahir",
                 ),
               ),
               TextFormField(
                 controller: alamatController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Alamat",
                 ),
               ),
               TextFormField(
                 controller: noHpController,
                 keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Nomor HP",
                 ),
               ),
               TextFormField(
                 controller: noWaliController,
                 keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Nomor Wali",
                 ),
               ),
               TextFormField(
                 controller: imageController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Image",
                 ),
                 readOnly: true,
@@ -201,14 +223,14 @@ class _AddPasienPageState extends State<AddPasienPage> {
                     child: Text(prodi['nama']),
                   );
                 }).toList(),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Prodi",
                 ),
               ),
               ElevatedButton(
                 onPressed: () => addPasien(context),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12.0),
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
                   child: Text(
                     'Simpan',
                     style: TextStyle(
