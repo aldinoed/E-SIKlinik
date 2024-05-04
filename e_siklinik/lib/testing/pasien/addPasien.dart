@@ -65,7 +65,7 @@ class _AddPasienPageState extends State<AddPasienPage> {
       request.fields['alamat'] = alamatController.text;
       request.fields['nomor_hp'] = noHpController.text;
       request.fields['nomor_wali'] = noWaliController.text;
-      request.fields['prodi_id'] = prodiController.text;
+      request.fields['jadwal_dokter_id'] = prodiController.text;
 
       if (_imageFile != null) {
         request.files.add(
