@@ -1,7 +1,7 @@
 import 'package:e_siklinik/components/box.dart';
 import 'package:e_siklinik/pages/data.dart';
 import 'package:e_siklinik/testing/addPasien.dart';
-import 'package:e_siklinik/testing/showPasien.dart';
+import 'package:e_siklinik/testing/pasien/showPasien.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
