@@ -168,6 +168,23 @@ class ObatController extends Controller
     /**
      * Show data kategori obat
      */
+    public function storeKategoriObat(Request $request){
+        try{
+            $response = KategoriObat::create([
+                'nama_kategori' => $request->nama
+            ]);
+            if(isNull($response)){
+                return response()->json(['message' => 'Succes input kategori obat']);
+            }else{
+                throw new Exception();
+            }
+        }catch(Exception $exception){
+            return response()->json(["status" => 500, "messasge" => "Error: " . $exception]);
+        }
+
+
+
+    }
     public function updateKategoriObat(Request $request, int $id)
     {
         try {
