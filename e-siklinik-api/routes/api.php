@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AntrianController;
+use App\Http\Controllers\CheckUpController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\ObatController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\ProdiController;
+use App\Models\CheckUpResult;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -65,3 +67,8 @@ Route::post('/obat/{id}/update', [ObatController::class, 'update'])->name('obat.
 Route::put('/kategori-obat/{id}/update', [ObatController::class, 'updateKategoriObat']);
 Route::delete('/obat/{id}/delete', [ObatController::class, 'destroy'])->name('obat.destroy');
 Route::delete('/kategori-obat/{id}/delete', [ObatController::class, 'destroyKategoriObat']);
+
+
+// Checkup Result
+Route::get('/checkup-result', [CheckUpController::class, 'index']);
+Route::post('/checkup-result', [CheckUpController::class, 'index']);

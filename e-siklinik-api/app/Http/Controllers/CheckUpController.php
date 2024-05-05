@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CheckUpResult;
 use Illuminate\Http\Request;
 
 class CheckUpController extends Controller
@@ -11,7 +12,12 @@ class CheckUpController extends Controller
      */
     public function index()
     {
-        //
+        $results = CheckUpResult::with('checkUpResulToAssesmen')->with('checkUpResultToDetailResep')->get();
+
+        if($results->count()==0){
+            return response()->json(['status' => 400, 'results' => 'Belum ada data']);
+        }
+        return response()->json(['status' => 200, 'results' => $results]);
     }
 
     /**
