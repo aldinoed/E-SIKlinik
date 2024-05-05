@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('checkup_assesmens', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('antrian_id')->constrained('antrian')->cascadeOnUpdate();
+            $table->foreignId('dokter_id')->constrained('dokter')->cascadeOnUpdate();
             $table->timestamps();
         });
     }

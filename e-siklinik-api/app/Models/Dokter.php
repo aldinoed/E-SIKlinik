@@ -19,9 +19,9 @@ class Dokter extends Model
         'nomor_hp',
         'image'];
 
-    public function dokterToAntrianTable()
+    public function dokterToAssesmen()
     {
-        return $this->hasMany(CheckUpResult::class);
+        return $this->hasMany(CheckupAssesmen::class);
     }
 
     public function dokterToJadwal()
