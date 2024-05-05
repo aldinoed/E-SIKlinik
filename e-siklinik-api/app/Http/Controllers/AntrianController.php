@@ -32,7 +32,7 @@ class AntrianController extends Controller
      */
     public function store(Request $request)
     {
-        $antrianNumberChecker = $this->nomorAntrianChecker($request);
+        $antrianNumberChecker = $this->nomorAntrianChecker();
 
         try {
             if ($antrianNumberChecker === 0) {
