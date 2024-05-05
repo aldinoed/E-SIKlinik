@@ -88,13 +88,16 @@ class _AddDokterPageState extends State<AddDokterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(
-          "Add Dokter",
-          style: TextStyle(
-            fontSize: 22.0,
-            color: Colors.black,
-          ),
+        leading: IconButton(onPressed: () {
+      Navigator.pop((context));
+    },icon: const Icon(Icons.arrow_back_ios)),
+        backgroundColor: Colors.white,
+        elevation: 2,
+        shadowColor: Colors.black,
+        centerTitle: true,
+        title: const Text(
+          "Data Dokter",
+          style: TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
       body: Padding(

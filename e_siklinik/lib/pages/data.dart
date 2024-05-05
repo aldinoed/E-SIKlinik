@@ -1,7 +1,7 @@
 import 'package:e_siklinik/components/box.dart';
-import 'package:e_siklinik/pages/data_dokter.dart';
-import 'package:e_siklinik/pages/data_obat.dart';
-import 'package:e_siklinik/pages/data_pasein.dart';
+import 'package:e_siklinik/pages/Dokter/data_dokter.dart';
+import 'package:e_siklinik/pages/Obat/data_obat.dart';
+import 'package:e_siklinik/pages/Pasien/data_pasien.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:fluttericon/rpg_awesome_icons.dart';
@@ -36,7 +36,6 @@ class _DataState extends State<Data> {
                 width: double.infinity,
                 height: 150,
                 child: const Center(
-                  child: Text("Grafik ?"),
                 ),
               ),
               const SizedBox(

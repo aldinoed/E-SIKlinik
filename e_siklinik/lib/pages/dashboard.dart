@@ -1,4 +1,5 @@
 import 'package:e_siklinik/components/box.dart';
+import 'package:e_siklinik/pages/Antrian/antrian.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,6 @@ class _DashboardState extends State<Dashboard> {
                 width: double.infinity,
                 height: 150,
                 child: const Center(
-                  child: Text("Grafik ?"),
                 ),
               ),
               Container(
@@ -135,7 +135,9 @@ class _DashboardState extends State<Dashboard> {
                     bgimage: 'assets/images/Utilities2.png',
                     icon: const Icon(Icons.people_alt,
                         size: 25, color: Color(0xFF234DF0)),
-                    onTapBox: () {},
+                    onTapBox: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Antrian()));
+                    },
                   ),
                 ],
               ),

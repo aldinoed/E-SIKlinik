@@ -1,6 +1,6 @@
 import 'package:e_siklinik/components/box.dart';
+import 'package:e_siklinik/pages/Pasien/add_pasien.dart';
 import 'package:e_siklinik/pages/data.dart';
-import 'package:e_siklinik/testing/addPasien.dart';
 import 'package:e_siklinik/testing/pasien/showPasien.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -63,13 +63,13 @@ class _DataPasienState extends State<DataPasien> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF9F9FB),
+      backgroundColor: const Color(0xFFF9F9FB),
       floatingActionButton: FloatingActionButton(
-        shape: CircleBorder(),
-        backgroundColor: Color(0xFF234DF0),
+        shape: const CircleBorder(),
+        backgroundColor: const Color(0xFF234DF0),
         onPressed: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const AddPasienPage()));
+            MaterialPageRoute(builder: (context) => const AddPasien()));
       },
       child: const Icon(Icons.add, color: Colors.white,),
       ),
@@ -101,7 +101,7 @@ class _DataPasienState extends State<DataPasien> {
                 child: Column(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 16, right: 16, left: 16),
+                      margin: const EdgeInsets.only(top: 16, right: 16, left: 16),
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       width: double.infinity,
                       height: 50,
