@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('detail_resep_obats', function (Blueprint $table) {
+        Schema::create('checkup_assesmens', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('obat_id')->constrained('obats')->cascadeOnUpdate();
-            $table->foreignId('chekup_id')->constrained('check_up_results')->cascadeOnUpdate();
-            $table->string('jumlah_pemakaian');
-            $table->string('waktu_pemakaian');
             $table->timestamps();
         });
     }
@@ -26,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('detail_resep_obats');
+        Schema::dropIfExists('checkup_assesmens');
     }
 };

@@ -14,7 +14,6 @@ class AntrianTable extends Model
     protected $fillable = [
         'pasien_id',
         'no_antrian',
-        'waktu_masuk'
     ];
 
     public function antrianToPasien() {
