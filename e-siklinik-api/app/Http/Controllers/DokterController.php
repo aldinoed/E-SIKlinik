@@ -14,11 +14,11 @@ class DokterController extends Controller
      */
     public function index()
     {
-        $dokter = Dokter::all();
+        $dokter = Dokter::with('dokterToJadwal')->get();
 
-        return view('dokter_index')->with('dokter', $dokter);
+        //return view('dokter_index')->with('dokter', $dokter);
 
-        //return response()->json(['message' => 'Succes tampil dokter', 'pasien'=> $dokter]);
+        return response()->json(['message' => 'Succes tampil dokter', 'pasien'=> $dokter]);
     }
 
     /**
