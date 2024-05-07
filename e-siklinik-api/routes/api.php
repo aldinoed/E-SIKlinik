@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AntrianController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CheckUpController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\ObatController;
@@ -24,6 +25,15 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//AUTH
+
+Route::get('/user', [AuthController::class, 'index']);
+Route::post('/register', [AuthController::class, 'Register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::put('/user/{id}', [AuthController::class, 'Edit']);
+
+
 
 //PASIEN
 Route::get('/pasien', [PasienController::class, 'index'])->name('pasien.index');
