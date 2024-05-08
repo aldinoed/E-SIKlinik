@@ -14,10 +14,10 @@ class CheckupAssesmen extends Model
     protected $fillable = ['antrian_id', 'dokter_id'];
 
     public function assesmenToResult(){
-        return $this->belongsTo(CheckUpResult::class);
+        return $this->belongsTo(CheckUpResult::class, 'assesmen_id');
     }
     public function assesmenToAntrian(){
-        return $this->hasOne(AntrianTable::class);
+        return $this->hasOne(AntrianTable::class, 'id', 'antrian_id');
     }
     public function assesmenToDokter(){
         return $this->belongTo(Dokter::class);

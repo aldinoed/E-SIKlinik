@@ -10,13 +10,17 @@ class CheckUpController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     // $results = CheckUpResult::with('checkUpResulToAssesmen')->with('checkUpResultToDetailResep')->get();
+
+        // if($results->count()==0){
+        //     return response()->json(['status' => 400, 'results' => 'Belum ada data']);
+        // }
+        // return response()->json(['status' => 200, 'results' => $results]);
+
     public function index()
     {
-        $results = CheckUpResult::with('checkUpResulToAssesmen')->with('checkUpResultToDetailResep')->get();
-
-        if($results->count()==0){
-            return response()->json(['status' => 400, 'results' => 'Belum ada data']);
-        }
+        $results = CheckUpResult::with('checkUpResulToAssesmen.assesmenToAntrian.antrianToPasien', 'checkUpResultToDetailResep.detailResepToObat')->get();
         return response()->json(['status' => 200, 'results' => $results]);
     }
 

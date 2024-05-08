@@ -14,9 +14,9 @@ class CheckUpResult extends Model
     protected $fillable = ['assesmen_id', 'hasil_diagnosa', 'url_file'];
 
     public function checkUpResulToAssesmen(){
-        return $this->hasOne(CheckupAssesmen::class);
+        return $this->belongsTo(CheckupAssesmen::class, 'assesmen_id');
     }
     public function checkUpResultToDetailResep(){
-        return $this->hasMany(DetailResepObat::class);
+        return $this->hasMany(DetailResepObat::class, 'checkup_id');
     }
 }

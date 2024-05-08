@@ -12,6 +12,6 @@ class KategoriObat extends Model
     protected $fillable = ['nama_kategori'];
 
     public function kategoriObatToObat(){
-        return $this->hasMany(Obat::class);
+        return $this->hasMany(Obat::class, 'kategori_id');
     }
 }

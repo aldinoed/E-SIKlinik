@@ -21,16 +21,19 @@ class ObatController extends Controller
      */
     public function index()
     {
-        try {
-            $obatData = DB::table('obats')->join('kategori_obats', 'obats.kategori_id', '=', 'kategori_obats.id')->get();
-            if ($obatData->isNotEmpty()) {
-                return response()->json(['status' => 200, 'obats' => $obatData]);
-            } else {
-                throw new Exception('Belum ada data');
-            }
-        } catch (Exception $exception) {
-            return response()->json(["status" => 500, "messasge" => "Error: " . $exception]);
-        }
+        // try {
+        //     $obatData = DB::table('obats')->join('kategori_obats', 'obats.kategori_id', '=', 'kategori_obats.id')->get();
+        //     if ($obatData->isNotEmpty()) {
+        //         return response()->json(['status' => 200, 'obats' => $obatData]);
+        //     } else {
+        //         throw new Exception('Belum ada data');
+        //     }
+        // } catch (Exception $exception) {
+        //     return response()->json(["status" => 500, "messasge" => "Error: " . $exception]);
+        // }
+
+        $obat = Obat::with('obatToKategoriObat')->get();
+        return response()->json(['status' => 200, 'obats' => $obat]);
     }
     /**
      * Store a newly created resource in storage.
@@ -158,7 +161,7 @@ class ObatController extends Controller
      */
     public function getKategori()
     {
-        $kategori = KategoriObat::all();
+        $kategori = KategoriObat::with('kategoriObatToObat')->get();
         if ($kategori->isNotEmpty()) {
             return response()->json(['message' => 'Data berhasil ditampilkan', 'kategori' => $kategori]);
         } else {
