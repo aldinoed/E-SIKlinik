@@ -17,9 +17,11 @@ class AntrianTable extends Model
     ];
 
     public function antrianToPasien() {
-        return $this->belongsTo(PasienTable::class);
+        return $this->belongsTo(PasienTable::class, 'pasien_id');
     }
+
+
     public function antrianToAssesmen() {
-        return $this->belongsTo(CheckupAssesmen::class);
+        return $this->belongsTo(CheckupAssesmen::class, 'antrian_id', 'id');
     }
 }

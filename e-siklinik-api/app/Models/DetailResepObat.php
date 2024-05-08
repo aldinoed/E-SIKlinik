@@ -12,9 +12,9 @@ class DetailResepObat extends Model
     protected $fillable =['checkup_id','obat_id', 'waktu_pemakaian', 'jumlah_pemakaian'];
 
     public function detailResepToCheckUpResult(){
-        return $this->belongsTo(CheckUpResult::class);
+        return $this->belongsTo(CheckUpResult::class, 'checkup_id');
     }
     public function detailResepToObat(){
-        return $this->belongsTo(Obat::class);
+        return $this->belongsTo(Obat::class, 'obat_id' );
     }
 }
