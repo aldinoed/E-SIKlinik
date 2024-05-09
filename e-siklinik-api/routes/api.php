@@ -43,14 +43,14 @@ Route::post('/pasien/update/{id}', [PasienController::class, 'update'])->name('p
 Route::delete('/pasien/delete/{id}', [PasienController::class, 'destroy'])->name('pasien.destroy');
 
 // PRODI
-Route::get('/prodi', [ProdiController::class, 'create'])->name('prodi.create');
+Route::get('/prodi', [ProdiController::class, 'index'])->name('prodi.create');
 Route::post('/prodi/create', [ProdiController::class, 'store'])->name('prodi.store');
 Route::get('/prodi/show/{id}', [ProdiController::class, 'show'])->name('prodi.show');
 Route::post('/prodi/update/{id}', [ProdiController::class, 'update'])->name('prodi.update');
 Route::delete('/prodi/delete/{id}', [ProdiController::class, 'destroy'])->name('prodi.destroy');
 
 //ANTRIAN
-Route::get('/antrian', [AntrianController::class, 'create'])->name('antrian.index');
+Route::get('/antrian', [AntrianController::class, 'index'])->name('antrian.index');
 Route::post('/antrian/create', [AntrianController::class, 'store'])->name('antrian.store');
 //Route::post('/antrian', [AntrianController::class, 'upadte'])->name('antrian.upadte');
 
@@ -77,6 +77,7 @@ Route::post('/obat/{id}/update', [ObatController::class, 'update'])->name('obat.
 Route::put('/kategori-obat/{id}/update', [ObatController::class, 'updateKategoriObat']);
 Route::delete('/obat/{id}/delete', [ObatController::class, 'destroy'])->name('obat.destroy');
 Route::delete('/kategori-obat/{id}/delete', [ObatController::class, 'destroyKategoriObat']);
+Route::get('/detail-resep', [ObatController::class, 'indexDetailResepObat']);
 
 
 // Checkup Result

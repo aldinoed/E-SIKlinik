@@ -68,8 +68,6 @@ class PasienController extends Controller
     public function show( $id)
     {
         $pasien = PasienTable::with('pasienToProdi')->find($id);
-
-
         return response()->json(['message' => 'Success tampil data Pasien', 'pasien' => $pasien]);
     }
 

@@ -12,7 +12,7 @@ class ProdiController extends Controller
      */
     public function index()
     {
-        $prodi = ProdiTable::all();
+        $prodi = ProdiTable::with('prodiToPasien')->get();
 
         return response()->json(['message' => 'Succes tampil Prodi', 'prodi'=> $prodi]);
     }
