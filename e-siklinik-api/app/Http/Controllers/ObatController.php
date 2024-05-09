@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 // use App\Models\Obat;
 
+use App\Models\DetailResepObat;
 use App\Models\KategoriObat;
 use App\Models\Obat;
 use App\Models\Dokter;
@@ -221,5 +222,11 @@ class ObatController extends Controller
         } catch (Exception $exception) {
             return response()->json(["status" => 500, "messasge" => "Error: " . $exception]);
         }
+    }
+
+    public function indexDetailResepObat (){
+        $detailResep = DetailResepObat::with('detailResepToObat.obatToKategoriObat', 'detailResepToCheckUpResult.checkUpResulToAssesmen.assesmenToAntrian.antrianToPasien')->get();
+
+        return response()->json(['message' => 'Data resep obat berhasil ditampilkan', 'detailResep' => $detailResep]);
     }
 }

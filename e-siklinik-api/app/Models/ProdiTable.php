@@ -16,7 +16,7 @@ class ProdiTable extends Model
     ];
     public function prodiToPasien()
     {
-        return $this->hasMany(PasienTable::class);
+        return $this->hasMany(PasienTable::class, 'prodi_id');
     }
 
 

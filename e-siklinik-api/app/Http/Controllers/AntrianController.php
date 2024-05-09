@@ -14,7 +14,7 @@ class AntrianController extends Controller
      */
     public function index()
     {
-        $antrian = AntrianTable::all();
+        $antrian = AntrianTable::with('antrianToPasien')->get();
         return response()->json(['message' => 'Succes tampil antrian', 'antrian' => $antrian]);
     }
 
