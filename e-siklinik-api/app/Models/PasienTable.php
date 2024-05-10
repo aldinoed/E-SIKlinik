@@ -22,12 +22,11 @@ class PasienTable extends Model
         'prodi_id',
         'image'
     ];
-
     public function pasienToProdi() {
         return $this->belongsTo(ProdiTable::class, 'prodi_id');
     }
 
     public function pasienToAntrian(){
-        return $this->hasMany(AntrianTable::class);
+        return $this->hasMany(AntrianTable::class, 'pasien_id');
     }
 }

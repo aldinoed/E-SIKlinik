@@ -82,4 +82,6 @@ Route::get('/detail-resep', [ObatController::class, 'indexDetailResepObat']);
 
 // Checkup Result
 Route::get('/checkup-result', [CheckUpController::class, 'index']);
-Route::post('/checkup-result', [CheckUpController::class, 'index']);
+Route::get('/checkup-assesmen', [CheckUpController::class, 'indexAssesmens']);
+Route::post('/checkup-result/insert', [CheckUpController::class, 'store']);
+Route::post('/checkup-assesmen/insert', [CheckUpController::class, 'storeAssesmen']);
