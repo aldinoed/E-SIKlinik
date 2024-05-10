@@ -51,12 +51,12 @@ Route::delete('/prodi/delete/{id}', [ProdiController::class, 'destroy'])->name('
 
 //ANTRIAN
 Route::get('/antrian', [AntrianController::class, 'index'])->name('antrian.index');
+Route::get('/antrian/show/{id}', [AntrianController::class, 'show'])->name('antrian.show');
 Route::post('/antrian/create', [AntrianController::class, 'store'])->name('antrian.store');
 //Route::post('/antrian', [AntrianController::class, 'upadte'])->name('antrian.upadte');
 
 //DOKTER
 Route::get('/dokter', [DokterController::class, 'index'])->name('dokter.index');
-Route::get('/dokter/create', [DokterController::class, 'create'])->name('dokter.create');
 Route::post('/dokter/create', [DokterController::class, 'store'])->name('dokter.store');
 Route::get('/dokter/show/{id}', [DokterController::class, 'show'])->name('dokter.show');
 Route::post('/dokter/update/{id}', [DokterController::class, 'update'])->name('dokter.update');
