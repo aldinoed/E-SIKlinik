@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('antrian', function (Blueprint $table) {
+        Schema::create('checkup_assesmens', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pasien_id')->constrained('pasien')->cascadeOnUpdate();
-            $table->integer('no_antrian');
+            $table->foreignId('antrian_id')->constrained('antrian')->cascadeOnUpdate();
+            $table->foreignId('dokter_id')->constrained('dokter')->cascadeOnUpdate();
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('antrian');
+        Schema::dropIfExists('checkup_assesmens');
     }
 };

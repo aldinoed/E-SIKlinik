@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('detail_resep_obats', function (Blueprint $table) {
             $table->id();
             $table->foreignId('obat_id')->constrained('obats')->cascadeOnUpdate();
-            $table->foreignId('chekup_id')->constrained('check_up_results')->cascadeOnUpdate();
-            $table->string('jumlah pemakaian');
+            $table->foreignId('checkup_id')->constrained('check_up_results')->cascadeOnUpdate();
+            $table->string('jumlah_pemakaian');
             $table->string('waktu_pemakaian');
             $table->timestamps();
         });

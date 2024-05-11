@@ -14,10 +14,14 @@ class AntrianTable extends Model
     protected $fillable = [
         'pasien_id',
         'no_antrian',
-        'waktu_masuk'
     ];
 
     public function antrianToPasien() {
-        return $this->hasMany(PasienTable::class);
+        return $this->belongsTo(PasienTable::class, 'pasien_id');
+    }
+
+
+    public function antrianToAssesmen() {
+        return $this->belongsTo(CheckupAssesmen::class, 'antrian_id', 'id');
     }
 }

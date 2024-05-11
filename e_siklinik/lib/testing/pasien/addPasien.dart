@@ -65,7 +65,7 @@ class _AddPasienPageState extends State<AddPasienPage> {
       request.fields['alamat'] = alamatController.text;
       request.fields['nomor_hp'] = noHpController.text;
       request.fields['nomor_wali'] = noWaliController.text;
-      request.fields['jadwal_dokter_id'] = prodiController.text;
+      request.fields['prodi_id'] = prodiController.text;
 
       if (_imageFile != null) {
         request.files.add(
@@ -79,26 +79,22 @@ class _AddPasienPageState extends State<AddPasienPage> {
       var response = await request.send();
 
      if (response.statusCode == 200) {
-      // Handle respon dari server
-      final pasien =
-          json.decode(await response.stream.bytesToString())['pasien'];
+      final pasien = json.decode(await response.stream.bytesToString())['pasien'];
       print('Pasien berhasil ditambahkan: $pasien');
-
-      // Menampilkan snackbar untuk memberi tahu pengguna bahwa pasien berhasil ditambahkan
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Pasien berhasil ditambahkan')),
       );
 
-      namaController.clear();
-      nrpController.clear();
-      genderController.clear();
-      tanggalLahirController.clear();
-      alamatController.clear();
-      noHpController.clear();
-      noWaliController.clear();
-      imageController.clear();
-      prodiController.clear();
-      _imageFile = null;
+      // namaController.clear();
+      // nrpController.clear();
+      // genderController.clear();
+      // tanggalLahirController.clear();
+      // alamatController.clear();
+      // noHpController.clear();
+      // noWaliController.clear();
+      // imageController.clear();
+      // prodiController.clear();
+      // _imageFile = null;
      
     } else {
       print('Gagal menambahkan pasien');

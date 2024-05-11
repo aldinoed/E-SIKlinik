@@ -1,7 +1,9 @@
+import 'package:e_siklinik/testing/dokter/editDokter.dart';
 import 'package:e_siklinik/testing/pasien/showPasien.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+ // Tambahkan import halaman EditDokterPage
 
 class ListDokterPage extends StatefulWidget {
   const ListDokterPage({Key? key}) : super(key: key);
@@ -57,7 +59,8 @@ class _ListDokterPageState extends State<ListDokterPage> {
               itemCount: dokterList.length,
               itemBuilder: (BuildContext context, int index) {
                 final dokter = dokterList[index];
-                final dokterId = dokter['id']; // Dapatkan id dokter di sini
+                final dokterId = dokter['id'];
+
                 return GestureDetector(
                   onTap: () {
                     // Navigator.push(
@@ -71,14 +74,32 @@ class _ListDokterPageState extends State<ListDokterPage> {
                   child: ListTile(
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(
-                          'http://10.0.2.2:8000/storage/'+dokter['image']),
+                        'http://10.0.2.2:8000/storage/' + dokter['image'],
+                      ),
                     ),
                     title: Text(dokter['nama'] ?? ''),
                     subtitle: Text(dokter['gender'] ?? ''),
-                    trailing: dokter['dokter_to_jadwal'].isEmpty
-                        ? Text("G ada jadwal")
-                        : Text(dokter['dokter_to_jadwal'][0]['hari'] ??
-                            'G ada hari'),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        dokter['dokter_to_jadwal'].isEmpty
+                            ? Text("G ada jadwal")
+                            : Text(
+                                dokter['dokter_to_jadwal'][0]['hari'] ?? 'G ada hari',
+                              ),
+                        IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditDokterPage(dokter: dokter),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },

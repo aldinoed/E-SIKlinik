@@ -11,18 +11,12 @@ class CheckUpResult extends Model
 
     protected $table = 'check_up_results';
 
-    protected $fillable = ['dokter_id', 'pasien_id','antrian_id', 'hasil_diagnosa', 'url_file'];
+    protected $fillable = ['assesmen_id', 'hasil_diagnosa', 'url_file'];
 
-    public function checkUpResultToDokter(){
-        return $this->belongsTo(Dokter::class);
-    }
-    public function checkUpResultToPasien(){
-        return $this->belongsTo(PasienTable::class);
-    }
-    public function checkUpResulToAntrian(){
-        return $this->hasOne(AntrianTable::class);
+    public function checkUpResulToAssesmen(){
+        return $this->belongsTo(CheckupAssesmen::class, 'assesmen_id');
     }
     public function checkUpResultToDetailResep(){
-        return $this->hasMany(DetailResepObat::class);
+        return $this->hasMany(DetailResepObat::class, 'checkup_id');
     }
 }

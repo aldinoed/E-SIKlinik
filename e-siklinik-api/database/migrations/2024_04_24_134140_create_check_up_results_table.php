@@ -13,9 +13,7 @@ return new class extends Migration
     {
         Schema::create('check_up_results', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('dokter_id')->constrained('dokter')->cascadeOnUpdate();
-            $table->foreignId('pasien_id')->constrained('pasien')->cascadeOnUpdate();
-            $table->foreignId('antrian_id')->constrained('antrian')->cascadeOnUpdate();
+            $table->foreignId('assesmen_id')->constrained('checkup_assesmens')->cascadeOnUpdate();
             $table->text('hasil_diagnosa');
             $table->string('url_file');
             $table->timestamps();

@@ -29,28 +29,8 @@ class _AddDokterPageState extends State<AddDokterPage> {
   @override
   void initState() {
     super.initState();
-   // _getAllProdi();
+   
   }
-
-  // Future<void> _getAllProdi() async {
-  //   try {
-  //     final response = await http.get(Uri.parse(apiGetAllJadwalDokter));
-  //     if (response.statusCode == 200) {
-  //       final data = json.decode(response.body);
-  //       if (data != null && data['jadwal_dokter'] != null) {
-  //         setState(() {
-  //           dokterList = data['jadwal_dokter'];
-  //         });
-  //       } else {
-  //         print("No data received from API");
-  //       }
-  //     } else {
-  //       print("Failed to load prodi");
-  //     }
-  //   } catch (error) {
-  //     print('Error : $error');
-  //   }
-  // }
 
   Future<void> addDokter(BuildContext context) async {
     try {

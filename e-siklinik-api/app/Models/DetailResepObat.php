@@ -9,12 +9,12 @@ class DetailResepObat extends Model
 {
     use HasFactory;
     protected $table = 'detail_resep_obats';
-    protected $fillable =['obat_id', 'waktu_pemakaian', 'jumlah_pemakaian'];
+    protected $fillable =['checkup_id','obat_id', 'waktu_pemakaian', 'jumlah_pemakaian'];
 
     public function detailResepToCheckUpResult(){
-        return $this->belongsTo(CheckUpResult::class);
+        return $this->belongsTo(CheckUpResult::class, 'checkup_id');
     }
     public function detailResepToObat(){
-        return $this->belongsTo(Obat::class);
+        return $this->belongsTo(Obat::class, 'obat_id' );
     }
 }

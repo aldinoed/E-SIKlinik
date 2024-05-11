@@ -13,7 +13,7 @@ class Obat extends Model
     protected $fillable = ['nama_obat', 'tanggal_kadaluarsa', 'stock', 'harga', 'kategori_id', 'image'];
 
     public function obatToKategoriObat(){
-        return $this->belongsTo(KategoriObat::class);
+        return $this->belongsTo(KategoriObat::class, 'kategori_id');
     }
     public function obatToResep(){
         return $this->hasMany(DetailResepObat::class);
