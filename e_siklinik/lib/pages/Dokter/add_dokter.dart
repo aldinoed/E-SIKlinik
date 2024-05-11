@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:e_siklinik/pages/Dokter/data_dokter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -31,7 +32,6 @@ class _AddDokterState extends State<AddDokter> {
   @override
   void initState() {
     super.initState();
-    // _getAllProdi();
   }
 
   // Future<void> _getAllProdi() async {
@@ -79,6 +79,13 @@ class _AddDokterState extends State<AddDokter> {
             json.decode(await response.stream.bytesToString())['dokter'];
         const SnackBar(content: Text('Dokter berhasil ditambahkan'));
         print('Dokter berhasil ditambahkan: $dokter');
+        Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => DataDokter()),
+);
+
+
+
       } else {
         print('Gagal menambahkan Dokter');
       }

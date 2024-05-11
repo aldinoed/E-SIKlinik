@@ -20,6 +20,7 @@ class _DataDokterState extends State<DataDokter> {
   void initState() {
     super.initState();
     _getAllDokter();
+    _refreshData();
   }
 
   Future<void> _getAllDokter() async {
@@ -97,42 +98,42 @@ class _DataDokterState extends State<DataDokter> {
                 ),
               )
             : SafeArea(
-              child: Column(
-                children: [
-                   Container(
-                        margin: EdgeInsets.only(top: 16, right: 16, left: 16),
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        width: double.infinity,
-                        height: 50,
-                        decoration: const BoxDecoration(
-                            color: Color(0xFFEFF0F3),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30))),
-                        child: Row(
-                          children: [
-                            Flexible(
-                              child: TextFormField(
-                                onChanged: _filterDokterList,
-                                maxLines: null,
-                                decoration: const InputDecoration(
-                                  hintText: 'Search Here',
-                                  border: InputBorder.none,
-                                ),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 16, right: 16, left: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      width: double.infinity,
+                      height: 50,
+                      decoration: const BoxDecoration(
+                          color: Color(0xFFEFF0F3),
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: TextFormField(
+                              onChanged: _filterDokterList,
+                              maxLines: null,
+                              decoration: const InputDecoration(
+                                hintText: 'Search Here',
+                                border: InputBorder.none,
                               ),
                             ),
-                            const Icon(Icons.search),
-                          ],
-                        ),
+                          ),
+                          const Icon(Icons.search),
+                        ],
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                  Flexible(
-                    child: ListView.builder(
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Flexible(
+                      child: ListView.builder(
                         itemCount: dokterList.length,
                         itemBuilder: (BuildContext context, int index) {
                           final dokter = dokterList[index];
-                          final dokterId = dokter['id']; // Dapatkan id dokter di sini
+                          final dokterId =
+                              dokter['id']; // Dapatkan id dokter di sini
                           return GestureDetector(
                             onTap: () {
                               // Navigator.push(
@@ -146,22 +147,24 @@ class _DataDokterState extends State<DataDokter> {
                             child: ListTile(
                               leading: CircleAvatar(
                                 backgroundImage: NetworkImage(
-                                    'http://10.0.2.2:8000/storage/' + dokter['image']),
+                                    'http://10.0.2.2:8000/storage/' +
+                                        dokter['image']),
                               ),
                               title: Text(dokter['nama'] ?? ''),
                               subtitle: Text(dokter['gender'] ?? ''),
                               trailing: dokter['dokter_to_jadwal'].isEmpty
                                   ? Text("G ada jadwal")
-                                  : Text(dokter['dokter_to_jadwal'][0]['hari'] ??
+                                  : Text(dokter['dokter_to_jadwal'][0]
+                                          ['hari'] ??
                                       'G ada hari'),
                             ),
                           );
                         },
                       ),
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
-            ),
       ),
     );
   }

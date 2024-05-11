@@ -28,4 +28,6 @@ class Dokter extends Model
     {
         return $this->hasMany(JadwalDokter::class);
     }
+
+ 
 }

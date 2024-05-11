@@ -1,7 +1,9 @@
+import 'package:e_siklinik/testing/pasien/editPasien.dart';
 import 'package:e_siklinik/testing/pasien/showPasien.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
 
 class ListPasienPage extends StatefulWidget {
   const ListPasienPage({Key? key}) : super(key: key);
@@ -57,27 +59,44 @@ class _ListPasienPageState extends State<ListPasienPage> {
               itemCount: pasienList.length,
               itemBuilder: (BuildContext context, int index) {
                 final pasien = pasienList[index];
-                final pasienId = pasien['id']; // Dapatkan id pasien di sini
+                final pasienId = pasien['id'];
+
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            ShowPasienDetail(pasienId: pasienId),
+                        builder: (context) => ShowPasienDetail(pasienId: pasienId),
                       ),
                     );
                   },
                   child: ListTile(
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(
-                          'http://10.0.2.2:8000/storage/' + pasien['image']),
+                        'http://10.0.2.2:8000/storage/' + pasien['image'],
+                      ),
                     ),
                     title: Text(pasien['nama'] ?? ''),
                     subtitle: Text(pasien['nrp'] ?? ''),
-                    trailing: pasien['pasien_to_prodi'] != null
-                        ? Text(pasien['pasien_to_prodi']['nama'] ?? '')
-                        : Text("G ada prodi"),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        pasien['pasien_to_prodi'] != null
+                            ? Text(pasien['pasien_to_prodi']['nama'] ?? '')
+                            : Text("G ada prodi"),
+                        IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditPasienPage(pasien: pasien),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },

@@ -165,6 +165,8 @@ class CheckUpController extends Controller
                 ->join('antrian', 'checkup_assesmens.antrian_id', '=', 'antrian.id')
                 ->join('pasien', 'antrian.pasien_id', '=', 'pasien.id')
                 ->addSelect('pasien.*')->where('checkup_assessmens.id', '=', "$id")->first();
+                
+                return response()->json(['status' => 200, 'results' => $response]);
         } catch (Exception $exception) {
         }
     }

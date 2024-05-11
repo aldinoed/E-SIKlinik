@@ -18,7 +18,7 @@ class DokterController extends Controller
 
         //return view('dokter_index')->with('dokter', $dokter);
 
-        return response()->json(['message' => 'Succes tampil dokter', 'pasien'=> $dokter]);
+        return response()->json(['message' => 'Succes tampil dokter', 'dokter'=> $dokter]);
     }
 
     /**
