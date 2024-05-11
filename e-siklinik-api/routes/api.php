@@ -3,11 +3,13 @@
 use App\Http\Controllers\AntrianController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CheckUpController;
+use App\Http\Controllers\DetailResepObatController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\ObatController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\ProdiController;
 use App\Models\CheckUpResult;
+use App\Models\DetailResepObat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -51,12 +53,12 @@ Route::delete('/prodi/delete/{id}', [ProdiController::class, 'destroy'])->name('
 
 //ANTRIAN
 Route::get('/antrian', [AntrianController::class, 'index'])->name('antrian.index');
+Route::get('/antrian/show/{id}', [AntrianController::class, 'show'])->name('antrian.show');
 Route::post('/antrian/create', [AntrianController::class, 'store'])->name('antrian.store');
 //Route::post('/antrian', [AntrianController::class, 'upadte'])->name('antrian.upadte');
 
 //DOKTER
 Route::get('/dokter', [DokterController::class, 'index'])->name('dokter.index');
-Route::get('/dokter/create', [DokterController::class, 'create'])->name('dokter.create');
 Route::post('/dokter/create', [DokterController::class, 'store'])->name('dokter.store');
 Route::get('/dokter/show/{id}', [DokterController::class, 'show'])->name('dokter.show');
 Route::post('/dokter/update/{id}', [DokterController::class, 'update'])->name('dokter.update');
@@ -82,6 +84,11 @@ Route::get('/detail-resep', [ObatController::class, 'indexDetailResepObat']);
 
 // Checkup Result
 Route::get('/checkup-result', [CheckUpController::class, 'index']);
+Route::get('/checkup-result/show/{id}', [CheckUpController::class, 'show']);
 Route::get('/checkup-assesmen', [CheckUpController::class, 'indexAssesmens']);
 Route::post('/checkup-result/insert', [CheckUpController::class, 'store']);
 Route::post('/checkup-assesmen/insert', [CheckUpController::class, 'storeAssesmen']);
+Route::get('/detail-resep-obat', [DetailResepObatController::class, 'index']);
+Route::post('/detail-resep-obat/insert', [DetailResepObatController::class, 'store']);
+Route::get('/detail-resep-obat/show/{id}', [DetailResepObatController::class, 'show']);
+Route::delete('/detail-resep-obat/{id}/delete', [DetailResepObatController::class, 'destroy']);

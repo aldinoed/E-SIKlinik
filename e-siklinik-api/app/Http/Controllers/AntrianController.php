@@ -53,7 +53,12 @@ class AntrianController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            $response = DB::table('antrian')->join('pasien', 'antrian.pasien_id', '=', 'pasien.id' )->where('antrian.id', '=', $id)->get();
+            return response()->json(["status" => 200, "data" => $response]);
+        }catch(Exception $exception){
+            return response()->json(["status" => 500, "messasge" => "Error: " . $exception]);
+        }
     }
 
     /**
