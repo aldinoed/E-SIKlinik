@@ -3,11 +3,13 @@
 use App\Http\Controllers\AntrianController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CheckUpController;
+use App\Http\Controllers\DetailResepObatController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\ObatController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\ProdiController;
 use App\Models\CheckUpResult;
+use App\Models\DetailResepObat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -82,6 +84,11 @@ Route::get('/detail-resep', [ObatController::class, 'indexDetailResepObat']);
 
 // Checkup Result
 Route::get('/checkup-result', [CheckUpController::class, 'index']);
+Route::get('/checkup-result/show/{id}', [CheckUpController::class, 'show']);
 Route::get('/checkup-assesmen', [CheckUpController::class, 'indexAssesmens']);
 Route::post('/checkup-result/insert', [CheckUpController::class, 'store']);
 Route::post('/checkup-assesmen/insert', [CheckUpController::class, 'storeAssesmen']);
+Route::get('/detail-resep-obat', [DetailResepObatController::class, 'index']);
+Route::post('/detail-resep-obat/insert', [DetailResepObatController::class, 'store']);
+Route::get('/detail-resep-obat/show/{id}', [DetailResepObatController::class, 'show']);
+Route::delete('/detail-resep-obat/{id}/delete', [DetailResepObatController::class, 'destroy']);
