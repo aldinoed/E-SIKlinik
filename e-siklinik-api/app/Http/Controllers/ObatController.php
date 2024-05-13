@@ -22,16 +22,7 @@ class ObatController extends Controller
      */
     public function index()
     {
-        // try {
-        //     $obatData = DB::table('obats')->join('kategori_obats', 'obats.kategori_id', '=', 'kategori_obats.id')->get();
-        //     if ($obatData->isNotEmpty()) {
-        //         return response()->json(['status' => 200, 'obats' => $obatData]);
-        //     } else {
-        //         throw new Exception('Belum ada data');
-        //     }
-        // } catch (Exception $exception) {
-        //     return response()->json(["status" => 500, "messasge" => "Error: " . $exception]);
-        // }
+
 
         $obat = Obat::with('obatToKategoriObat')->get();
         return response()->json(['status' => 200, 'obats' => $obat]);
@@ -39,35 +30,52 @@ class ObatController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+     // try {
+        //     $file = $request->file('image');
+        //     $path = time() . '_' . $request->nama . '.' . $file->getClientOriginalExtension();
+        //     var_dump($path);
+
+        //     $uploadRes = Storage::disk('local')->put('public/' . $path, file_get_contents($file));
+
+        //     if ($uploadRes == false) {
+        //         throw new Exception("Upload gambar gagal", 500);
+        //     } else {
+        //         $response = Obat::create([
+        //             'nama_obat' => $request->nama,
+        //             'tanggal_kadaluarsa' => $request->kadaluarsa,
+        //             'stock' => $request->stock,
+        //             'harga' => $request->harga,
+        //             'kategori_id' => $request->kategoriId,
+        //             'image' => $path,
+        //         ]);
+        //         if (isNull($response)) {
+        //             return response()->json(["status" => 200, "message" => "Berhasil input obat", "obats" => $response]);
+        //         } else {
+        //             throw new Exception();
+        //         }
+        //     }
+        // } catch (Exception $exception) {
+        //     return response()->json(["status" => 500, "message" => "Error: " . $exception->getMessage()]);
+        // }
     public function store(Request $request)
     {
-        try {
-            $file = $request->file('image');
-            $path = time() . '_' . $request->nama . '.' . $file->getClientOriginalExtension();
-            var_dump($path);
 
-            $uploadRes = Storage::disk('local')->put('public/' . $path, file_get_contents($file));
+        $file = $request->file('image');
+        $path = time() . '_' . $request->name . '.' . $file->getClientOriginalExtension();
 
-            if ($uploadRes == false) {
-                throw new Exception("Upload gambar gagal", 500);
-            } else {
-                $response = Obat::create([
-                    'nama_obat' => $request->nama,
-                    'tanggal_kadaluarsa' => $request->kadaluarsa,
+        Storage::disk('local')->put('public/' . $path, file_get_contents($file));
+
+        $obats = Obat::create([
+            'nama_obat' => $request->nama_obat,
+                    'tanggal_kadaluarsa' => $request->tanggal_kadaluarsa,
                     'stock' => $request->stock,
                     'harga' => $request->harga,
-                    'kategori_id' => $request->kategoriId,
-                    'image' => $path,
-                ]);
-                if (isNull($response)) {
-                    return response()->json(["status" => 200, "message" => "Berhasil input obat"]);
-                } else {
-                    throw new Exception();
-                }
-            }
-        } catch (Exception $exception) {
-            return response()->json(["status" => 500, "messasge" => "Error: " . $exception]);
-        }
+                    'kategori_id' => $request->kategori_id,
+            'image' => $path
+        ]);
+
+        return response()->json(['message' => 'Succes input obat', 'obats'=> $obats]);
     }
 
     /**
