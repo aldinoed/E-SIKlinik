@@ -136,7 +136,7 @@ class _DashboardState extends State<Dashboard> {
                     icon: const Icon(Icons.people_alt,
                         size: 25, color: Color(0xFF234DF0)),
                     onTapBox: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Antrian()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> AntrianPage()));
                     },
                   ),
                 ],
