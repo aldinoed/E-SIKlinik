@@ -1,7 +1,11 @@
+import 'package:e_siklinik/pages/Obat/addObat.dart';
 import 'package:e_siklinik/pages/Obat/add_obat.dart';
+import 'package:e_siklinik/testing/obat/addObat.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class DataObat extends StatefulWidget {
   const DataObat({Key? key}) : super(key: key);
@@ -11,8 +15,31 @@ class DataObat extends StatefulWidget {
 }
 
 class _DataObatState extends State<DataObat> {
+  final String apiGetAllObat = "http://10.0.2.2:8000/api/obat";
+  List<dynamic> obatList = [];
+
   String query = '';
   TextEditingController _searchController = TextEditingController();
+
+  Future<void> _getAllObat() async {
+    try {
+      final response = await http.get(Uri.parse(apiGetAllObat));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data != null && data['obats'] != null) {
+          setState(() {
+            obatList = data['obats'];
+          });
+        } else {
+          print("No data received from API");
+        }
+      } else {
+        print("Failed to load obat");
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+  }
 
   List<String> data = [
     'Apple',
@@ -32,6 +59,7 @@ class _DataObatState extends State<DataObat> {
   @override
   void initState() {
     super.initState();
+    _getAllObat();
     filteredData = data;
   }
 
@@ -54,7 +82,7 @@ class _DataObatState extends State<DataObat> {
         centerTitle: true,
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.arrow_left,size: 50, color: Color.fromARGB(255, 0, 0, 0)),
+          icon: Icon(Icons.arrow_left, size: 50, color: Color.fromARGB(255, 0, 0, 0)),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -91,16 +119,17 @@ class _DataObatState extends State<DataObat> {
                 crossAxisSpacing: 8.0,
                 childAspectRatio: MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 2.5),
               ),
-              itemCount: filteredData.length,
+              itemCount: obatList.length,
               itemBuilder: (BuildContext context, int index) {
+                final obat = obatList[index];
                 return IntrinsicHeight(
                   child: Card(
-                    elevation: 3,                 
+                    elevation: 3,
                     child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: Colors.white,
-                    ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.white,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -109,17 +138,18 @@ class _DataObatState extends State<DataObat> {
                               radius: 10,
                               backgroundColor: Colors.transparent,
                               child: Image.asset(
-                                  'assets/images/obat.png',
-                                  width: 40,
-                                  height: 40,
-                                  fit:BoxFit.fill,
+                                'assets/images/obat.png',
+                                width: 40,
+                                height: 40,
+                                fit: BoxFit.fill,
                               ),
                             ),
                             trailing: SizedBox(
                               child: IconButton(
-                                onPressed: (){},
+                                onPressed: () {},
                                 icon: Icon(Icons.more_vert),
-                                )),
+                              ),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -127,9 +157,9 @@ class _DataObatState extends State<DataObat> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(filteredData[index], style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                                Text('EXP: '),
-                                Text('Stok')
+                                Text(obat['nama_obat'], style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                                Text('EXP: ${obat['tanggal_kadaluarsa'] ?? '-'}'),
+                                Text('Stok: ${obat['stock'] ?? '-'}')
                               ],
                             ),
                           )
@@ -148,9 +178,9 @@ class _DataObatState extends State<DataObat> {
         shape: CircleBorder(),
         foregroundColor: Colors.black,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: ((context) => AddObat())));
+          Navigator.push(context, MaterialPageRoute(builder: ((context) => AddObatNew())));
         },
-        child: Icon(Icons.add, size: 40,color: Colors.white,),
+        child: Icon(Icons.add, size: 40, color: Colors.white,),
       ),
     );
   }
