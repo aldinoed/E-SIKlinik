@@ -2,10 +2,6 @@ import 'package:e_siklinik/components/header.dart';
 import 'package:e_siklinik/pages/dashboard.dart';
 import 'package:e_siklinik/pages/data.dart';
 import 'package:e_siklinik/pages/search.dart';
-import 'package:e_siklinik/testing/dokter/listDokter.dart';
-import 'package:e_siklinik/testing/obat/addObat.dart';
-import 'package:e_siklinik/testing/obat/listObat.dart';
-import 'package:e_siklinik/testing/pasien/listPasien.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:molten_navigationbar_flutter/molten_navigationbar_flutter.dart';
@@ -34,8 +30,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-       home: Scaffold
-       (
+      home: Scaffold(
         backgroundColor: Color(0xFFF9F9FB),
         drawer: const Drawer(),
         appBar: const Header(),

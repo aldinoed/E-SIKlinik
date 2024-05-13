@@ -77,14 +77,17 @@ class _AddDokterState extends State<AddDokter> {
       if (response.statusCode == 200) {
         final dokter =
             json.decode(await response.stream.bytesToString())['dokter'];
-        const SnackBar(content: Text('Dokter berhasil ditambahkan'));
         print('Dokter berhasil ditambahkan: $dokter');
-        Navigator.push(
-  context,
-  MaterialPageRoute(builder: (context) => DataDokter()),
-);
-
-
+// Menampilkan snackbar untuk memberi tahu pengguna bahwa pasien berhasil ditambahkan
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Dokter berhasil ditambahkan')),
+        );
+namaController.clear();
+        genderController.clear();
+        tanggalLahirController.clear();
+        alamatController.clear();
+        noHpController.clear();
+                _imageFile = null;
 
       } else {
         print('Gagal menambahkan Dokter');
