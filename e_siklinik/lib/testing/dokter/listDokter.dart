@@ -1,6 +1,5 @@
 import 'package:e_siklinik/testing/dokter/editDokter.dart';
 import 'package:e_siklinik/testing/dokter/showDokter.dart';
-import 'package:e_siklinik/testing/pasien/showPasien.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

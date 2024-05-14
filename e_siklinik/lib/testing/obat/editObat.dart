@@ -19,9 +19,11 @@ class _EditObatPageState extends State<EditObatPage> {
   late TextEditingController _tanggalKadaluarsaController;
   late TextEditingController _stockController;
   late TextEditingController _hargaController;
-  late TextEditingController _kategoriIdController;
+  String? _selectedKategori;
   final TextEditingController imageController = TextEditingController();
 
+  final String apiGetAllKategoriObat = "http://10.0.2.2:8000/api/kategori-obat";
+  List<dynamic> kategoriObatList = [];
   File? _imageFile;
 
   @override
@@ -30,10 +32,13 @@ class _EditObatPageState extends State<EditObatPage> {
     _namaObatController = TextEditingController(text: widget.obat['nama_obat']);
     _tanggalKadaluarsaController =
         TextEditingController(text: widget.obat['tanggal_kadaluarsa']);
-    _stockController = TextEditingController(text: widget.obat['stock'].toString());
-    _hargaController = TextEditingController(text: widget.obat['harga'].toString());
-    _kategoriIdController = TextEditingController(text: widget.obat['kategori_id'].toString());
+    _stockController =
+        TextEditingController(text: widget.obat['stock'].toString());
+    _hargaController =
+        TextEditingController(text: widget.obat['harga'].toString());
+    _selectedKategori = widget.obat['kategori_id'].toString();
     _imageFile = null;
+    _getAllKategoriObat();
   }
 
   @override
@@ -42,7 +47,6 @@ class _EditObatPageState extends State<EditObatPage> {
     _tanggalKadaluarsaController.dispose();
     _stockController.dispose();
     _hargaController.dispose();
-    _kategoriIdController.dispose();
     super.dispose();
   }
 
@@ -56,7 +60,7 @@ class _EditObatPageState extends State<EditObatPage> {
     request.fields['tanggal_kadaluarsa'] = _tanggalKadaluarsaController.text;
     request.fields['stock'] = _stockController.text;
     request.fields['harga'] = _hargaController.text;
-    request.fields['kategori_id'] = _kategoriIdController.text;
+    request.fields['kategori_id'] = _selectedKategori!;
 
     // Menambahkan file gambar (jika ada)
     if (_imageFile != null) {
@@ -84,6 +88,26 @@ class _EditObatPageState extends State<EditObatPage> {
           content: Text('Gagal memperbarui data obat'),
         ),
       );
+    }
+  }
+
+  Future<void> _getAllKategoriObat() async {
+    try {
+      final response = await http.get(Uri.parse(apiGetAllKategoriObat));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data != null && data['kategori'] != null) {
+          setState(() {
+            kategoriObatList = data['kategori'];
+          });
+        } else {
+          print("No data received from API");
+        }
+      } else {
+        print("Failed to load prodi");
+      }
+    } catch (error) {
+      print('Error : $error');
     }
   }
 
@@ -148,16 +172,19 @@ class _EditObatPageState extends State<EditObatPage> {
                   return null;
                 },
               ),
-              TextFormField(
-                controller: _kategoriIdController,
-                decoration: InputDecoration(
-                  labelText: 'Kategori ID',
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Kategori ID tidak boleh kosong';
-                  }
-                  return null;
+              DropdownButtonFormField<String>(
+                value: _selectedKategori,
+                decoration: InputDecoration(labelText: 'Kategori Obat'),
+                items: kategoriObatList.map((kategori) {
+                  return DropdownMenuItem<String>(
+                    value: kategori['id'].toString(),
+                    child: Text(kategori?['nama_kategori'] ?? ''),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedKategori = value;
+                  });
                 },
               ),
               TextFormField(
