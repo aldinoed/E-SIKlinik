@@ -2,6 +2,7 @@ import 'package:e_siklinik/components/header.dart';
 import 'package:e_siklinik/pages/dashboard.dart';
 import 'package:e_siklinik/pages/data.dart';
 import 'package:e_siklinik/pages/search.dart';
+import 'package:e_siklinik/testing/antrian/listAntrian.dart';
 import 'package:e_siklinik/testing/dokter/listDokter.dart';
 import 'package:e_siklinik/testing/obat/listKategoriObat.dart';
 import 'package:e_siklinik/testing/obat/listObat.dart';
@@ -34,7 +35,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ListObatPage() 
+      home: AntrianListPage() 
       // (
       //   backgroundColor: Color(0xFFF9F9FB),
       //   drawer: const Drawer(),
