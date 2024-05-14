@@ -82,13 +82,12 @@ class _AddDokterState extends State<AddDokter> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Dokter berhasil ditambahkan')),
         );
-namaController.clear();
+        namaController.clear();
         genderController.clear();
         tanggalLahirController.clear();
         alamatController.clear();
         noHpController.clear();
-                _imageFile = null;
-
+        _imageFile = null;
       } else {
         print('Gagal menambahkan Dokter');
       }

@@ -78,40 +78,41 @@ class _AddPasienPageState extends State<AddPasienPage> {
 
       var response = await request.send();
 
-     if (response.statusCode == 200) {
-      final pasien = json.decode(await response.stream.bytesToString())['pasien'];
-      print('Pasien berhasil ditambahkan: $pasien');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Pasien berhasil ditambahkan')),
-      );
+      if (response.statusCode == 200) {
+        final pasien =
+            json.decode(await response.stream.bytesToString())['pasien'];
+        print('Pasien berhasil ditambahkan: $pasien');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Pasien berhasil ditambahkan')),
+        );
 
-      // namaController.clear();
-      // nrpController.clear();
-      // genderController.clear();
-      // tanggalLahirController.clear();
-      // alamatController.clear();
-      // noHpController.clear();
-      // noWaliController.clear();
-      // imageController.clear();
-      // prodiController.clear();
-      // _imageFile = null;
-     
-    } else {
-      print('Gagal menambahkan pasien');
+        // namaController.clear();
+        // nrpController.clear();
+        // genderController.clear();
+        // tanggalLahirController.clear();
+        // alamatController.clear();
+        // noHpController.clear();
+        // noWaliController.clear();
+        // imageController.clear();
+        // prodiController.clear();
+        // _imageFile = null;
+      } else {
+        print('Gagal menambahkan pasien');
+      }
+    } catch (error) {
+      print('Error: $error');
     }
-  } catch (error) {
-    print('Error: $error');
-  }
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: () {
-      Navigator.pop((context));
-    },icon: const Icon(Icons.arrow_back_ios)),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop((context));
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
         backgroundColor: Colors.white,
         elevation: 2,
         shadowColor: Colors.black,

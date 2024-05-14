@@ -66,7 +66,10 @@ class _DataObatState extends State<DataObat> {
   void onQueryChanged(String newQuery) {
     setState(() {
       query = newQuery;
-      filteredData = data.where((element) => element.toLowerCase().contains(query.toLowerCase())).toList();
+      filteredData = data
+          .where(
+              (element) => element.toLowerCase().contains(query.toLowerCase()))
+          .toList();
     });
   }
 
@@ -77,12 +80,14 @@ class _DataObatState extends State<DataObat> {
         surfaceTintColor: Colors.transparent,
         title: Text(
           "Database Obat",
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(
+              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.arrow_left, size: 50, color: Color.fromARGB(255, 0, 0, 0)),
+          icon: Icon(Icons.arrow_left,
+              size: 50, color: Color.fromARGB(255, 0, 0, 0)),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -101,11 +106,11 @@ class _DataObatState extends State<DataObat> {
                   filled: true,
                   fillColor: const Color.fromARGB(200, 235, 242, 255),
                   labelText: 'Cari Obat',
-                  labelStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+                  labelStyle: TextStyle(
+                      color: Colors.grey, fontWeight: FontWeight.bold),
                   border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(30)
-                  ),
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(30)),
                   suffixIcon: Icon(Icons.search),
                 ),
               ),
@@ -117,7 +122,8 @@ class _DataObatState extends State<DataObat> {
                 crossAxisCount: 2,
                 mainAxisSpacing: 8.0,
                 crossAxisSpacing: 8.0,
-                childAspectRatio: MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 2.5),
+                childAspectRatio: MediaQuery.of(context).size.width /
+                    (MediaQuery.of(context).size.height / 2.5),
               ),
               itemCount: obatList.length,
               itemBuilder: (BuildContext context, int index) {
@@ -157,8 +163,12 @@ class _DataObatState extends State<DataObat> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(obat['nama_obat'], style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                                Text('EXP: ${obat['tanggal_kadaluarsa'] ?? '-'}'),
+                                Text(obat['nama_obat'],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20)),
+                                Text(
+                                    'EXP: ${obat['tanggal_kadaluarsa'] ?? '-'}'),
                                 Text('Stok: ${obat['stock'] ?? '-'}')
                               ],
                             ),
@@ -178,9 +188,14 @@ class _DataObatState extends State<DataObat> {
         shape: CircleBorder(),
         foregroundColor: Colors.black,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: ((context) => AddObatNew())));
+          Navigator.push(
+              context, MaterialPageRoute(builder: ((context) => AddObatNew())));
         },
-        child: Icon(Icons.add, size: 40, color: Colors.white,),
+        child: Icon(
+          Icons.add,
+          size: 40,
+          color: Colors.white,
+        ),
       ),
     );
   }

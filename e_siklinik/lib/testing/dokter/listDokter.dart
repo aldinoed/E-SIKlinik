@@ -1,9 +1,10 @@
 import 'package:e_siklinik/testing/dokter/editDokter.dart';
+import 'package:e_siklinik/testing/dokter/showDokter.dart';
 import 'package:e_siklinik/testing/pasien/showPasien.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
- // Tambahkan import halaman EditDokterPage
+// Tambahkan import halaman EditDokterPage
 
 class ListDokterPage extends StatefulWidget {
   const ListDokterPage({Key? key}) : super(key: key);
@@ -63,13 +64,13 @@ class _ListDokterPageState extends State<ListDokterPage> {
 
                 return GestureDetector(
                   onTap: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) =>
-                    //         ShowPasienDetail(pasienId: pasienId),
-                    //   ),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ShowDokterPage(dokterId: dokterId),
+                      ),
+                    );
                   },
                   child: ListTile(
                     leading: CircleAvatar(
@@ -85,7 +86,8 @@ class _ListDokterPageState extends State<ListDokterPage> {
                         dokter['dokter_to_jadwal'].isEmpty
                             ? Text("G ada jadwal")
                             : Text(
-                                dokter['dokter_to_jadwal'][0]['hari'] ?? 'G ada hari',
+                                dokter['dokter_to_jadwal'][0]['hari'] ??
+                                    'G ada hari',
                               ),
                         IconButton(
                           icon: Icon(Icons.edit),
@@ -93,7 +95,8 @@ class _ListDokterPageState extends State<ListDokterPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EditDokterPage(dokter: dokter),
+                                builder: (context) =>
+                                    EditDokterPage(dokter: dokter),
                               ),
                             );
                           },

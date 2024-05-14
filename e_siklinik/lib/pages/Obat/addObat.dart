@@ -24,7 +24,7 @@ class _AddObatNewState extends State<AddObatNew> {
   final TextEditingController imageController = TextEditingController();
 
   final String apiPostObat = "http://10.0.2.2:8000/api/obat/insert";
-  
+
   final String apiGetAllKategori = "http://10.0.2.2:8000/api/kategori-obat";
 
   List<dynamic> kategoriList = [];
@@ -86,9 +86,7 @@ class _AddObatNewState extends State<AddObatNew> {
           const SnackBar(content: Text('Obat berhasil ditambahkan')),
         );
         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const DataObat()));
+            context, MaterialPageRoute(builder: (context) => const DataObat()));
 
         // Clear input fields
         // namaObatController.clear();

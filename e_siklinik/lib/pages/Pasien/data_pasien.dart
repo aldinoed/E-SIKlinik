@@ -68,10 +68,13 @@ class _DataPasienState extends State<DataPasien> {
         shape: const CircleBorder(),
         backgroundColor: const Color(0xFF234DF0),
         onPressed: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const AddPasien()));
-      },
-      child: const Icon(Icons.add, color: Colors.white,),
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const AddPasien()));
+        },
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
       appBar: AppBar(
         leading: IconButton(
@@ -101,14 +104,14 @@ class _DataPasienState extends State<DataPasien> {
                 child: Column(
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(top: 16, right: 16, left: 16),
+                      margin:
+                          const EdgeInsets.only(top: 16, right: 16, left: 16),
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       width: double.infinity,
                       height: 50,
                       decoration: const BoxDecoration(
                           color: Color(0xFFEFF0F3),
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(30))),
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
                       child: Row(
                         children: [
                           Flexible(
@@ -139,8 +142,8 @@ class _DataPasienState extends State<DataPasien> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ShowPasienDetail(
-                                          pasienId: pasienId),
+                                      builder: (context) =>
+                                          ShowPasienDetail(pasienId: pasienId),
                                     ),
                                   );
                                 },
@@ -148,8 +151,7 @@ class _DataPasienState extends State<DataPasien> {
                                 nrp: pasien['nrp'] ?? '',
                                 prodi: pasien['pasien_to_prodi'] != null
                                     ? Text(
-                                        pasien['pasien_to_prodi']['nama'] ??
-                                            '',
+                                        pasien['pasien_to_prodi']['nama'] ?? '',
                                         style: const TextStyle(
                                             fontWeight: FontWeight.w300),
                                       )
