@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:e_siklinik/testing/antrian/addAssesment.dart';
 import 'package:e_siklinik/testing/antrian/assesmentList.dart';
 import 'package:e_siklinik/testing/antrian/assesmentShow.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,7 @@ class _AntrianListPageState extends State<AntrianListPage> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                AssesmentDetail(assesmentId: antrianId,),
+                                AddAssesmentPage(antrianId: antrianId,),
                           ),
                         );
                       },
