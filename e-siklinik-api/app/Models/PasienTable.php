@@ -20,6 +20,7 @@ class PasienTable extends Model
         'nomor_hp',
         'nomor_wali',
         'prodi_id',
+        'is_disabled',
         'image'
     ];
     public function pasienToProdi() {

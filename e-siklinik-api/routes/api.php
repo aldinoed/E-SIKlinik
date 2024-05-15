@@ -40,6 +40,8 @@ Route::put('/user/{id}', [AuthController::class, 'Edit']);
 //PASIEN
 Route::get('/pasien', [PasienController::class, 'index'])->name('pasien.index');
 Route::post('/pasien/create', [PasienController::class, 'store'])->name('pasien.store');
+Route::put('/pasien/disabled/{id}', [PasienController::class, 'disablePasien'])->name('pasien.disabled');
+Route::post('/pasien/aktif/{id}', [PasienController::class, 'aktifPasien'])->name('pasien.aktif');
 Route::get('/pasien/show/{id}', [PasienController::class, 'show'])->name('pasien.show');
 Route::post('/pasien/update/{id}', [PasienController::class, 'update'])->name('pasien.update');
 Route::delete('/pasien/delete/{id}', [PasienController::class, 'destroy'])->name('pasien.destroy');
@@ -60,6 +62,7 @@ Route::post('/antrian/create', [AntrianController::class, 'store'])->name('antri
 //DOKTER
 Route::get('/dokter', [DokterController::class, 'index'])->name('dokter.index');
 Route::post('/dokter/create', [DokterController::class, 'store'])->name('dokter.store');
+Route::put('/dokter/disabled/{id}', [DokterController::class, 'disabledDokter'])->name('dokter.disabled');
 Route::get('/dokter/show/{id}', [DokterController::class, 'show'])->name('dokter.show');
 Route::post('/dokter/update/{id}', [DokterController::class, 'update'])->name('dokter.update');
 Route::delete('/dokter/delete/{id}', [DokterController::class, 'destroy'])->name('dokter.destroy');
@@ -86,6 +89,7 @@ Route::get('/detail-resep', [ObatController::class, 'indexDetailResepObat']);
 Route::get('/checkup-result', [CheckUpController::class, 'index']);
 Route::get('/checkup-result/show/{id}', [CheckUpController::class, 'show']);
 Route::get('/checkup-assesmen', [CheckUpController::class, 'indexAssesmens']);
+Route::get('/checkup-assesmen/show/{id}', [CheckUpController::class, 'showAssesmen']);
 Route::post('/checkup-result/insert', [CheckUpController::class, 'store']);
 Route::post('/checkup-assesmen/insert', [CheckUpController::class, 'storeAssesmen']);
 Route::get('/detail-resep-obat', [DetailResepObatController::class, 'index']);

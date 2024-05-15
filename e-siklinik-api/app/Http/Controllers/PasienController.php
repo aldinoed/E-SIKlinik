@@ -17,7 +17,7 @@ class PasienController extends Controller
      */
     public function index()
     {
-        $pasien = PasienTable::with('pasienToProdi')->get();
+        $pasien = PasienTable::with('pasienToProdi')->where('is_disabled','=', false)->get();
 
 
         //return view ('pasien_index')->with('pasien', $pasien);
@@ -131,7 +131,7 @@ class PasienController extends Controller
         $pasien->prodi_id = $request->prodi_id;
     }
 
-  
+
     $pasien->save();
 
     return response()->json(['message' => 'Success update data Pasien', 'pasien' => $pasien]);
@@ -148,5 +148,28 @@ class PasienController extends Controller
         $pasien = PasienTable::findOrFail($id);
         $pasien->delete();
         return response()->json(['message' => 'Success delete data Pasien']);
+    }
+
+    public function disablePasien($id){
+        $pasien = PasienTable::find($id);
+        if($pasien->is_disabled == false){
+        $pasien->is_disabled = true;
+        $pasien->save();
+        return response()->json(['message' => 'Success disable data Pasien']);
+        }
+            if($pasien->is_disabled == true){
+                    $pasien->is_disabled = false;
+                    $pasien->save();
+                    return response()->json(['message' => 'Success aktifkan data Pasien']);
+                            }
+    }
+
+    public function aktifPasien($id){
+        $pasien = PasienTable::find($id);
+        if($pasien->is_disbaled == true){
+        $pasien->is_disabled = false;
+        $pasien->save();
+        return response()->json(['message' => 'Success aktifkan data Pasien']);
+                }
     }
 }

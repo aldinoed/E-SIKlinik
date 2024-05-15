@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('alamat');
             $table->string('nomor_hp');
             $table->string('image');
+            $table->boolean('is_disabled')->default(false);
             $table->timestamps();
         });
     }
