@@ -148,7 +148,7 @@ class _AddObatState extends State<AddObat> {
                                               children: [
                                                 DropdownButtonFormField<String>(
                                                 isExpanded: true,
-                                                icon: ImageIcon(AssetImage("assets/images/Dropdown.png")),
+                                                icon: ImageIcon(AssetImage("assets/images/Dropdown.png"), size: 15,),
                                                 decoration: InputDecoration.collapsed(hintText: ""),
                                                 hint: Text("Pilih Nama Dokter",style: TextStyle(fontFamily: 'Urbanist',fontSize: 16, color: Colors.black),),
                                                 value: _doctors,

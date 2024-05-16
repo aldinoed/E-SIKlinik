@@ -82,11 +82,7 @@ class _AddAntrianPageState extends State<AddAntrianPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => AntrianPage(),
-              ),
-            );
+            Navigator.pop(context);
           },
         ),
       ),

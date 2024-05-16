@@ -115,7 +115,10 @@ class _DataObatState extends State<DataObat> {
                                   fit:BoxFit.fill,
                               ),
                             ),
-                            trailing: SizedBox(
+                            trailing: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black)
+                              ),
                               child: IconButton(
                                 onPressed: (){},
                                 icon: Icon(Icons.more_vert),

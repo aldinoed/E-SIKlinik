@@ -1,5 +1,6 @@
 import 'package:e_siklinik/components/box.dart';
 import 'package:e_siklinik/pages/Antrian/antrian.dart';
+import 'package:e_siklinik/pages/Checkup/checkup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -127,7 +128,9 @@ class _DashboardState extends State<Dashboard> {
                       size: 25,
                       color: Color(0xFF234DF0),
                     ),
-                    onTapBox: () {},
+                    onTapBox: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Checkup()));
+                    },
                   ),
                   Box(
                     title: 'Jadwal Antrean',

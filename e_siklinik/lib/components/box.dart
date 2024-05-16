@@ -175,3 +175,12 @@ class BoxData extends StatelessWidget {
     );
   }
 }
+
+class BoxObat extends StatelessWidget {
+  const BoxObat({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
