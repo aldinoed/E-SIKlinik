@@ -83,9 +83,8 @@ class ObatController extends Controller
      */
     public function show(string $id)
     {
-        $obatData = DB::table('obats')->join('kategori_obats', 'obats.kategori_id', '=', 'kategori_obats.id')->where('obats.id', '=', $id)->first();
-
-        return response()->json(['message' => 'Data berhasil ditampilkan', 'dataObat' => $obatData]);
+        $obat = Obat::with('obatToKategoriObat')->find($id);
+        return response()->json(['status' => 200, 'obats' => $obat]);
     }
 
     /**
@@ -101,8 +100,7 @@ class ObatController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        var_dump($id);
-        var_dump($request);
+
         $obat = Obat::find($id);
 
         if (!$obat) {
@@ -125,12 +123,12 @@ class ObatController extends Controller
             $obat->image = $path;
         }
 
-        if ($request->has('nama')) {
-            $obat->nama_obat = $request->nama;
+        if ($request->has('nama_obat')) {
+            $obat->nama_obat = $request->nama_obat;
         }
 
-        if ($request->has('kadaluarsa')) {
-            $obat->tanggal_kadaluarsa = $request->kadaluarsa;
+        if ($request->has('tanggal_kadaluarsa')) {
+            $obat->tanggal_kadaluarsa = $request->tanggal_kadaluarsa;
         }
 
         if ($request->has('stock')) {
@@ -140,11 +138,13 @@ class ObatController extends Controller
         if ($request->has('harga')) {
             $obat->harga = $request->harga;
         }
-        if($request->has('kategoriId')){
-            $obat->kategori_id = $request->kategoriId;
+        if($request->has('kategori_id')){
+            $obat->kategori_id = $request->kategori_id;
         }
 
         $obat->save();
+
+        return response()->json(['message' => 'Succes update obat']);
     }
 
     /**

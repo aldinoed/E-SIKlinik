@@ -90,7 +90,6 @@ class _AddObatPageState extends State<AddObatPage> {
         // imageController.clear();
         // kategoriController.clear();
         // _imageFile = null;
-
       } else {
         final errorData = json.decode(await response.stream.bytesToString());
         print('Gagal menambahkan obat: ${errorData['message']}');

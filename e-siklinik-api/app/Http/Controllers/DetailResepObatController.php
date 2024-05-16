@@ -6,6 +6,7 @@ use App\Models\DetailResepObat;
 use Exception;
 use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\DB;
+use App\Models\Obat;
 
 use function PHPUnit\Framework\isNull;
 
@@ -44,6 +45,7 @@ class DetailResepObatController extends Controller
                 'waktu_pemakaian'=>$request->consumptionTime
             ]);
             if (isNull($response)) {
+                $this->decreaseStock($request->qty, $request->obatId);
                 return response()->json(["status" => 200, "message" => "Berhasil input resep obat"]);
             } else {
                 throw new Exception();
@@ -60,6 +62,7 @@ class DetailResepObatController extends Controller
     {
         $response = DB::table('detail_resep_obats')->addSelect('detail_resep_obats.*')->join('obats', 'detail_resep_obats.obat_id', '=', 'obats.id')->addSelect('obats.*')->join('kategori_obats', 'obats.kategori_id', '=', 'kategori_obats.id')->addSelect('kategori_obats.*')->join('check_up_results', 'detail_resep_obats.checkup_id', '=', 'check_up_results.id')->addSelect('check_up_results.*')->where('detail_resep_obats.id', '=', $id)->first();
         if($response){
+
             return response()->json(['status' => 200, 'results' => $response]);
         }
         return response()->json(['status' => 400, 'results' => 'Belum ada data']);
@@ -97,5 +100,13 @@ class DetailResepObatController extends Controller
         } catch (Exception $exception) {
             return response()->json(["status" => 500, "messasge" => "Error: " . $exception]);
         }
+    }
+
+    private function decreaseStock(int $amountOfDecrease, int $obatId):void{
+        $obat = Obat::find($obatId);
+        $currentStock = $obat->stock - $amountOfDecrease;
+        $obat->update([
+            'stock' => $currentStock
+        ]);
     }
 }

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('nomor_wali');
             $table->string('image');
             $table->foreignId('prodi_id')->constrained('prodi')->cascadeOnUpdate();
+            $table->boolean('is_disabled')->default(false);
             $table->timestamps();
         });
     }

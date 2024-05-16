@@ -2,29 +2,29 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class ProdiListScreen extends StatefulWidget {
+class KategoriObatPage extends StatefulWidget {
   @override
-  _ProdiListScreenState createState() => _ProdiListScreenState();
+  _KategoriObatPageState createState() => _KategoriObatPageState();
 }
 
-class _ProdiListScreenState extends State<ProdiListScreen> {
-  List<dynamic> prodiList = [];
-  final String apiGetAllProdi = "http://10.0.2.2:8000/api/prodi";
+class _KategoriObatPageState extends State<KategoriObatPage> {
+  List<dynamic> kategoriObatList = [];
+  final String apiGetAllKategoriObat = "http://10.0.2.2:8000/api/kategori-obat";
 
   @override
   void initState() {
     super.initState();
-    _getAllProdi();
+    _getAllKategoriObat();
   }
 
-  Future<void> _getAllProdi() async {
+  Future<void> _getAllKategoriObat() async {
     try {
-      final response = await http.get(Uri.parse(apiGetAllProdi));
+      final response = await http.get(Uri.parse(apiGetAllKategoriObat));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        if (data != null && data['prodi'] != null) {
+        if (data != null && data['kategori'] != null) {
           setState(() {
-            prodiList = data['prodi'];
+            kategoriObatList = data['kategori'];
           });
         } else {
           print("No data received from API");
@@ -43,20 +43,20 @@ class _ProdiListScreenState extends State<ProdiListScreen> {
       appBar: AppBar(
         title: Text('Daftar Prodi'),
       ),
-      body: prodiList.isEmpty
+      body: kategoriObatList.isEmpty
           ? Center(
               child: Text(
-                'Prodi Kosong',
+                'Ketegori Kosong',
                 style: TextStyle(fontSize: 18.0),
               ),
             )
           : ListView.builder(
-              itemCount: prodiList.length,
+              itemCount: kategoriObatList.length,
               itemBuilder: (BuildContext context, int index) {
                 return Card(
                   child: ListTile(
-                    title: Text(prodiList[index]['nama']),
-                    subtitle: Text(prodiList[index]['created_at'].toString()),
+                    title: Text(kategoriObatList[index]['nama_kategori']),
+                    subtitle: Text(kategoriObatList[index]['created_at'].toString()),
                   ),
                 );
               },

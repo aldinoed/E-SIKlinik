@@ -14,6 +14,9 @@ class EditPasienPage extends StatefulWidget {
 }
 
 class _EditPasienPageState extends State<EditPasienPage> {
+  final String apiGetAllProdi = "http://10.0.2.2:8000/api/prodi";
+  List<dynamic> prodiList = [];
+
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _namaController;
   late TextEditingController _nrpController;
@@ -22,6 +25,7 @@ class _EditPasienPageState extends State<EditPasienPage> {
   late TextEditingController _alamatController;
   late TextEditingController _nomorHpController;
   late TextEditingController _nomorWaliController;
+  String? _selectedProdiId;
   final TextEditingController imageController = TextEditingController();
 
   File? _imageFile;
@@ -38,7 +42,9 @@ class _EditPasienPageState extends State<EditPasienPage> {
     _nomorHpController = TextEditingController(text: widget.pasien['nomor_hp']);
     _nomorWaliController =
         TextEditingController(text: widget.pasien['nomor_wali']);
+    _selectedProdiId = widget.pasien['prodi_id'].toString();
     _imageFile = null;
+    _getAllProdi();
   }
 
   @override
@@ -66,6 +72,7 @@ class _EditPasienPageState extends State<EditPasienPage> {
     request.fields['alamat'] = _alamatController.text;
     request.fields['nomor_hp'] = _nomorHpController.text;
     request.fields['nomor_wali'] = _nomorWaliController.text;
+    request.fields['prodi_id'] = _selectedProdiId!;
 
     // Menambahkan file gambar (jika ada)
     if (_imageFile != null) {
@@ -93,6 +100,26 @@ class _EditPasienPageState extends State<EditPasienPage> {
           content: Text('Gagal memperbarui data pasien'),
         ),
       );
+    }
+  }
+
+  Future<void> _getAllProdi() async {
+    try {
+      final response = await http.get(Uri.parse(apiGetAllProdi));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data != null && data['prodi'] != null) {
+          setState(() {
+            prodiList = data['prodi'];
+          });
+        } else {
+          print("No data received from API");
+        }
+      } else {
+        print("Failed to load prodi");
+      }
+    } catch (error) {
+      print('Error: $error');
     }
   }
 
@@ -193,6 +220,30 @@ class _EditPasienPageState extends State<EditPasienPage> {
                   return null;
                 },
               ),
+              DropdownButtonFormField<String>(
+                value: _selectedProdiId,
+                decoration: InputDecoration(
+                  labelText: 'Prodi',
+                ),
+                items: prodiList.map((prodi) {
+                  return DropdownMenuItem<String>(
+                    value: prodi['id'].toString(),
+                    child: Text(prodi?['nama'] ??
+                        ''), 
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedProdiId = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null) {
+                    return 'Prodi tidak boleh kosong';
+                  }
+                  return null;
+                },
+              ),
               TextFormField(
                 controller: imageController,
                 decoration: InputDecoration(
@@ -204,7 +255,6 @@ class _EditPasienPageState extends State<EditPasienPage> {
                   final pickedFile = await picker.pickImage(
                     source: ImageSource.gallery,
                   );
-
                   if (pickedFile != null) {
                     setState(() {
                       _imageFile = File(pickedFile.path);

@@ -29,7 +29,6 @@ class _AddDokterPageState extends State<AddDokterPage> {
   @override
   void initState() {
     super.initState();
-   
   }
 
   Future<void> addDokter(BuildContext context) async {
@@ -53,7 +52,8 @@ class _AddDokterPageState extends State<AddDokterPage> {
       var response = await request.send();
 
       if (response.statusCode == 200) {
-        final dokter = json.decode(await response.stream.bytesToString())['dokter'];
+        final dokter =
+            json.decode(await response.stream.bytesToString())['dokter'];
         SnackBar(content: Text('Dokter berhasil ditambahkan'));
         print('Dokter berhasil ditambahkan: $dokter');
       } else {
@@ -68,9 +68,11 @@ class _AddDokterPageState extends State<AddDokterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: () {
-      Navigator.pop((context));
-    },icon: const Icon(Icons.arrow_back_ios)),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop((context));
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
         backgroundColor: Colors.white,
         elevation: 2,
         shadowColor: Colors.black,

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
 class ListPasienPage extends StatefulWidget {
   const ListPasienPage({Key? key}) : super(key: key);
 
@@ -66,7 +65,8 @@ class _ListPasienPageState extends State<ListPasienPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ShowPasienDetail(pasienId: pasienId),
+                        builder: (context) =>
+                            ShowPasienDetail(pasienId: pasienId),
                       ),
                     );
                   },
@@ -90,7 +90,8 @@ class _ListPasienPageState extends State<ListPasienPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EditPasienPage(pasien: pasien),
+                                builder: (context) =>
+                                    EditPasienPage(pasien: pasien),
                               ),
                             );
                           },

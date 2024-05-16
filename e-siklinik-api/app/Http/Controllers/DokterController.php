@@ -14,7 +14,7 @@ class DokterController extends Controller
      */
     public function index()
     {
-        $dokter = Dokter::with('dokterToJadwal')->get();
+        $dokter = Dokter::with('dokterToJadwal')->where('is_disabled', '=', false)->get();
 
         //return view('dokter_index')->with('dokter', $dokter);
 
@@ -166,5 +166,19 @@ class DokterController extends Controller
         $jadwal_dokter = JadwalDokter::find($id);
         $jadwal_dokter->delete();
         return response()->json(['message' => 'Success delete data jadwal dokter']);
+    }
+
+    public function disabledDokter($id){
+        $dokter = Dokter::find($id);
+        if($dokter->is_disabled == false){
+        $dokter->is_disabled = true;
+        $dokter->save();
+        return response()->json(['message' => 'Success disable data dokter']);
+        }
+            if($dokter->is_disabled == true){
+                    $dokter->is_disabled = false;
+                    $dokter->save();
+                    return response()->json(['message' => 'Success aktifkan data dokter']);
+                            }
     }
 }

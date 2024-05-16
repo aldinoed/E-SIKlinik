@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use function PHPUnit\Framework\isNull;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Psy\VersionUpdater\Checker;
 
 class CheckUpController extends Controller
 {
@@ -26,27 +27,42 @@ class CheckUpController extends Controller
 
     public function index()
     {
-        $results = DB::table('check_up_results')
-            ->select('check_up_results.*')
-            ->join('checkup_assesmens', 'check_up_results.assesmen_id', '=', 'checkup_assesmens.id')
-            ->addSelect('checkup_assesmens.*')
-            ->join('dokter', 'checkup_assesmens.dokter_id', '=', 'dokter.id')
-            ->addSelect('dokter.*')
-            ->join('antrian', 'checkup_assesmens.antrian_id', '=', 'antrian.id')
-            ->addSelect('antrian.*')
-            ->join('pasien', 'antrian.pasien_id', '=', 'pasien.id')
-            ->addSelect('pasien.*')
-            ->join('prodi', 'pasien.prodi_id', '=', 'prodi.id')
-            ->addSelect('prodi.*')
-            ->join('detail_resep_obats', 'detail_resep_obats.checkup_id', '=', 'check_up_results.id')
-            ->addSelect('detail_resep_obats.*')->join('obats', 'detail_resep_obats.obat_id', '=', 'obats.id')->addSelect('obats.*')->join('kategori_obats', 'obats.kategori_id', '=', 'kategori_obats.id')->addSelect('kategori_obats.*')
-            ->get();
 
-        if ($results->count() == 0) {
-            return response()->json(['status' => 400, 'results' => 'Belum ada data']);
-        }
-        return response()->json(['status' => 200, 'results' => $results]);
+        $checkup = CheckUpResult::with
+        ('checkUpResulToAssesmen.assesmenToDokter',
+        'checkUpResulToAssesmen.assesmenToAntrian.antrianToPasien.pasienToProdi',
+        'checkUpResultToDetailResep.detailResepToObat'
+        )->get();
+        return response()->json(['status' => 200, 'checkup' => $checkup]);
+
+
+        // $results = DB::table('check_up_results')
+        //     ->select('check_up_results.*')
+        //     ->join('checkup_assesmens', 'check_up_results.assesmen_id', '=', 'checkup_assesmens.id')
+        //     ->addSelect('checkup_assesmens.*')
+        //     ->join('dokter', 'checkup_assesmens.dokter_id', '=', 'dokter.id')
+        //     ->addSelect('dokter.*')
+        //     ->join('antrian', 'checkup_assesmens.antrian_id', '=', 'antrian.id')
+        //     ->addSelect('antrian.*')
+        //     ->join('pasien', 'antrian.pasien_id', '=', 'pasien.id')
+        //     ->addSelect('pasien.*')
+        //     ->join('prodi', 'pasien.prodi_id', '=', 'prodi.id')
+        //     ->addSelect('prodi.*')
+        //     ->join('detail_resep_obats', 'detail_resep_obats.checkup_id', '=', 'check_up_results.id')
+        //     ->addSelect('detail_resep_obats.*')
+        //     ->join('obats', 'detail_resep_obats.obat_id', '=', 'obats.id')
+        //     ->addSelect('obats.*')
+        //     ->join('kategori_obats', 'obats.kategori_id', '=', 'kategori_obats.id')
+        //     ->addSelect('kategori_obats.*')
+        //     ->get();
+
+        // if ($results->isEmpty()) {
+        //     return response()->json(['status' => 400, 'results' => 'Belum ada data']);
+        // }
+
+        // return response()->json(['status' => 200, 'results' => $results]);
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -92,8 +108,8 @@ class CheckUpController extends Controller
                 throw new Exception("Upload gambar gagal", 500);
             } else {
                 $response = CheckUpResult::create([
-                    'assesmen_id' => $request->assesmenId,
-                    'hasil_diagnosa' => $request->diagnosa,
+                    'assesmen_id' => $request->assesmen_id,
+                    'hasil_diagnosa' => $request->hasil_diagnosa,
                     'url_file' => $path,
                 ]);
                 if ($response) {
@@ -155,21 +171,36 @@ class CheckUpController extends Controller
     /**
      * Display the specified assesmen.
      */
-    public function showAssesmen(string $id)
-    {
-
+    public function showAssesmen(string $id) {
         try {
             $response = DB::table('dokter')
-                ->select('dokter.id as dokter_id',  'dokter.nama as nama_dokter', 'checkup_assesmens.id as checkup_assesmen_id', 'antrian.id as antrian_id', 'antrian.no_antrian')
+                ->select(
+                    'dokter.id as dokter_id',
+                    'dokter.nama as nama_dokter',
+                    'checkup_assesmens.id as checkup_assesmen_id',
+                    'antrian.id as antrian_id',
+                    'antrian.no_antrian',
+                    'pasien.nama as nama_pasien',
+                    'prodi.nama as nama_prodi'
+                )
                 ->join('checkup_assesmens', 'dokter.id', '=', 'checkup_assesmens.dokter_id')
                 ->join('antrian', 'checkup_assesmens.antrian_id', '=', 'antrian.id')
                 ->join('pasien', 'antrian.pasien_id', '=', 'pasien.id')
-                ->addSelect('pasien.*')->where('checkup_assessmens.id', '=', "$id")->first();
-                
+                ->join('prodi', 'pasien.prodi_id', '=', 'prodi.id')
+                ->addSelect('checkup_assesmens.*', 'antrian.*', 'pasien.*', 'prodi.nama')
+                ->where('checkup_assesmens.id', '=', $id)
+                ->first();
+
+            if ($response) {
                 return response()->json(['status' => 200, 'results' => $response]);
+            } else {
+                return response()->json(['status' => 400, 'results' => 'Data not found']);
+            }
         } catch (Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()]);
         }
     }
+
 
     /**
      * Show the form for editing the specified resource.
