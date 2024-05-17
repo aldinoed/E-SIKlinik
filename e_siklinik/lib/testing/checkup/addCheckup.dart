@@ -14,8 +14,6 @@ class AddCheckupResult extends StatefulWidget {
 
 class _AddCheckupResultState extends State<AddCheckupResult> {
   final TextEditingController hasilDiagnosaController = TextEditingController();
-  final TextEditingController jumlahPemakaianController = TextEditingController();
-  final TextEditingController waktuPemakaianController = TextEditingController();
   final TextEditingController imageController = TextEditingController();
 
   final String apiPostCheckupResult = "http://10.0.2.2:8000/api/checkup-obat/insert";
@@ -24,7 +22,7 @@ class _AddCheckupResultState extends State<AddCheckupResult> {
   List<dynamic> obatList = [];
   Map<String, dynamic>? assesmentDetail;
   File? _imageFile;
-  int? obatId;
+  List<Map<String, dynamic>> resepObatList = [];
 
   @override
   void initState() {
@@ -80,9 +78,6 @@ class _AddCheckupResultState extends State<AddCheckupResult> {
       var request = http.MultipartRequest('POST', Uri.parse(apiPostCheckupResult));
       request.fields['hasil_diagnosa'] = hasilDiagnosaController.text;
       request.fields['assesmen_id'] = widget.assesmentId.toString();
-      request.fields['obat_id'] = obatId.toString();
-      request.fields['jumlah_pemakaian'] = jumlahPemakaianController.text;
-      request.fields['waktu_pemakaian'] = waktuPemakaianController.text;
 
       if (_imageFile != null) {
         request.files.add(
@@ -92,6 +87,8 @@ class _AddCheckupResultState extends State<AddCheckupResult> {
           ),
         );
       }
+
+      request.fields['resep_obat'] = json.encode(resepObatList);
 
       var response = await request.send();
 
@@ -106,6 +103,16 @@ class _AddCheckupResultState extends State<AddCheckupResult> {
     } catch (error) {
       print('Error: $error');
     }
+  }
+
+  void addResepObat() {
+    setState(() {
+      resepObatList.add({
+        'obat_id': null,
+        'jumlah_pemakaian': '',
+        'waktu_pemakaian': '',
+      });
+    });
   }
 
   @override
@@ -127,7 +134,7 @@ class _AddCheckupResultState extends State<AddCheckupResult> {
           style: TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Form(
           child: Column(
@@ -143,54 +150,73 @@ class _AddCheckupResultState extends State<AddCheckupResult> {
                   labelText: "Deskripsi",
                 ),
               ),
-               TextFormField(
-              controller: imageController,
-              decoration: const InputDecoration(
-                labelText: "Image (Opsional)",
-              ),
-              readOnly: true,
-              onTap: () async {
-                final picker = ImagePicker();
-                final pickedFile = await picker.pickImage(
-                  source: ImageSource.gallery,
-                );
-
-                if (pickedFile != null) {
-                  setState(() {
-                    _imageFile = File(pickedFile.path);
-                    imageController.text = _imageFile!.path.split('/').last;
-                  });
-                }
-              },
-            ),
-              DropdownButtonFormField<int>(
-                value: obatId,
-                onChanged: (value) {
-                  setState(() {
-                    obatId = value;
-                  });
-                },
-                items: obatList.map<DropdownMenuItem<int>>((obat) {
-                  return DropdownMenuItem<int>(
-                    value: obat['id'],
-                    child: Text(obat['nama_obat']),
+              TextFormField(
+                controller: imageController,
+                decoration: const InputDecoration(
+                  labelText: "Image (Opsional)",
+                ),
+                readOnly: true,
+                onTap: () async {
+                  final picker = ImagePicker();
+                  final pickedFile = await picker.pickImage(
+                    source: ImageSource.gallery,
                   );
-                }).toList(),
-                decoration: const InputDecoration(
-                  labelText: "Nama obat",
-                ),
+
+                  if (pickedFile != null) {
+                    setState(() {
+                      _imageFile = File(pickedFile.path);
+                      imageController.text = _imageFile!.path.split('/').last;
+                    });
+                  }
+                },
               ),
-              TextFormField(
-                controller: jumlahPemakaianController,
-                decoration: const InputDecoration(
-                  labelText: "Jumlah Pemakaian",
-                ),
-              ),
-              TextFormField(
-                controller: waktuPemakaianController,
-                decoration: const InputDecoration(
-                  labelText: "Waktu Pemakaian",
-                ),
+              ...resepObatList.map((resep) {
+                int index = resepObatList.indexOf(resep);
+                return Column(
+                  children: [
+                    DropdownButtonFormField<int>(
+                      value: resep['obat_id'],
+                      onChanged: (value) {
+                        setState(() {
+                          resepObatList[index]['obat_id'] = value;
+                        });
+                      },
+                      items: obatList.map<DropdownMenuItem<int>>((obat) {
+                        return DropdownMenuItem<int>(
+                          value: obat['id'],
+                          child: Text(obat['nama_obat']),
+                        );
+                      }).toList(),
+                      decoration: const InputDecoration(
+                        labelText: "Nama obat",
+                      ),
+                    ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: "Jumlah Pemakaian",
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          resepObatList[index]['jumlah_pemakaian'] = value;
+                        });
+                      },
+                    ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: "Waktu Pemakaian",
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          resepObatList[index]['waktu_pemakaian'] = value;
+                        });
+                      },
+                    ),
+                  ],
+                );
+              }).toList(),
+              ElevatedButton(
+                onPressed: addResepObat,
+                child: const Text("Tambah Resep Obat"),
               ),
               ElevatedButton(
                 onPressed: () => addCheckupWithResepObat(context),
