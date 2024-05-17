@@ -242,7 +242,7 @@ class CheckUpController extends Controller
         $path = null;
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $path = time() . '_' . $request->nama . '.' . $file->getClientOriginalExtension();
+            $path = time() . '_' . $file->getClientOriginalExtension();
             $uploadRes = Storage::disk('local')->put('public/' . $path, file_get_contents($file));
 
             if ($uploadRes === false) {
@@ -253,23 +253,23 @@ class CheckUpController extends Controller
         $checkupResult = CheckUpResult::create([
             'assesmen_id' => $request->assesmen_id,
             'hasil_diagnosa' => $request->hasil_diagnosa,
-            'url_file' => $path, // Menggunakan $path yang mungkin berisi nilai null
+            'url_file' => $path,
         ]);
 
         if ($checkupResult) {
-            $detailResepObat = DetailResepObat::create([
-                'obat_id' => $request->obat_id,
-                'checkup_id' => $checkupResult->id,
-                'jumlah_pemakaian' => $request->jumlah_pemakaian,
-                'waktu_pemakaian' => $request->waktu_pemakaian,
-            ]);
+            $resepObatList = json_decode($request->resep_obat, true);
 
-            if ($detailResepObat) {
-                DB::commit();
-                return response()->json(["status" => 200, "message" => "Berhasil input hasil checkup dan resep obat"]);
-            } else {
-                throw new Exception("Gagal menyimpan detail resep obat");
+            foreach ($resepObatList as $resep) {
+                DetailResepObat::create([
+                    'obat_id' => $resep['obat_id'],
+                    'checkup_id' => $checkupResult->id,
+                    'jumlah_pemakaian' => $resep['jumlah_pemakaian'],
+                    'waktu_pemakaian' => $resep['waktu_pemakaian'],
+                ]);
             }
+
+            DB::commit();
+            return response()->json(["status" => 200, "message" => "Berhasil input hasil checkup dan resep obat"]);
         } else {
             throw new Exception("Gagal menyimpan hasil checkup");
         }
@@ -278,4 +278,5 @@ class CheckUpController extends Controller
         return response()->json(["status" => 500, "message" => "Error: " . $exception->getMessage()]);
     }
 }
+
 }
