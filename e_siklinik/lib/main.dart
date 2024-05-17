@@ -4,6 +4,7 @@ import 'package:e_siklinik/pages/dashboard.dart';
 import 'package:e_siklinik/pages/data.dart';
 import 'package:e_siklinik/pages/search.dart';
 import 'package:e_siklinik/testing/antrian/addAntrian.dart';
+import 'package:e_siklinik/testing/antrian/assesmentList.dart';
 import 'package:e_siklinik/testing/antrian/listAntrian.dart';
 import 'package:e_siklinik/testing/checkup/listCheckup.dart';
 import 'package:e_siklinik/testing/dokter/listDokter.dart';
@@ -38,7 +39,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: CheckupListPage() 
+      home: AssesmentList() 
       // (
       //   backgroundColor: Color(0xFFF9F9FB),
       //   drawer: const Drawer(),

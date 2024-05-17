@@ -22,6 +22,7 @@ class _AddAssesmentPageState extends State<AddAssesmentPage> {
 
   final String apiGetAllDokter = "http://10.0.2.2:8000/api/dokter";
   List<dynamic> dokterList = [];
+  File? _imageFile;
 
   @override
   void initState() {
@@ -78,6 +79,15 @@ class _AddAssesmentPageState extends State<AddAssesmentPage> {
       var request = http.MultipartRequest('POST', Uri.parse(apiPostAssesment));
       request.fields['dokter_id'] = dokterIdController.text;
       request.fields['antrian_id'] = widget.antrianId.toString();
+
+      if (_imageFile != null) {
+        request.files.add(
+          await http.MultipartFile.fromPath(
+            'image',
+            _imageFile!.path,
+          ),
+        );
+      }
 
       var response = await request.send();
 
