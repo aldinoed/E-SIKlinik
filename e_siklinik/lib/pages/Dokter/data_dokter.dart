@@ -1,5 +1,9 @@
 import 'dart:convert';
+import 'package:e_siklinik/components/bottomsheet.dart';
+import 'package:e_siklinik/components/box.dart';
 import 'package:e_siklinik/pages/Dokter/add_dokter.dart';
+import 'package:e_siklinik/pages/Dokter/edit_dokter.dart';
+import 'package:e_siklinik/pages/Dokter/show_dokter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -60,10 +64,10 @@ class _DataDokterState extends State<DataDokter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF9F9FB),
+      backgroundColor: const Color(0xFFF9F9FB),
       floatingActionButton: FloatingActionButton(
-        shape: CircleBorder(),
-        backgroundColor: Color(0xFF234DF0),
+        shape: const CircleBorder(),
+        backgroundColor: const Color(0xFF234DF0),
         onPressed: () {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const AddDokter()));
@@ -91,7 +95,7 @@ class _DataDokterState extends State<DataDokter> {
       body: RefreshIndicator(
         onRefresh: _refreshData,
         child: dokterList.isEmpty
-            ? Center(
+            ? const Center(
                 child: Text(
                   'Tidak ada data Dokter',
                   style: TextStyle(fontSize: 18.0),
@@ -101,7 +105,8 @@ class _DataDokterState extends State<DataDokter> {
                 child: Column(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 16, right: 16, left: 16),
+                      margin:
+                          const EdgeInsets.only(top: 16, right: 16, left: 16),
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       width: double.infinity,
                       height: 50,
@@ -129,36 +134,56 @@ class _DataDokterState extends State<DataDokter> {
                     ),
                     Flexible(
                       child: ListView.builder(
-                        itemCount: dokterList.length,
+                        itemCount: filteredDokterList.length,
                         itemBuilder: (BuildContext context, int index) {
-                          final dokter = dokterList[index];
+                          final dokter = filteredDokterList[index];
                           final dokterId =
                               dokter['id']; // Dapatkan id dokter di sini
-                          return GestureDetector(
-                            onTap: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) =>
-                              //         ShowPasienDetail(pasienId: pasienId),
-                              //   ),
-                              // );
+                          return BoxDokter(
+                            onTapBox: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ShowDokter(dokterId: dokterId)));
                             },
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    'http://10.0.2.2:8000/storage/' +
-                                        dokter['image']),
-                              ),
-                              title: Text(dokter['nama'] ?? ''),
-                              subtitle: Text(dokter['gender'] ?? ''),
-                              trailing: dokter['dokter_to_jadwal'].isEmpty
-                                  ? Text("G ada jadwal")
-                                  : Text(dokter['dokter_to_jadwal'][0]
-                                          ['hari'] ??
-                                      'G ada hari'),
-                            ),
+                            icon: 'http://10.0.2.2:8000/storage/' +
+                                dokter['image'],
+                            nama: dokter['nama'] ?? '',
+                            onTapPop: () {
+                              showModalBottomSheet(
+                                isScrollControlled: true,
+                                  context: context,
+                                  builder: (context) => BuildSheet(onTapEdit: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => EditDokter(dokter: dokter)));
+                                  }, onTapDelete: () {  },));
+                            },
                           );
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     // Navigator.push(
+                          //     //   context,
+                          //     //   MaterialPageRoute(
+                          //     //     builder: (context) =>
+                          //     //         ShowPasienDetail(pasienId: pasienId),
+                          //     //   ),
+                          //     // );
+                          //   },
+                          //   child: ListTile(
+                          //     leading: CircleAvatar(
+                          //       backgroundImage: NetworkImage(
+                          // 'http://10.0.2.2:8000/storage/' +
+                          //     dokter['image']),
+                          //     ),
+                          //     title: Text(dokter['nama'] ?? ''),
+                          //     subtitle: Text(dokter['gender'] ?? ''),
+                          //     trailing: dokter['dokter_to_jadwal'].isEmpty
+                          //         ? Text("G ada jadwal")
+                          //         : Text(dokter['dokter_to_jadwal'][0]
+                          //                 ['hari'] ??
+                          //             'G ada hari'),
+                          //   ),
+                          // );
                         },
                       ),
                     ),

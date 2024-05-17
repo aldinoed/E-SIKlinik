@@ -20,7 +20,7 @@ class _DataState extends State<Data> {
       backgroundColor: Color(0xFFF9F9FB),
       body: SafeArea(
           child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -204,7 +204,7 @@ class _CheckupState extends State<Checkup> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: SizedBox(
-                              width: 310,                       
+                              width: 310,
                               child: Card(
                                 child: Container(
                                   decoration: BoxDecoration(

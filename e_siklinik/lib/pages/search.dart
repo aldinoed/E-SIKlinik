@@ -1,6 +1,6 @@
 import 'package:e_siklinik/components/box.dart';
 import 'package:e_siklinik/pages/Checkup/riwayat_checkup.dart';
-import 'package:e_siklinik/pages/Pasien/data_pasien.dart';
+import 'package:e_siklinik/pages/hasil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +18,7 @@ class _SearchState extends State<Search> {
       backgroundColor: Color(0xFFF9F9FB),
       body: SafeArea(
           child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,9 +28,8 @@ class _SearchState extends State<Search> {
               ),
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                  border: Border.all(color: Color(0xFF234DF0))
-                ),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    border: Border.all(color: Color(0xFF234DF0))),
                 width: double.infinity,
                 height: 150,
                 child: const Center(
@@ -41,30 +40,29 @@ class _SearchState extends State<Search> {
                 height: 10,
               ),
               Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        width: double.infinity,
-                        height: 50,
-                        decoration: const BoxDecoration(
-                            color: Color(0xFFEFF0F3),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30))),
-                        child: Row(
-                          children: [
-                            Flexible(
-                              child: TextFormField(
-                                // onChanged: _filterDokterList,
-                                maxLines: null,
-                                decoration: const InputDecoration(
-                                  hintText: 'Search Here',
-                                  border: InputBorder.none,
-                                ),
-                              ),
-                            ),
-                            const Icon(Icons.search),
-                          ],
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                width: double.infinity,
+                height: 50,
+                decoration: const BoxDecoration(
+                    color: Color(0xFFEFF0F3),
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: TextFormField(
+                        // onChanged: _filterDokterList,
+                        maxLines: null,
+                        decoration: const InputDecoration(
+                          hintText: 'Search Here',
+                          border: InputBorder.none,
                         ),
                       ),
-                      const SizedBox(
+                    ),
+                    const Icon(Icons.search),
+                  ],
+                ),
+              ),
+              const SizedBox(
                 height: 10,
               ),
               const Text(
@@ -76,13 +74,18 @@ class _SearchState extends State<Search> {
                   const SizedBox(
                     height: 8,
                   ),
-                  BoxData(onTapBox: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const RiwayatCheckup()));
-                    }, nama: 'Pasien', nrp: '31225000', icon: setIcon(Icons.person_outline,
-                                    const Color(0xFF234DF0)), prodi: Text("Tanggal : DD/MM/YYYY"))
+                  BoxSearchPage(
+                      onTapBox: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Hasil()));
+                      },
+                      nama: 'Pasien',
+                      nrp: '31225000',
+                      icon: setIcon(
+                          Icons.person_outline, const Color(0xFF234DF0)),
+                      prodi: Text("Tanggal : DD/MM/YYYY"))
                 ],
               )
             ],

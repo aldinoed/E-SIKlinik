@@ -1,7 +1,8 @@
+import 'package:e_siklinik/components/bottomsheet.dart';
 import 'package:e_siklinik/components/box.dart';
 import 'package:e_siklinik/pages/Pasien/add_pasien.dart';
-import 'package:e_siklinik/pages/data.dart';
-import 'package:e_siklinik/testing/pasien/showPasien.dart';
+import 'package:e_siklinik/pages/Pasien/edit_pasien.dart';
+import 'package:e_siklinik/pages/Pasien/show_pasien.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -137,13 +138,13 @@ class _DataPasienState extends State<DataPasien> {
                           itemBuilder: (BuildContext context, int index) {
                             final pasien = filteredPasienList[index];
                             final pasienId = pasien['id'];
-                            return BoxData(
+                            return BoxPasien(
                                 onTapBox: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          ShowPasienDetail(pasienId: pasienId),
+                                          ShowPasien(pasienId: pasienId),
                                     ),
                                   );
                                 },
@@ -156,10 +157,17 @@ class _DataPasienState extends State<DataPasien> {
                                             fontWeight: FontWeight.w300),
                                       )
                                     : const Text("G ada prodi"),
-                                icon: setIcon(Icons.person_outline,
-                                    const Color(0xFF234DF0))
-                                //  icon: 'http://10.0.2.2:8000/storage/' +
-                                //      pasien['image']
+                                // icon: setIcon(Icons.person_outline,
+                                //     const Color(0xFF234DF0))
+                                 icon: 'http://10.0.2.2:8000/storage/' + pasien['image'], 
+                                 onTapPop: () {
+                                  showModalBottomSheet(
+                                isScrollControlled: true,
+                                  context: context,
+                                  builder: (context) => BuildSheet(onTapEdit: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => EditPasien(pasien: pasien)));
+                                  }, onTapDelete: () {  },));
+                                 },
                                 );
                           }),
                     )

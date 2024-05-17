@@ -13,7 +13,14 @@ class _AddAntrianPageState extends State<AddAntrianPage> {
   final TextEditingController _patientInfoController = TextEditingController();
   String? _selectedDoctor;
   final TextEditingController _dateController = TextEditingController();
-  final List<String> _doctorOptions = ['Dr. Ghazi', 'Dr. Angga', 'Dr. Hammam', 'Dr. Ian', 'Dr. Andru','Dr. Ridwan'];
+  final List<String> _doctorOptions = [
+    'Dr. Ghazi',
+    'Dr. Angga',
+    'Dr. Hammam',
+    'Dr. Ian',
+    'Dr. Andru',
+    'Dr. Ridwan'
+  ];
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -109,6 +116,28 @@ class _AddAntrianPageState extends State<AddAntrianPage> {
                 ),
               ),
               SizedBox(height: 20.0),
+              // Tanggal Check Up - Input tanggal dengan kalender
+              _buildInputField(
+                label: 'Tanggal Check Up',
+                inputWidget: TextFormField(
+                  controller: _dateController,
+                  readOnly: true,
+                  onTap: () {
+                    _selectDate(context);
+                  },
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    suffixIcon: Icon(Icons.calendar_today),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Harap pilih tanggal check up';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              SizedBox(height: 20.0),
               _buildInputField(
                 label: 'Pilih Dokter',
                 inputWidget: DropdownButtonFormField<String>(
@@ -136,28 +165,7 @@ class _AddAntrianPageState extends State<AddAntrianPage> {
                 ),
               ),
               SizedBox(height: 20.0),
-              // Tanggal Check Up - Input tanggal dengan kalender
-              _buildInputField(
-                label: 'Tanggal Check Up',
-                inputWidget: TextFormField(
-                  controller: _dateController,
-                  readOnly: true,
-                  onTap: () {
-                    _selectDate(context);
-                  },
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    suffixIcon: Icon(Icons.calendar_today),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Harap pilih tanggal check up';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              SizedBox(height: 20.0),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -180,11 +188,16 @@ class _AddAntrianPageState extends State<AddAntrianPage> {
                           SnackBar(content: Text('Data submitted')),
                         );
                       }
+                      
                     },
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 18, 60, 243)),
+                      backgroundColor: MaterialStateProperty.all(
+                          Color.fromARGB(255, 18, 60, 243)),
                     ),
-                    child: Text('Submit', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+                    child: Text(
+                      'Submit',
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
                     ),
                   ),
                 ],
