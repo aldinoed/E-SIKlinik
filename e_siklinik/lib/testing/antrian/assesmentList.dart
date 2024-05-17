@@ -1,3 +1,5 @@
+import 'package:e_siklinik/testing/antrian/addAssesment.dart';
+import 'package:e_siklinik/testing/checkup/addCheckup.dart';
 import 'package:e_siklinik/testing/pasien/editPasien.dart';
 import 'package:e_siklinik/testing/pasien/showPasien.dart';
 import 'package:flutter/material.dart';
@@ -72,23 +74,23 @@ class _AssesmentListState extends State<AssesmentList> {
                   },
                   child: ListTile(
                     
-                    title: Text(assesment['created_at'] ?? ''),
+                    title: Text(assesment['nama_pasien'] ?? ''),
                     subtitle: Text(assesment['nama_dokter'] ?? ''),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(assesment['nama']),
+                        Text(assesment['nama_prodi']),
                         Text(assesment['nrp']),
                         IconButton(
                           icon: Icon(Icons.edit),
                           onPressed: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) =>
-                            //         EditPasienPage(pasien: pasien),
-                            //   ),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    AddCheckupResult(assesmentId: assesmentId),
+                              ),
+                            );
                           },
                         ),
                       ],

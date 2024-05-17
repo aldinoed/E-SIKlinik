@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CheckupAssesmen;
 use App\Models\CheckUpResult;
+use App\Models\DetailResepObat;
 use App\Models\Obat;
 use Exception;
 use Illuminate\Http\Request;
@@ -69,15 +70,22 @@ class CheckUpController extends Controller
     public function indexAssesmens()
     {
         $response = DB::table('dokter')
-            ->select('dokter.id as dokter_id',  'dokter.nama as nama_dokter', 'checkup_assesmens.id as checkup_assesmen_id', 'antrian.id as antrian_id', 'antrian.no_antrian')
-            ->join('checkup_assesmens', 'dokter.id', '=', 'checkup_assesmens.dokter_id')
-            ->addSelect('checkup_assesmens.*')
-            ->join('antrian', 'checkup_assesmens.antrian_id', '=', 'antrian.id')
-            ->addSelect('antrian.*')
-            ->join('pasien', 'antrian.pasien_id', '=', 'pasien.id')
-            ->addSelect('pasien.*')
-            ->join('prodi', 'pasien.prodi_id', '=', 'prodi.id')
-            ->addSelect('prodi.*')
+                ->select(
+                    'dokter.id as dokter_id',
+                    'dokter.nama as nama_dokter',
+                    'checkup_assesmens.id as checkup_assesmen_id',
+                    'antrian.id as antrian_id',
+                    'antrian.no_antrian',
+                    'pasien.nama as nama_pasien',
+                    'prodi.nama as nama_prodi'
+                )
+                ->join('checkup_assesmens', 'dokter.id', '=', 'checkup_assesmens.dokter_id')
+                ->join('antrian', 'checkup_assesmens.antrian_id', '=', 'antrian.id')
+                ->join('pasien', 'antrian.pasien_id', '=', 'pasien.id')
+                ->join('prodi', 'pasien.prodi_id', '=', 'prodi.id')
+                ->addSelect('checkup_assesmens.*', 'antrian.*', 'pasien.*', 'prodi.nama')
+
+
             ->get();
         if ($response->count() == 0) {
             return response()->json(['status' => 400, 'results' => 'Belum ada data']);
@@ -225,4 +233,50 @@ class CheckUpController extends Controller
     {
         //
     }
+
+    public function storeCheckupWithResepObat(Request $request)
+{
+    DB::beginTransaction();
+
+    try {
+        $path = null;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $path = time() . '_' . $file->getClientOriginalExtension();
+            $uploadRes = Storage::disk('local')->put('public/' . $path, file_get_contents($file));
+
+            if ($uploadRes === false) {
+                throw new Exception("Upload gambar gagal", 500);
+            }
+        }
+
+        $checkupResult = CheckUpResult::create([
+            'assesmen_id' => $request->assesmen_id,
+            'hasil_diagnosa' => $request->hasil_diagnosa,
+            'url_file' => $path,
+        ]);
+
+        if ($checkupResult) {
+            $resepObatList = json_decode($request->resep_obat, true);
+
+            foreach ($resepObatList as $resep) {
+                DetailResepObat::create([
+                    'obat_id' => $resep['obat_id'],
+                    'checkup_id' => $checkupResult->id,
+                    'jumlah_pemakaian' => $resep['jumlah_pemakaian'],
+                    'waktu_pemakaian' => $resep['waktu_pemakaian'],
+                ]);
+            }
+
+            DB::commit();
+            return response()->json(["status" => 200, "message" => "Berhasil input hasil checkup dan resep obat"]);
+        } else {
+            throw new Exception("Gagal menyimpan hasil checkup");
+        }
+    } catch (Exception $exception) {
+        DB::rollBack();
+        return response()->json(["status" => 500, "message" => "Error: " . $exception->getMessage()]);
+    }
+}
+
 }
