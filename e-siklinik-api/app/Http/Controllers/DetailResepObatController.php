@@ -39,13 +39,13 @@ class DetailResepObatController extends Controller
     {
         try{
             $response = DetailResepObat::create([
-                'obat_id'=>$request->obatId,
-                'checkup_id'=>$request->checkupId,
-                'jumlah_pemakaian'=>$request->qty,
-                'waktu_pemakaian'=>$request->consumptionTime
+                'obat_id'=>$request->obat_id,
+                'checkup_id'=>$request->checkup_id,
+                'jumlah_pemakaian'=>$request->jumlah_pemakaian,
+                'waktu_pemakaian'=>$request->waktu_pemakaian
             ]);
             if (isNull($response)) {
-                $this->decreaseStock($request->qty, $request->obatId);
+                //$this->decreaseStock($request->jumlah_pemakaian, $request->obat_id);
                 return response()->json(["status" => 200, "message" => "Berhasil input resep obat"]);
             } else {
                 throw new Exception();
@@ -102,11 +102,11 @@ class DetailResepObatController extends Controller
         }
     }
 
-    private function decreaseStock(int $amountOfDecrease, int $obatId):void{
-        $obat = Obat::find($obatId);
-        $currentStock = $obat->stock - $amountOfDecrease;
-        $obat->update([
-            'stock' => $currentStock
-        ]);
-    }
+    // private function decreaseStock(int $obat_id):void{
+    //     $obat = Obat::find($obat_id);
+    //     $currentStock = $obat->stock - 1;
+    //     $obat->update([
+    //         'stock' => $currentStock
+    //     ]);
+    // }
 }

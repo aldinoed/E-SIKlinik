@@ -96,3 +96,5 @@ Route::get('/detail-resep-obat', [DetailResepObatController::class, 'index']);
 Route::post('/detail-resep-obat/insert', [DetailResepObatController::class, 'store']);
 Route::get('/detail-resep-obat/show/{id}', [DetailResepObatController::class, 'show']);
 Route::delete('/detail-resep-obat/{id}/delete', [DetailResepObatController::class, 'destroy']);
+Route::post('/checkup-obat/insert', [CheckUpController::class, 'storeCheckupWithResepObat']);
+
