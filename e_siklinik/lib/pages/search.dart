@@ -1,5 +1,4 @@
 import 'package:e_siklinik/components/box.dart';
-import 'package:e_siklinik/pages/Checkup/riwayat_checkup.dart';
 import 'package:e_siklinik/pages/hasil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +14,7 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF9F9FB),
+      backgroundColor: const Color(0xFFF9F9FB),
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
@@ -28,8 +27,8 @@ class _SearchState extends State<Search> {
               ),
               Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                    border: Border.all(color: Color(0xFF234DF0))),
+                    borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    border: Border.all(color: const Color(0xFF234DF0))),
                 width: double.infinity,
                 height: 150,
                 child: const Center(
@@ -79,13 +78,13 @@ class _SearchState extends State<Search> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Hasil()));
+                                builder: (context) => const Hasil()));
                       },
                       nama: 'Pasien',
                       nrp: '31225000',
                       icon: setIcon(
                           Icons.person_outline, const Color(0xFF234DF0)),
-                      prodi: Text("Tanggal : DD/MM/YYYY"))
+                      prodi: const Text("Tanggal : DD/MM/YYYY"))
                 ],
               )
             ],

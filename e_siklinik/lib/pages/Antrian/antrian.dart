@@ -1,3 +1,4 @@
+import 'package:e_siklinik/testing/antrian/addAntrian.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -127,7 +128,7 @@ class _AntrianPageState extends State<AntrianPage> {
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => AddAntrianPage(),
+              builder: (context) => AddAntrian(),
             ),
           );
         },

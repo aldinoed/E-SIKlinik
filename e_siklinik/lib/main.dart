@@ -20,7 +20,6 @@ import 'package:fluttericon/font_awesome_icons.dart';
 void main() {
   runApp(const MyApp());
 }
-
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 

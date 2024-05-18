@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -328,6 +326,12 @@ class _AddDokterState extends State<AddDokter> {
                         children: [
                           ElevatedButton(
                             onPressed: () => addDokter(context),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF234DF0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                            ),
                             child: const Padding(
                               padding: EdgeInsets.symmetric(vertical: 12.0),
                               child: Text(
@@ -335,12 +339,6 @@ class _AddDokterState extends State<AddDokter> {
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Color(0xFFFCFCFD)),
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF234DF0),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
                               ),
                             ),
                           ),

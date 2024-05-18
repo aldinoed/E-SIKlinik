@@ -3,9 +3,7 @@ import 'package:e_siklinik/components/box.dart';
 import 'package:e_siklinik/pages/Pasien/add_pasien.dart';
 import 'package:e_siklinik/pages/Pasien/edit_pasien.dart';
 import 'package:e_siklinik/pages/Pasien/show_pasien.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

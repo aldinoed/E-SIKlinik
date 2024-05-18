@@ -1,12 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class Box extends StatelessWidget {
   final String bgimage;
   final String title;
   final String desc;
-  final icon;
+  final Widget icon;
   final VoidCallback onTapBox;
   const Box(
       {super.key,
@@ -365,7 +363,7 @@ class BoxRiwayat extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(nama, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 20),),
-                    Text("Tanggal : ${tanggal}", style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 15),)
+                    Text("Tanggal : $tanggal", style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 15),)
 
                   ],
                 )

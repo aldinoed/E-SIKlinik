@@ -5,7 +5,6 @@ import 'package:e_siklinik/pages/Dokter/add_dokter.dart';
 import 'package:e_siklinik/pages/Dokter/edit_dokter.dart';
 import 'package:e_siklinik/pages/Dokter/show_dokter.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DataDokter extends StatefulWidget {

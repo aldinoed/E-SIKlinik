@@ -1,6 +1,6 @@
 import 'package:e_siklinik/components/box.dart';
 import 'package:e_siklinik/pages/Antrian/antrian.dart';
-import 'package:e_siklinik/pages/Checkup/checkup.dart';
+import 'package:e_siklinik/testing/checkup/addCheckup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +15,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            backgroundColor: Color(0xFFF9F9FB),
+            backgroundColor: const Color(0xFFF9F9FB),
 
       body: SafeArea(
           child: Padding(
@@ -129,7 +129,7 @@ class _DashboardState extends State<Dashboard> {
                       color: Color(0xFF234DF0),
                     ),
                     onTapBox: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Checkup()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const AddCheckupResult(assesmentId: 1,)));
                     },
                   ),
                   Box(

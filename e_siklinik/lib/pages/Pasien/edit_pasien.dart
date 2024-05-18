@@ -89,14 +89,14 @@ class _EditPasienState extends State<EditPasien> {
     if (response.statusCode == 200) {
       // Berhasil memperbarui data
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Data pasien berhasil diperbarui'),
         ),
       );
     } else {
       // Gagal memperbarui data
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Gagal memperbarui data pasien'),
         ),
       );
@@ -201,7 +201,7 @@ class _EditPasienState extends State<EditPasien> {
                 ),
                 DropdownButtonFormField<String>(
                       value: _selectedProdiId,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Prodi',
                       ),
                       items: prodiList.map((prodi) {
@@ -470,6 +470,12 @@ class _EditPasienState extends State<EditPasien> {
                           _updatePasien();
                         }
                       },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF234DF0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                      ),
                       child: const Padding(
                         padding: EdgeInsets.symmetric(vertical: 12.0),
                         child: Text(
@@ -477,12 +483,6 @@ class _EditPasienState extends State<EditPasien> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Color(0xFFFCFCFD)),
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF234DF0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
                         ),
                       ),
                     ),

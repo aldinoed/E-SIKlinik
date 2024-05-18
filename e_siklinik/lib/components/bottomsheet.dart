@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 
@@ -57,12 +56,12 @@ class BuildSheet extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: onTapDelete,
-                child: Row(
+                child: const Row(
                   children: [
-                    Container(
+                    SizedBox(
                       width: 40,
                       height: 40,
-                      child: const FittedBox(
+                      child: FittedBox(
                         fit: BoxFit.contain,
                         child: Icon(
                           Icons.delete_forever_outlined,
@@ -70,10 +69,10 @@ class BuildSheet extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       width: 5,
                     ),
-                    const Text(
+                    Text(
                       "Delete Data",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w600),

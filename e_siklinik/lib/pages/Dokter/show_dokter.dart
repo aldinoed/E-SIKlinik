@@ -45,7 +45,7 @@ class _ShowDokterState extends State<ShowDokter> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detail Dokter'),
+        title: const Text('Detail Dokter'),
       ),
       body: dokterDetail != null
           ? Center(
@@ -68,7 +68,7 @@ class _ShowDokterState extends State<ShowDokter> {
                 ],
               ),
             )
-          : Center(child: CircularProgressIndicator()),
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 }

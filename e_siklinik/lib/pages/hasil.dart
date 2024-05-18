@@ -1,6 +1,5 @@
 import 'package:e_siklinik/components/box.dart';
 import 'package:e_siklinik/pages/Checkup/riwayat_checkup.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Hasil extends StatefulWidget {
@@ -34,14 +33,14 @@ class _HasilState extends State<Hasil> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Andru Falah Arifin", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),),
-            Text("3122500048", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),),
-            SizedBox(height: 15,),
-            Text("Riwayat Check Up (5)", style: TextStyle(fontWeight: FontWeight.w600),),
-                        SizedBox(height: 10,),
+            const Text("Andru Falah Arifin", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),),
+            const Text("3122500048", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w300),),
+            const SizedBox(height: 15,),
+            const Text("Riwayat Check Up (5)", style: TextStyle(fontWeight: FontWeight.w600),),
+                        const SizedBox(height: 10,),
                         Flexible(child: ListView.builder(itemCount: 5, itemBuilder: (BuildContext context, int index){
                           return BoxRiwayat(onTapBox: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RiwayatCheckup()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const RiwayatCheckup()));
                           }, tanggal: "29/06/2024", nama: "Dr. Ian Ale Ale");
                         }))
           ],

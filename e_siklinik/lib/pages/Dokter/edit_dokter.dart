@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart'; // Tambahkan baris ini
+import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class EditDokter extends StatefulWidget {
@@ -355,6 +355,12 @@ class _EditDokterState extends State<EditDokter> {
                               _updateDokter();
                             }
                           },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF234DF0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                          ),
                           child: const Padding(
                             padding: EdgeInsets.symmetric(vertical: 12.0),
                             child: Text(
@@ -362,12 +368,6 @@ class _EditDokterState extends State<EditDokter> {
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xFFFCFCFD)),
-                            ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF234DF0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
                             ),
                           ),
                         ),
