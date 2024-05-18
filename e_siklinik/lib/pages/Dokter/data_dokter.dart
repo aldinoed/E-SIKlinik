@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:e_siklinik/components/bottomsheet.dart';
 import 'package:e_siklinik/components/box.dart';
+import 'package:e_siklinik/components/delete_confirmation.dart';
 import 'package:e_siklinik/pages/Dokter/add_dokter.dart';
 import 'package:e_siklinik/pages/Dokter/edit_dokter.dart';
 import 'package:e_siklinik/pages/Dokter/show_dokter.dart';
@@ -58,6 +59,10 @@ class _DataDokterState extends State<DataDokter> {
               dokter['nama'].toLowerCase().contains(searchText.toLowerCase()))
           .toList();
     });
+  }
+
+  void _deleteItem() {
+    print('Item deleted');
   }
 
   @override
@@ -151,11 +156,22 @@ class _DataDokterState extends State<DataDokter> {
                             nama: dokter['nama'] ?? '',
                             onTapPop: () {
                               showModalBottomSheet(
-                                isScrollControlled: true,
+                                  isScrollControlled: true,
                                   context: context,
-                                  builder: (context) => BuildSheet(onTapEdit: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => EditDokter(dokter: dokter)));
-                                  }, onTapDelete: () {  },));
+                                  builder: (context) => BuildSheet(
+                                        onTapEdit: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EditDokter(
+                                                          dokter: dokter)));
+                                        },
+                                        onTapDelete: () {
+                                          showDeleteConfirmationDialog(
+                                              context, _deleteItem);
+                                        },
+                                      ));
                             },
                           );
                           // GestureDetector(

@@ -1,5 +1,6 @@
 import 'package:e_siklinik/components/bottomsheet.dart';
 import 'package:e_siklinik/components/box.dart';
+import 'package:e_siklinik/components/delete_confirmation.dart';
 import 'package:e_siklinik/pages/Pasien/add_pasien.dart';
 import 'package:e_siklinik/pages/Pasien/edit_pasien.dart';
 import 'package:e_siklinik/pages/Pasien/show_pasien.dart';
@@ -57,6 +58,10 @@ class _DataPasienState extends State<DataPasien> {
               pasien['nama'].toLowerCase().contains(searchText.toLowerCase()))
           .toList();
     });
+  }
+
+    void _deleteItem() {
+    print('Item deleted');
   }
 
   @override
@@ -164,7 +169,9 @@ class _DataPasienState extends State<DataPasien> {
                                   context: context,
                                   builder: (context) => BuildSheet(onTapEdit: () {
                                     Navigator.push(context, MaterialPageRoute(builder: (context) => EditPasien(pasien: pasien)));
-                                  }, onTapDelete: () {  },));
+                                  }, onTapDelete: () {
+                                    showDeleteConfirmationDialog(context, _deleteItem);
+                                  },));
                                  },
                                 );
                           }),
