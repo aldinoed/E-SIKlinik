@@ -1,5 +1,7 @@
 import 'package:e_siklinik/components/box.dart';
 import 'package:e_siklinik/pages/Antrian/antrian.dart';
+import 'package:e_siklinik/testing/antrian/assesmentList.dart';
+import 'package:e_siklinik/testing/antrian/listAntrian.dart';
 import 'package:e_siklinik/testing/checkup/addCheckup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -129,7 +131,7 @@ class _DashboardState extends State<Dashboard> {
                       color: Color(0xFF234DF0),
                     ),
                     onTapBox: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const AddCheckupResult(assesmentId: 1,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const AssesmentList()));
                     },
                   ),
                   Box(
@@ -139,7 +141,7 @@ class _DashboardState extends State<Dashboard> {
                     icon: const Icon(Icons.people_alt,
                         size: 25, color: Color(0xFF234DF0)),
                     onTapBox: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> AntrianPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> AntrianListPage()));
                     },
                   ),
                 ],

@@ -167,26 +167,26 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Hasil Check Up",
                     style: TextStyle(fontWeight: FontWeight.w600),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
-                  Text(
+                  const Text(
                     "Loremmmmmm",
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         color: Color(0xFF62636C),
                       )),
-                    SizedBox(
+                    const SizedBox(
                     height: 5,
                   ),
                   Container(
                     width: double.infinity,
                     height: 125,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       color: Colors.grey
                     ),

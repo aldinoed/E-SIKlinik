@@ -185,7 +185,7 @@ class _AddAssessmentState extends State<AddAssessment> {
                         setInfoPasien("NRP", "${antrianDetail?[0]['nrp']}"),
                         setInfoPasien("Nama", "${antrianDetail?[0]['nama']}"),
                         setInfoPasien("Program Studi",
-                            "${antrianDetail?[0]['prodi_id']}"),
+                            "${antrianDetail?[0]['pasien_to_prodi']?['nama']}"),
                         setInfoPasien("Gender", "${antrianDetail?[0]['gender']}"),
                         setInfoPasien("Tanggal Lahir",
                             "${antrianDetail?[0]['tanggal_lahir']}"),

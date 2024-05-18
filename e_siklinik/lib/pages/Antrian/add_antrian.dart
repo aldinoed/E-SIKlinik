@@ -298,7 +298,7 @@ class _AddAntrianState extends State<AddAntrian> {
                         setInfoPasien("NRP", "${selectedPasien!['nrp']}"),
                         setInfoPasien("Nama", "${selectedPasien!['nama']}"),
                         setInfoPasien("Program Studi",
-                            "${selectedPasien!['prodi_id']}"),
+                            "${selectedPasien!['pasien_to_prodi']['nama']}"),
                         setInfoPasien("Gender", "${selectedPasien!['gender']}"),
                         setInfoPasien("Tanggal Lahir",
                             "${selectedPasien!['tanggal_lahir']}"),

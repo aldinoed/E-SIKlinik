@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:e_siklinik/pages/Antrian/add_antrian.dart';
 import 'package:e_siklinik/pages/Antrian/add_assessment.dart';
 import 'package:e_siklinik/testing/antrian/addAssesment.dart';
 import 'package:e_siklinik/testing/antrian/assesmentList.dart';
@@ -44,6 +45,21 @@ class _AntrianListPageState extends State<AntrianListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => AddAntrian(),
+            ),
+          );
+        },
+        child: Icon(Icons.add, size: 30, color: Colors.white),
+        backgroundColor: Color(0xFF234DF0),
+        elevation: 8,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+      ),
       appBar: AppBar(
         title: Text('Daftar Antrian'),
       ),

@@ -1,3 +1,4 @@
+import 'package:e_siklinik/pages/Checkup/checkup.dart';
 import 'package:e_siklinik/testing/antrian/addAssesment.dart';
 import 'package:e_siklinik/testing/checkup/addCheckup.dart';
 import 'package:e_siklinik/testing/pasien/editPasien.dart';
@@ -88,7 +89,7 @@ class _AssesmentListState extends State<AssesmentList> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    AddCheckupResult(assesmentId: assesmentId),
+                                    AddCheckup(assesmentId: assesmentId),
                               ),
                             );
                           },
