@@ -355,7 +355,7 @@ class _AddObatNewState extends State<AddObatNew> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Container(
-                                                      height: 40,
+                                                      
                                                       child: TextField(
                                                         controller:
                                                             tanggalKadaluarsaController,
