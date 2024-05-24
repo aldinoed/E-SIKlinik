@@ -1,10 +1,12 @@
 import 'package:e_siklinik/components/box.dart';
 import 'package:e_siklinik/pages/Dokter/data_dokter.dart';
+import 'package:e_siklinik/pages/Jadwal/data_jadwal.dart';
 import 'package:e_siklinik/pages/Obat/data_obat.dart';
 import 'package:e_siklinik/pages/Pasien/data_pasien.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:fluttericon/rpg_awesome_icons.dart';
+import 'package:fluttericon/entypo_icons.dart';
 
 class Data extends StatefulWidget {
   const Data({super.key});
@@ -35,8 +37,7 @@ class _DataState extends State<Data> {
                 ),
                 width: double.infinity,
                 height: 150,
-                child: const Center(
-                ),
+                child: const Center(),
               ),
               const SizedBox(
                 height: 20,
@@ -54,7 +55,8 @@ class _DataState extends State<Data> {
                     title: "Pasien",
                     desc: "Add, Edit, Delete Data\nPasien",
                     bgimage: '',
-                    icon: setIcon(Icons.person_outline, const Color(0xFF234DF0)),
+                    icon:
+                        setIcon(Icons.person_outline, const Color(0xFF234DF0)),
                     onTapBox: () {
                       Navigator.push(
                           context,
@@ -66,7 +68,8 @@ class _DataState extends State<Data> {
                     title: "Dokter",
                     desc: "Add, Edit, Delete Data\nDokter",
                     bgimage: '',
-                    icon: setIcon(FontAwesome.stethoscope, const Color(0xFF234DF0)),
+                    icon: setIcon(
+                        FontAwesome.stethoscope, const Color(0xFF234DF0)),
                     onTapBox: () {
                       Navigator.push(
                           context,
@@ -85,7 +88,19 @@ class _DataState extends State<Data> {
                           MaterialPageRoute(
                               builder: (context) => const DataObat()));
                     },
-                  )
+                  ),
+                  Box(
+                      title: "Jadwal Dokter",
+                      desc: "Add, Edit, Delete Data\nJadwal Dokter",
+                      bgimage: '',
+                      icon:
+                          setIcon(Entypo.back_in_time, const Color(0xFF234DF0)),
+                      onTapBox: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DataJadwal()));
+                      })
                 ],
               )
             ],

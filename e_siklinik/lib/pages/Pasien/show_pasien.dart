@@ -1,3 +1,5 @@
+import 'package:e_siklinik/components/box.dart';
+import 'package:e_siklinik/pages/data.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -5,13 +7,14 @@ import 'dart:convert';
 class ShowPasien extends StatefulWidget {
   final int pasienId;
   const ShowPasien({Key? key, required this.pasienId});
-
   @override
   State<ShowPasien> createState() => _ShowPasienState();
 }
 
 class _ShowPasienState extends State<ShowPasien> {
   Map<String, dynamic>? pasienDetail;
+  bool isLoading = true;
+  bool hasError = false;
 
   @override
   void initState() {
@@ -22,50 +25,221 @@ class _ShowPasienState extends State<ShowPasien> {
   Future<void> _getPasienDetail() async {
     try {
       final response = await http.get(
-          Uri.parse("http://10.0.2.2:8000/api/pasien/show/${widget.pasienId}"));
+        Uri.parse("http://10.0.2.2:8000/api/pasien/show/${widget.pasienId}"),
+        headers: {'Content-Type': 'application/json'},
+      ).timeout(const Duration(seconds: 30)); // Increased timeout duration
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data != null && data['pasien'] != null) {
           setState(() {
             pasienDetail = data['pasien'];
+            isLoading = false;
+          });
+        } else {
+          setState(() {
+            hasError = true;
+            isLoading = false;
           });
         }
       } else {
-        print("Failed to load pasien detail");
+        setState(() {
+          hasError = true;
+          isLoading = false;
+        });
+        print("Failed to load pasien detail: ${response.statusCode}");
       }
     } catch (error) {
-      print('Error : $error');
+      setState(() {
+        hasError = true;
+        isLoading = false;
+      });
+      print('Error: $error');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF9F9FB),
       appBar: AppBar(
-        title: const Text('Detail Pasien'),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 2,
+        shadowColor: Colors.black,
+        centerTitle: true,
+        title: const Text(
+          "Detail Pasien",
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
       ),
-      body: pasienDetail != null
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        'http://10.0.2.2:8000/storage/' +
-                            pasienDetail!['image']),
-                  ),
-                  Text('Nama: ${pasienDetail!['nama']}'),
-                  Text('NRP: ${pasienDetail!['nrp']}'),
-                  Text('Gender: ${pasienDetail!['gender']}'),
-                  Text('Tanggal Lahir: ${pasienDetail!['tanggal_lahir']}'),
-                  Text('Alamat: ${pasienDetail!['alamat']}'),
-                  Text('Nomor HP: ${pasienDetail!['nomor_hp']}'),
-                  Text('Nomor Wali: ${pasienDetail!['nomor_wali']}'),
-                  Text('Prodi ID: ${pasienDetail!['prodi_id']}'),
-                ],
-              ),
-            )
-          : const Center(child: CircularProgressIndicator()),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : hasError
+              ? const Center(child: Text('Failed to load data'))
+              : NestedScrollView(
+                  headerSliverBuilder:
+                      (BuildContext context, bool innerBoxIsScrolled) {
+                    return <Widget>[
+                      SliverAppBar(
+                        automaticallyImplyLeading: false,
+                        expandedHeight: 300.0,
+                        floating: false,
+                        stretch: true,
+                        flexibleSpace: FlexibleSpaceBar(
+                          collapseMode: CollapseMode.parallax,
+                          background: pasienDetail != null &&
+                                  pasienDetail!['image'] != null
+                              ? Image.network(
+                                  'http://10.0.2.2:8000/storage/' +
+                                      pasienDetail!['image'],
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset('assets/images/pp.png',
+                                        fit: BoxFit.cover);
+                                  },
+                                )
+                              : Image.asset(
+                                  'assets/images/pp.png',
+                                  fit: BoxFit.cover,
+                                ),
+                        ),
+                      ),
+                    ];
+                  },
+                  body: pasienDetail != null
+                      ? Padding(
+                          padding: EdgeInsets.all(24),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(16),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Color.fromARGB(255, 244, 244, 244),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(15)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      offset: const Offset(-1, 2),
+                                      blurRadius: 3,
+                                      spreadRadius: 0,
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                        padding: EdgeInsets.only(bottom: 8),
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                            border: BorderDirectional(
+                                                bottom: BorderSide(
+                                                    color: Colors.black))),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              '${pasienDetail!['nama']}',
+                                              style: TextStyle(
+                                                  fontSize: 24,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            Text(
+                                                '${pasienDetail!['pasien_to_prodi']['nama']}'),
+                                            Text('${pasienDetail!['nrp']}')
+                                          ],
+                                        )),
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                    setInfoDokter(
+                                        'Gender', '${pasienDetail!['gender']}'),
+                                    setInfoDokter('Tanggal Lahir',
+                                        '${pasienDetail!['tanggal_lahir']}'),
+                                    setInfoDokter(
+                                        'Alamat', '${pasienDetail!['alamat']}'),
+                                    setInfoDokter('Nomor Hp',
+                                        '${pasienDetail!['nomor_hp']}'),
+                                    setInfoDokter('Nomor Wali',
+                                        '${pasienDetail!['nomor_wali']}'),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                " Check Up Terakhir",
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Flexible(
+                                child: ListView.builder(
+                                  itemCount: 9,
+                                  itemBuilder: (context, index) {
+                                    return BoxSearchPage(
+                                        onTapBox: () {},
+                                        nama: "Andru Falah Arifin",
+                                        nrp: "3122500048",
+                                        icon: setIcon(Icons.person_outline,
+                                            const Color(0xFF234DF0)),
+                                        prodi: Text("D3 IT"));
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : const Center(child: Text('No detail available')),
+                ),
     );
   }
+}
+
+Widget setInfoDokter(String label, String value) {
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      SizedBox(
+        width: 120,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(label,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF62636C),
+                )),
+            const Text(":",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF62636C),
+                ))
+          ],
+        ),
+      ),
+      const SizedBox(
+        width: 5,
+      ),
+      Expanded(
+        child: Text(value,
+            style: const TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF62636C),
+            )),
+      )
+    ],
+  );
 }

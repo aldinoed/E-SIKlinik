@@ -76,6 +76,7 @@ class _EditDokterState extends State<EditDokter> {
           content: Text('Data dokter berhasil diperbarui'),
         ),
       );
+      Navigator.pop(context, true);
     } else {
       // Gagal memperbarui data
       ScaffoldMessenger.of(context).showSnackBar(

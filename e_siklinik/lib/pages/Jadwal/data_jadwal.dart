@@ -1,46 +1,47 @@
+import 'dart:convert';
 import 'package:e_siklinik/components/bottomsheet.dart';
 import 'package:e_siklinik/components/box.dart';
 import 'package:e_siklinik/components/delete_confirmation.dart';
-import 'package:e_siklinik/pages/Pasien/add_pasien.dart';
-import 'package:e_siklinik/pages/Pasien/edit_pasien.dart';
-import 'package:e_siklinik/pages/Pasien/show_pasien.dart';
-import 'package:flutter/material.dart';
+import 'package:e_siklinik/pages/Jadwal/edit_jadwal.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:e_siklinik/pages/Jadwal/add_jadwal.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
-class DataPasien extends StatefulWidget {
-  const DataPasien({super.key});
+class DataJadwal extends StatefulWidget {
+  const DataJadwal({super.key});
 
   @override
-  State<DataPasien> createState() => _DataPasienState();
+  State<DataJadwal> createState() => _DataJadwalState();
 }
 
-class _DataPasienState extends State<DataPasien> {
-  final String apiGetAllPasien = "http://10.0.2.2:8000/api/pasien";
-  List<dynamic> pasienList = [];
-  List<dynamic> filteredPasienList = [];
+class _DataJadwalState extends State<DataJadwal> {
+  final String apiGetAllJadwalDokter = "http://10.0.2.2:8000/api/jadwal_dokter";
+  List<dynamic> jadwalList = [];
+  List<dynamic> filteredJadwalList = [];
 
   @override
   void initState() {
     super.initState();
-    _getAllPasien();
+    _getAllJadwal();
+    _refreshData();
   }
 
-  Future<void> _getAllPasien() async {
+  Future<void> _getAllJadwal() async {
     try {
-      final response = await http.get(Uri.parse(apiGetAllPasien));
+      final response = await http.get(Uri.parse(apiGetAllJadwalDokter));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        if (data != null && data['pasien'] != null) {
+        if (data != null && data['jadwal_dokter'] != null) {
           setState(() {
-            pasienList = data['pasien'];
-            filteredPasienList = List.from(pasienList);
+            jadwalList = data['jadwal_dokter'];
+            filteredJadwalList = List.from(jadwalList);
           });
         } else {
           print("No data received from API");
         }
       } else {
-        print("Failed to load pasien");
+        print("Failed to load Data");
       }
     } catch (error) {
       print('Error : $error');
@@ -48,14 +49,25 @@ class _DataPasienState extends State<DataPasien> {
   }
 
   Future<void> _refreshData() async {
-    await _getAllPasien();
+    await _getAllJadwal();
   }
 
-  void _filterPasienList(String searchText) {
+  void _filterJadwalList(String searchText) {
     setState(() {
-      filteredPasienList = pasienList
-          .where((pasien) =>
-              pasien['nama'].toLowerCase().contains(searchText.toLowerCase()))
+      filteredJadwalList = jadwalList
+          .where((jadwal) =>
+              jadwal['jadwal_to_dokter']['nama']
+                  .toLowerCase()
+                  .contains(searchText.toLowerCase()) ||
+              jadwal['hari']
+                  .toLowerCase()
+                  .contains(searchText.toLowerCase()) ||
+              jadwal['jadwal_mulai_tugas']
+                  .toLowerCase()
+                  .contains(searchText.toLowerCase()) ||
+              jadwal['jadwal_selesai_tugas']
+                  .toLowerCase()
+                  .contains(searchText.toLowerCase()))
           .toList();
     });
   }
@@ -72,10 +84,10 @@ class _DataPasienState extends State<DataPasien> {
         shape: const CircleBorder(),
         backgroundColor: const Color(0xFF234DF0),
         onPressed: () async {
-          // Menunggu hasil dari halaman AddPasien
+          // Menunggu hasil dari halaman AddJadwal
           final result = await Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const AddPasien()),
+            MaterialPageRoute(builder: (context) => const AddJadwal()),
           );
           // Jika result bernilai true, panggil _refreshData
           if (result == true) {
@@ -98,16 +110,16 @@ class _DataPasienState extends State<DataPasien> {
         shadowColor: Colors.black,
         centerTitle: true,
         title: const Text(
-          "Database Pasien",
+          "Jadwal Dokter",
           style: TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
       body: RefreshIndicator(
         onRefresh: _refreshData,
-        child: pasienList.isEmpty
+        child: jadwalList.isEmpty
             ? const Center(
                 child: Text(
-                  'Tidak ada data pasien',
+                  'Tidak ada data Jadwal Dokter',
                   style: TextStyle(fontSize: 18.0),
                 ),
               )
@@ -127,7 +139,7 @@ class _DataPasienState extends State<DataPasien> {
                         children: [
                           Flexible(
                             child: TextFormField(
-                              onChanged: _filterPasienList,
+                              onChanged: _filterJadwalList,
                               maxLines: null,
                               decoration: const InputDecoration(
                                 hintText: 'Search Here',
@@ -144,51 +156,32 @@ class _DataPasienState extends State<DataPasien> {
                     ),
                     Flexible(
                       child: ListView.builder(
-                        itemCount: filteredPasienList.length,
+                        itemCount: filteredJadwalList.length,
                         itemBuilder: (BuildContext context, int index) {
-                          final pasien = filteredPasienList[index];
-                          final pasienId = pasien['id'];
-                          return BoxPasien(
-                            onTapBox: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      ShowPasien(pasienId: pasienId),
-                                ),
-                              );
-                            },
-                            nama: pasien['nama'] ?? '',
-                            nrp: pasien['nrp'] ?? '',
-                            prodi: pasien['pasien_to_prodi'] != null
-                                ? Text(
-                                    pasien['pasien_to_prodi']['nama'] ?? '',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w300),
-                                  )
-                                : const Text("G ada prodi"),
-                            icon: 'http://10.0.2.2:8000/storage/' +
-                                pasien['image'],
+                          final jadwal = filteredJadwalList[index];
+
+                          return BoxJadwal(
+                            dokter: "${jadwal['jadwal_to_dokter']['nama']}",
+                            jadwal:
+                                "${jadwal['hari']}, ${jadwal['jadwal_mulai_tugas']} - ${jadwal['jadwal_selesai_tugas']}",
                             onTapPop: () {
                               showModalBottomSheet(
                                 isScrollControlled: true,
                                 context: context,
                                 builder: (context) => BuildSheet(
                                   onTapEdit: () async {
-                                    // Menunggu hasil dari halaman EditPasien
-                                    final result = await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            EditPasien(pasien: pasien),
-                                      ),
-                                    );
-                                    // Jika result bernilai true, tutup modal bottom sheet
-                                    if (result == true) {
-                                      Navigator.pop(
-                                          context); // Menutup showModalBottomSheet
-                                      _refreshData(); // Memuat ulang data jika perlu
-                                    }
+                                    // final result = await Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) =>
+                                    //         EditJadwal(jadwal: jadwal),
+                                    //   ),
+                                    // );
+                                    // if (result == true) {
+                                    //   Navigator.pop(
+                                    //       context); // Menutup showModalBottomSheet
+                                    //   _refreshData();
+                                    // }
                                   },
                                   onTapDelete: () {
                                     showDeleteConfirmationDialog(
