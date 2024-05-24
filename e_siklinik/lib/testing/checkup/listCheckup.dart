@@ -2,10 +2,13 @@ import 'dart:convert';
 import 'package:e_siklinik/testing/antrian/addAssesment.dart';
 import 'package:e_siklinik/testing/antrian/assesmentList.dart';
 import 'package:e_siklinik/testing/antrian/assesmentShow.dart';
+import 'package:e_siklinik/testing/checkup/showCheckup.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class CheckupListPage extends StatefulWidget {
+  const CheckupListPage({Key? key}) : super(key: key);
+
   @override
   _CheckupListPageState createState() => _CheckupListPageState();
 }
@@ -73,6 +76,18 @@ class _CheckupListPageState extends State<CheckupListPage> {
                               ['pasien_to_prodi']['nama']),
                           Text(checkup['check_up_resul_to_assesmen']
                               ['assesmen_to_dokter']['nama']),
+                          IconButton(
+                            icon: Icon(Icons.edit),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ShowCheckupDetail(checkupId: checkupId),
+                                ),
+                              );
+                            },
+                          ),
                         ],
                       ),
                       trailing: SizedBox(

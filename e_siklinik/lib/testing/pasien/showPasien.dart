@@ -12,11 +12,13 @@ class ShowPasienDetail extends StatefulWidget {
 
 class _ShowPasienDetailState extends State<ShowPasienDetail> {
   Map<String, dynamic>? pasienDetail;
+  List<dynamic>? riwayat;
 
   @override
   void initState() {
     super.initState();
     _getPasienDetail();
+    _getRiwayatCheckup();
   }
 
   Future<void> _getPasienDetail() async {
@@ -38,32 +40,68 @@ class _ShowPasienDetailState extends State<ShowPasienDetail> {
     }
   }
 
+  Future<void> _getRiwayatCheckup() async {
+    try {
+      final response = await http.get(
+          Uri.parse("http://10.0.2.2:8000/api/riwayat-pasien/${widget.pasienId}"));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data != null && data['checkup'] != null) {
+          setState(() {
+            riwayat = data['checkup'];
+          });
+        }
+      } else {
+        print("Failed to load riwayat checkup");
+      }
+    } catch (error) {
+      print('Error : $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Detail Pasien'),
       ),
-      body: pasienDetail != null
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        'http://10.0.2.2:8000/storage/' +
-                            pasienDetail!['image']),
+      body: pasienDetail != null && riwayat != null
+          ? Column(
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(
+                      'http://10.0.2.2:8000/storage/' +
+                          pasienDetail!['image']),
+                ),
+                Text('Nama: ${pasienDetail!['nama']}'),
+                Text('NRP: ${pasienDetail!['nrp']}'),
+                Text('Gender: ${pasienDetail!['gender']}'),
+                Text('Tanggal Lahir: ${pasienDetail!['tanggal_lahir']}'),
+                Text('Alamat: ${pasienDetail!['alamat']}'),
+                Text('Nomor HP: ${pasienDetail!['nomor_hp']}'),
+                Text('Nomor Wali: ${pasienDetail!['nomor_wali']}'),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: riwayat!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final checkup = riwayat![index];
+                      return Card(
+                        child: ListTile(
+                          title: Text('Hasil Diagnosa: ${checkup['hasil_diagnosa']}'),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Checkup Id: ${checkup['id']}'),
+                              Text('Assesmen Id: ${checkup['assesmen_id']}'),
+                              
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                  Text('Nama: ${pasienDetail!['nama']}'),
-                  Text('NRP: ${pasienDetail!['nrp']}'),
-                  Text('Gender: ${pasienDetail!['gender']}'),
-                  Text('Tanggal Lahir: ${pasienDetail!['tanggal_lahir']}'),
-                  Text('Alamat: ${pasienDetail!['alamat']}'),
-                  Text('Nomor HP: ${pasienDetail!['nomor_hp']}'),
-                  Text('Nomor Wali: ${pasienDetail!['nomor_wali']}'),
-                  Text('Prodi ID: ${pasienDetail!['prodi_id']}'),
-                ],
-              ),
+                ),
+              ],
             )
           : Center(child: CircularProgressIndicator()),
     );
