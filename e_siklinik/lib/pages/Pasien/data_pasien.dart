@@ -16,7 +16,7 @@ class DataPasien extends StatefulWidget {
 }
 
 class _DataPasienState extends State<DataPasien> {
-  final String apiGetAllPasien = "http://10.0.2.2:8000/api/pasien";
+  final String apiGetAllPasien = "http://192.168.43.246:8080/api/pasien";
   List<dynamic> pasienList = [];
   List<dynamic> filteredPasienList = [];
 
