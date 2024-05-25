@@ -72,9 +72,16 @@ class _DataDokterState extends State<DataDokter> {
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
         backgroundColor: const Color(0xFF234DF0),
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const AddDokter()));
+        onPressed: () async {
+          // Menunggu hasil dari halaman AddDokter
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddDokter()),
+          );
+          // Jika result bernilai true, panggil _refreshData
+          if (result == true) {
+            _refreshData();
+          }
         },
         child: const Icon(
           Icons.add,
@@ -159,13 +166,18 @@ class _DataDokterState extends State<DataDokter> {
                                   isScrollControlled: true,
                                   context: context,
                                   builder: (context) => BuildSheet(
-                                        onTapEdit: () {
-                                          Navigator.push(
+                                        onTapEdit: () async {
+                                          final result = await Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       EditDokter(
                                                           dokter: dokter)));
+                                          if (result == true) {
+                                            Navigator.pop(
+                                                context); // Menutup showModalBottomSheet
+                                            _refreshData(); // Memuat ulang data jika perlu
+                                          }
                                         },
                                         onTapDelete: () {
                                           showDeleteConfirmationDialog(
@@ -174,31 +186,6 @@ class _DataDokterState extends State<DataDokter> {
                                       ));
                             },
                           );
-                          // GestureDetector(
-                          //   onTap: () {
-                          //     // Navigator.push(
-                          //     //   context,
-                          //     //   MaterialPageRoute(
-                          //     //     builder: (context) =>
-                          //     //         ShowPasienDetail(pasienId: pasienId),
-                          //     //   ),
-                          //     // );
-                          //   },
-                          //   child: ListTile(
-                          //     leading: CircleAvatar(
-                          //       backgroundImage: NetworkImage(
-                          // 'http://192.168.43.246:8080/storage/' +
-                          //     dokter['image']),
-                          //     ),
-                          //     title: Text(dokter['nama'] ?? ''),
-                          //     subtitle: Text(dokter['gender'] ?? ''),
-                          //     trailing: dokter['dokter_to_jadwal'].isEmpty
-                          //         ? Text("G ada jadwal")
-                          //         : Text(dokter['dokter_to_jadwal'][0]
-                          //                 ['hari'] ??
-                          //             'G ada hari'),
-                          //   ),
-                          // );
                         },
                       ),
                     ),

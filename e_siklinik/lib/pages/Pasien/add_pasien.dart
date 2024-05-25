@@ -115,7 +115,7 @@ class _AddPasienState extends State<AddPasien> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.pop((context));
+              Navigator.pop(context, true);
             },
             icon: const Icon(Icons.arrow_back_ios)),
         backgroundColor: Colors.white,
@@ -189,8 +189,8 @@ class _AddPasienState extends State<AddPasien> {
                       showSearchBox: true,
                       searchFieldProps: TextFieldProps(
                         decoration: InputDecoration(
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
                           hintText: 'Cari Prodi',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
@@ -224,7 +224,8 @@ class _AddPasienState extends State<AddPasien> {
                     },
                     dropdownDecoratorProps: DropDownDecoratorProps(
                       dropdownSearchDecoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 3),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 3),
                         hintText: 'Prodi',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),

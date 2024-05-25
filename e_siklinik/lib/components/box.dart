@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttericon/entypo_icons.dart';
 
 class Box extends StatelessWidget {
   final String bgimage;
@@ -172,7 +173,8 @@ class BoxPasien extends StatelessWidget {
     required this.nama,
     required this.nrp,
     required this.icon,
-    required this.prodi, required this.onTapPop,
+    required this.prodi,
+    required this.onTapPop,
   });
 
   @override
@@ -258,7 +260,12 @@ class BoxDokter extends StatelessWidget {
   final VoidCallback onTapPop;
   final String icon;
   final String nama;
-  const BoxDokter({super.key, required this.onTapBox, required this.icon, required this.nama, required this.onTapPop});
+  const BoxDokter(
+      {super.key,
+      required this.onTapBox,
+      required this.icon,
+      required this.nama,
+      required this.onTapPop});
 
   @override
   Widget build(BuildContext context) {
@@ -293,7 +300,8 @@ class BoxDokter extends StatelessWidget {
                       width: 50,
                       height: 50,
                       decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(15)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15)),
                           image: DecorationImage(
                               image: NetworkImage(icon), fit: BoxFit.fill),
                           color: const Color(0xFFDDEAFF)),
@@ -301,17 +309,20 @@ class BoxDokter extends StatelessWidget {
                     const SizedBox(
                       width: 15,
                     ),
-                    Text(nama, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 20),)
+                    Text(
+                      nama,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 20),
+                    )
                   ],
                 ),
                 IconButton(
-                      onPressed: onTapPop, 
-                      icon: const Icon(Icons.more_vert)),
+                    onPressed: onTapPop, icon: const Icon(Icons.more_vert)),
               ],
             ),
           ),
-        ),  
-         const SizedBox(
+        ),
+        const SizedBox(
           height: 15,
         )
       ],
@@ -323,7 +334,11 @@ class BoxRiwayat extends StatelessWidget {
   final VoidCallback onTapBox;
   final String tanggal;
   final String nama;
-  const BoxRiwayat({super.key, required this.onTapBox, required this.tanggal, required this.nama});
+  const BoxRiwayat(
+      {super.key,
+      required this.onTapBox,
+      required this.tanggal,
+      required this.nama});
 
   @override
   Widget build(BuildContext context) {
@@ -351,10 +366,14 @@ class BoxRiwayat extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const CircleAvatar(
-            backgroundColor: Color(0xFFB7D1FF),
-            radius: 25,
-            child: Icon(Icons.person_outline, color: Color(0xFF234DF0),size: 40,),
-          ),
+                  backgroundColor: Color(0xFFB7D1FF),
+                  radius: 25,
+                  child: Icon(
+                    Icons.person_outline,
+                    color: Color(0xFF234DF0),
+                    size: 40,
+                  ),
+                ),
                 const SizedBox(
                   width: 15,
                 ),
@@ -362,16 +381,23 @@ class BoxRiwayat extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(nama, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 20),),
-                    Text("Tanggal : $tanggal", style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 15),)
-
+                    Text(
+                      nama,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 20),
+                    ),
+                    Text(
+                      "Tanggal : $tanggal",
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w400, fontSize: 15),
+                    )
                   ],
                 )
               ],
             ),
           ),
-        ),  
-         const SizedBox(
+        ),
+        const SizedBox(
           height: 15,
         )
       ],
@@ -379,11 +405,83 @@ class BoxRiwayat extends StatelessWidget {
   }
 }
 
-class BoxObat extends StatelessWidget {
-  const BoxObat({super.key});
+class BoxJadwal extends StatelessWidget {
+  final String dokter;
+  final String jadwal;
+  final VoidCallback onTapPop;
+
+  const BoxJadwal(
+      {super.key,
+      required this.dokter,
+      required this.jadwal,
+      required this.onTapPop});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.all(15),
+          width: double.infinity,
+          height: 100,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.all(Radius.circular(15)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                offset: const Offset(-1, 2),
+                blurRadius: 3,
+                spreadRadius: 0,
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const CircleAvatar(
+                    backgroundColor: Color(0xFFB7D1FF),
+                    radius: 20,
+                    child: Icon(
+                      Entypo.back_in_time,
+                      color: Color(0xFF234DF0),
+                      size: 25,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        jadwal,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 17),
+                      ),
+                      Text(
+                        dokter,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w400, fontSize: 15),
+                      )
+                    ],
+                  )
+                ],
+              ),
+              IconButton(
+                  onPressed: onTapPop, icon: const Icon(Icons.more_vert)),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 15,
+        )
+      ],
+    );
   }
 }

@@ -87,6 +87,8 @@ Route::get('/detail-resep', [ObatController::class, 'indexDetailResepObat']);
 
 // Checkup Result
 Route::get('/checkup-result', [CheckUpController::class, 'index']);
+Route::get('/riwayat-pasien/{id}', [CheckUpController::class, 'riwayatPasien']);
+Route::get('/riwayat-dokter/{id}', [CheckUpController::class, 'riwayatDokter']);
 Route::get('/checkup-result/show/{id}', [CheckUpController::class, 'show']);
 Route::get('/checkup-assesmen', [CheckUpController::class, 'indexAssesmens']);
 Route::get('/checkup-assesmen/show/{id}', [CheckUpController::class, 'showAssesmen']);
