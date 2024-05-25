@@ -15,19 +15,19 @@ class EditDokter extends StatefulWidget {
 class _EditDokterState extends State<EditDokter> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _namaController;
-  late TextEditingController _genderController;
   late TextEditingController _tanggalLahirController;
   late TextEditingController _alamatController;
   late TextEditingController _nomorHpController;
   final TextEditingController imageController = TextEditingController();
-
+  String? selectedGender;
   File? _imageFile;
+  final List<String> genders = ["Laki-laki", "Perempuan"];
 
   @override
   void initState() {
     super.initState();
     _namaController = TextEditingController(text: widget.dokter['nama']);
-    _genderController = TextEditingController(text: widget.dokter['gender']);
+    selectedGender = widget.dokter['gender'];
     _tanggalLahirController =
         TextEditingController(text: widget.dokter['tanggal_lahir']);
     _alamatController = TextEditingController(text: widget.dokter['alamat']);
@@ -38,7 +38,6 @@ class _EditDokterState extends State<EditDokter> {
   @override
   void dispose() {
     _namaController.dispose();
-    _genderController.dispose();
     _tanggalLahirController.dispose();
     _alamatController.dispose();
     _nomorHpController.dispose();
@@ -52,7 +51,7 @@ class _EditDokterState extends State<EditDokter> {
 
     // Menambahkan data yang akan diperbarui
     request.fields['nama'] = _namaController.text;
-    request.fields['gender'] = _genderController.text;
+    request.fields['gender'] = selectedGender ?? '';
     request.fields['tanggal_lahir'] = _tanggalLahirController.text;
     request.fields['alamat'] = _alamatController.text;
     request.fields['nomor_hp'] = _nomorHpController.text;
@@ -179,18 +178,30 @@ class _EditDokterState extends State<EditDokter> {
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(15)),
                                       color: Color(0xFFEFF0F3)),
-                                  child: TextFormField(
-                                    controller: _genderController,
-                                    decoration: const InputDecoration(
-                                        hintText: "Gender",
-                                        border: InputBorder.none),
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Jenis kelamin tidak boleh kosong';
-                                      }
-                                      return null;
-                                    },
-                                  ),
+                                  child: DropdownButtonFormField<String>(
+              value: selectedGender,
+              decoration: const InputDecoration(
+                hintText: "Gender",
+                border: InputBorder.none,
+              ),
+              items: genders.map((String gender) {
+                return DropdownMenuItem<String>(
+                  value: gender,
+                  child: Text(gender),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedGender = newValue;
+                });
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Jenis kelamin tidak boleh kosong';
+                }
+                return null;
+              },
+            ),
                                 ),
                               ],
                             )),
@@ -365,7 +376,7 @@ class _EditDokterState extends State<EditDokter> {
                           child: const Padding(
                             padding: EdgeInsets.symmetric(vertical: 12.0),
                             child: Text(
-                              'Submit',
+                              'Update',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xFFFCFCFD)),

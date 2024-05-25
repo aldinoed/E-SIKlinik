@@ -1,15 +1,47 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class RiwayatCheckup extends StatefulWidget {
-  const RiwayatCheckup({super.key});
+  final int checkupId;
+  const RiwayatCheckup({super.key, required this.checkupId});
 
   @override
   State<RiwayatCheckup> createState() => _RiwayatCheckupState();
 }
 
 class _RiwayatCheckupState extends State<RiwayatCheckup> {
+  Map<String, dynamic>? checkupDetail;
+  @override
+  void initState() {
+    super.initState();
+    _getCheckupDetail();
+  }
+
+  Future<void> _getCheckupDetail() async {
+    try {
+      final response = await http.get(
+        Uri.parse("http://10.0.2.2:8000/api/checkup-result/show/${widget.checkupId}"),
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data != null && data['checkup'] != null) {
+          setState(() {
+            checkupDetail = data['checkup'];
+          });
+        } else {
+          print("No data received from API");
+        }
+      } else {
+        print("Failed to load riwayat checkup");
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +61,8 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
           style: TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
-      body: SingleChildScrollView(
+      body: checkupDetail != null
+      ? SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         child: Column(
           children: [
@@ -49,18 +82,18 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
                   ),
                 ],
               ),
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Tanggal Check Up",
                     style: TextStyle(fontWeight: FontWeight.w600),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
-                  Text("11/11/2023",
-                      style: TextStyle(
+                  Text("${checkupDetail?['created_at']}",
+                      style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         color: Color(0xFF62636C),
                       ))
@@ -96,7 +129,7 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
                   const SizedBox(
                     height: 10,
                   ),
-                  setInfoPasien("NRP", "3122500048"),
+                  setInfoPasien("NRP", "${checkupDetail?['check_up_resul_to_assesmen']['assesmen_to_antrian']['antrian_to_pasien'][0]['nrp']}"),
                   setInfoPasien("Nama", "Andru Falah Arifin"),
                   setInfoPasien("Program Studi", "D3 Teknik Informatika"),
                   setInfoPasien("Gender", "Laki-laki"),
@@ -231,7 +264,8 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
             )
           ],
         ),
-      ),
+      )
+      : const Center(child: CircularProgressIndicator())
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:e_siklinik/components/box.dart';
-import 'package:e_siklinik/pages/hasil.dart';
+import 'package:e_siklinik/pages/Checkup/riwayat_checkup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -31,7 +31,6 @@ class _SearchState extends State<Search> {
           setState(() {
             checkupList = data['checkup'];
           });
-          print(checkupList);
         } else {
           print("No data received from API");
         }
@@ -141,9 +140,10 @@ class _SearchState extends State<Search> {
             itemCount: checkupList.length,
             itemBuilder: (BuildContext context, int index) {
               final checkup = checkupList[index];
+              final checkupId =  checkup['id'];
               return BoxSearchPage(
                 onTapBox: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> const Hasil()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> RiwayatCheckup(checkupId: checkupId)));
                 },
                 nama: checkup['check_up_resul_to_assesmen']['assesmen_to_antrian']
                     ['antrian_to_pasien']['nama'],

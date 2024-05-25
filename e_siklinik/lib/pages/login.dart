@@ -109,6 +109,7 @@ class LoginPage extends StatelessWidget {
                                                   child: TextFormField(
                                                     decoration: const InputDecoration(
                                                       border: InputBorder.none,
+                                                      hintText: "Username"
                                                     ),
                                                   ),
                                                 ),
@@ -131,6 +132,7 @@ class LoginPage extends StatelessWidget {
                                                     obscureText: true,
                                                     decoration: const InputDecoration(
                                                       border: InputBorder.none,
+                                                      hintText: "Password"
                                                     ),
                                                   ),
                                                 ),

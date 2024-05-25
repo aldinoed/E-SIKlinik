@@ -25,37 +25,19 @@ class _AddDokterState extends State<AddDokter> {
 
   List<dynamic> dokterList = [];
   File? _imageFile;
+  String? selectedGender;
+  final List<String> genders = ["Laki-laki", "Perempuan"];
 
   @override
   void initState() {
     super.initState();
   }
 
-  // Future<void> _getAllProdi() async {
-  //   try {
-  //     final response = await http.get(Uri.parse(apiGetAllJadwalDokter));
-  //     if (response.statusCode == 200) {
-  //       final data = json.decode(response.body);
-  //       if (data != null && data['jadwal_dokter'] != null) {
-  //         setState(() {
-  //           dokterList = data['jadwal_dokter'];
-  //         });
-  //       } else {
-  //         print("No data received from API");
-  //       }
-  //     } else {
-  //       print("Failed to load prodi");
-  //     }
-  //   } catch (error) {
-  //     print('Error : $error');
-  //   }
-  // }
-
   Future<void> addDokter(BuildContext context) async {
     try {
       var request = http.MultipartRequest('POST', Uri.parse(apiPostDokter));
       request.fields['nama'] = namaController.text;
-      request.fields['gender'] = genderController.text;
+      request.fields['gender'] = selectedGender ?? "";
       request.fields['tanggal_lahir'] = tanggalLahirController.text;
       request.fields['alamat'] = alamatController.text;
       request.fields['nomor_hp'] = noHpController.text;
@@ -79,12 +61,14 @@ class _AddDokterState extends State<AddDokter> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Dokter berhasil ditambahkan')),
         );
-        namaController.clear();
-        genderController.clear();
-        tanggalLahirController.clear();
-        alamatController.clear();
-        noHpController.clear();
-        _imageFile = null;
+        // namaController.clear();
+        // selectedGender = null;
+        // tanggalLahirController.clear();
+        // alamatController.clear();
+        // noHpController.clear();
+        // _imageFile = null;
+        Navigator.pop(context, true);
+
       } else {
         print('Gagal menambahkan Dokter');
       }
@@ -100,7 +84,7 @@ class _AddDokterState extends State<AddDokter> {
         appBar: AppBar(
           leading: IconButton(
               onPressed: () {
-                Navigator.pop(context, true);
+                Navigator.pop(context);
               },
               icon: const Icon(Icons.arrow_back_ios)),
           backgroundColor: Colors.white,
@@ -177,11 +161,23 @@ class _AddDokterState extends State<AddDokter> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(15)),
                                         color: Color(0xFFEFF0F3)),
-                                    child: TextFormField(
-                                      controller: genderController,
+                                    child: DropdownButtonFormField<String>(
+                                      value: selectedGender,
                                       decoration: const InputDecoration(
-                                          hintText: "Gender",
-                                          border: InputBorder.none),
+                                        hintText: "Gender",
+                                        border: InputBorder.none,
+                                      ),
+                                      items: genders.map((String gender) {
+                                        return DropdownMenuItem<String>(
+                                          value: gender,
+                                          child: Text(gender),
+                                        );
+                                      }).toList(),
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          selectedGender = newValue;
+                                        });
+                                      },
                                     ),
                                   ),
                                 ],

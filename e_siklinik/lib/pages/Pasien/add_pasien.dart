@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:dropdown_search/dropdown_search.dart';
+import 'package:e_siklinik/components/dropdown_search.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -27,7 +27,8 @@ class _AddPasienState extends State<AddPasien> {
   final String apiGetAllProdi = "http://10.0.2.2:8000/api/prodi";
 
   List<dynamic> prodiList = [];
-
+  String? selectedGender;
+  final List<String> genders = ["Laki-laki", "Perempuan"];
   File? _imageFile;
 
   @override
@@ -61,7 +62,7 @@ class _AddPasienState extends State<AddPasien> {
       var request = http.MultipartRequest('POST', Uri.parse(apiPostPasien));
       request.fields['nama'] = namaController.text;
       request.fields['nrp'] = nrpController.text;
-      request.fields['gender'] = genderController.text;
+      request.fields['gender'] = selectedGender ?? "";
       request.fields['tanggal_lahir'] = tanggalLahirController.text;
       request.fields['alamat'] = alamatController.text;
       request.fields['nomor_hp'] = noHpController.text;
@@ -92,7 +93,7 @@ class _AddPasienState extends State<AddPasien> {
 
         namaController.clear();
         nrpController.clear();
-        genderController.clear();
+        selectedGender = null;
         tanggalLahirController.clear();
         alamatController.clear();
         noHpController.clear();
@@ -184,57 +185,26 @@ class _AddPasienState extends State<AddPasien> {
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                     color: Color(0xFFEFF0F3),
                   ),
-                  child: DropdownSearch<String>(
-                    popupProps: PopupProps.menu(
-                      showSearchBox: true,
-                      searchFieldProps: TextFieldProps(
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                          hintText: 'Cari Prodi',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: const BorderSide(color: Colors.grey),
-                          ),
-                        ),
-                      ),
-                      constraints: const BoxConstraints(
-                        maxHeight: 250,
-                        maxWidth: double.infinity,
-                      ),
-                      menuProps: const MenuProps(
-                        backgroundColor: Color(0xFFEFF0F3),
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(15),
-                              bottomRight: Radius.circular(15)),
-                        ),
-                      ),
-                    ),
+                  child: AutocompleteTextField(
+                    decoration: const InputDecoration(
+                        hintText: 'Prodi', border: InputBorder.none),
+                    validator: (val) {
+                      if (prodiList.contains(val)) {
+                        return null;
+                      } else {
+                        return 'Invalid Prodi';
+                      }
+                    },
                     items: prodiList
                         .map((prodi) => prodi['nama'] as String)
                         .toList(),
-                    onChanged: (value) {
+                    onItemSelect: (value) {
                       final selectedProdi = prodiList
                           .firstWhere((prodi) => prodi['nama'] == value);
                       setState(() {
                         prodiController.text = selectedProdi['id'].toString();
                       });
                     },
-                    dropdownDecoratorProps: DropDownDecoratorProps(
-                      dropdownSearchDecoration: InputDecoration(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 3),
-                        hintText: 'Prodi',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
-                    filterFn: (prodi, filter) =>
-                        prodi.toLowerCase().contains(filter.toLowerCase()),
                   ),
                 ),
                 const SizedBox(
@@ -281,11 +251,23 @@ class _AddPasienState extends State<AddPasien> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(15)),
                                   color: Color(0xFFEFF0F3)),
-                              child: TextFormField(
-                                controller: genderController,
+                              child: DropdownButtonFormField<String>(
+                                value: selectedGender,
                                 decoration: const InputDecoration(
-                                    hintText: "Gender",
-                                    border: InputBorder.none),
+                                  hintText: "Gender",
+                                  border: InputBorder.none,
+                                ),
+                                items: genders.map((String gender) {
+                                  return DropdownMenuItem<String>(
+                                    value: gender,
+                                    child: Text(gender),
+                                  );
+                                }).toList(),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    selectedGender = newValue;
+                                  });
+                                },
                               ),
                             ),
                           ],
