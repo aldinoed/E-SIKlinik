@@ -22,7 +22,7 @@ class _ShowDokterState extends State<ShowDokter> {
   Future<void> _getDokterDetail() async {
     try {
       final response = await http.get(
-        Uri.parse("http://10.0.2.2:8000/api/dokter/show/${widget.dokterId}"),
+        Uri.parse("http://192.168.43.246:8080/api/dokter/show/${widget.dokterId}"),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -54,7 +54,7 @@ class _ShowDokterState extends State<ShowDokter> {
                 children: [
                   CircleAvatar(
                     backgroundImage: NetworkImage(
-                      'http://10.0.2.2:8000/storage/' + dokterDetail!['image'],
+                      'http://192.168.43.246:8080/storage/' + dokterDetail!['image'],
                     ),
                   ),
                   Text('Nama: ${dokterDetail!['nama']}'),

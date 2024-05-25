@@ -16,7 +16,7 @@ class DataPasien extends StatefulWidget {
 }
 
 class _DataPasienState extends State<DataPasien> {
-  final String apiGetAllPasien = "http://10.0.2.2:8000/api/pasien";
+  final String apiGetAllPasien = "http://192.168.43.246:8080/api/pasien";
   List<dynamic> pasienList = [];
   List<dynamic> filteredPasienList = [];
 
@@ -162,7 +162,7 @@ class _DataPasienState extends State<DataPasien> {
                                     : const Text("G ada prodi"),
                                 // icon: setIcon(Icons.person_outline,
                                 //     const Color(0xFF234DF0))
-                                 icon: 'http://10.0.2.2:8000/storage/' + pasien['image'], 
+                                 icon: 'http://192.168.43.246:8080/storage/' + pasien['image'],
                                  onTapPop: () {
                                   showModalBottomSheet(
                                 isScrollControlled: true,

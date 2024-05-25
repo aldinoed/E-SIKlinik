@@ -1,10 +1,27 @@
+import 'package:e_siklinik/auth/auth.dart';
 import 'package:e_siklinik/control.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  bool wantToSignIn = false;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  void saveCookie(String token, String name, int isAdmin) async {
+    SharedPreferences cookie = await SharedPreferences.getInstance();
+    cookie.setString('token', token);
+    cookie.setString('name', name);
+    cookie.setInt('isAdmin', isAdmin);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,17 +74,23 @@ class LoginPage extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
+                          setState(() {
+                            wantToSignIn = true;
+                          });
+
                           showModalBottomSheet(
                             context: context,
                             isScrollControlled: true,
                             builder: (BuildContext context) {
                               return DraggableScrollableSheet(
                                 expand: false,
-                                builder: (BuildContext context, ScrollController scrollController) {
+                                builder: (BuildContext context,
+                                    ScrollController scrollController) {
                                   return SingleChildScrollView(
                                     controller: scrollController,
                                     child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 15),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
@@ -87,29 +110,42 @@ class LoginPage extends StatelessWidget {
                                             ),
                                           ),
                                           Container(
-                                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                                            margin: const EdgeInsets.only(top: 50),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 16),
+                                            margin:
+                                                const EdgeInsets.only(top: 50),
                                             child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 const Text(
-                                                  "Username",
+                                                  "Email",
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w700,
                                                   ),
                                                 ),
                                                 Container(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 16),
                                                   height: 50,
                                                   width: double.infinity,
-                                                  decoration: const BoxDecoration(
-                                                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                15)),
                                                     color: Color(0xFFEBF2FF),
                                                   ),
                                                   child: TextFormField(
-                                                    decoration: const InputDecoration(
+                                                    controller: emailController,
+                                                    decoration:
+                                                        const InputDecoration(
                                                       border: InputBorder.none,
                                                     ),
+                                                    keyboardType: TextInputType
+                                                        .emailAddress,
                                                   ),
                                                 ),
                                                 const SizedBox(height: 20),
@@ -120,16 +156,25 @@ class LoginPage extends StatelessWidget {
                                                   ),
                                                 ),
                                                 Container(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 16),
                                                   height: 50,
                                                   width: double.infinity,
-                                                  decoration: const BoxDecoration(
-                                                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                15)),
                                                     color: Color(0xFFEBF2FF),
                                                   ),
                                                   child: TextFormField(
+                                                    controller:
+                                                        passwordController,
                                                     obscureText: true,
-                                                    decoration: const InputDecoration(
+                                                    decoration:
+                                                        const InputDecoration(
                                                       border: InputBorder.none,
                                                     ),
                                                   ),
@@ -138,15 +183,59 @@ class LoginPage extends StatelessWidget {
                                             ),
                                           ),
                                           GestureDetector(
-                                            onTap: (){
-                                              Navigator.push(context, MaterialPageRoute(builder: (context) => const ControlPage()));
+                                            onTap: () async {
+                                              dynamic response =
+                                                  await Auth.postLogin(
+                                                      email:
+                                                          emailController.text,
+                                                      password:
+                                                          passwordController
+                                                              .text);
+                                              if (response.status == 200) {
+                                                saveCookie(
+                                                    response.token,
+                                                    response.name,
+                                                    response.isAdmin);
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  const SnackBar(
+                                                      backgroundColor:
+                                                          Colors.green,
+                                                      content: Text(
+                                                        'Berhasil login!',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      )),
+                                                );
+                                                Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const ControlPage()));
+                                              } else {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  const SnackBar(
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      content: Text(
+                                                        'Email atau password salah!',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      )),
+                                                );
+                                              }
                                             },
                                             child: Container(
-                                              margin: const EdgeInsets.only(top: 30, left: 16, right: 16),
+                                              margin: const EdgeInsets.only(
+                                                  top: 30, left: 16, right: 16),
                                               width: double.infinity,
                                               height: 50,
                                               decoration: const BoxDecoration(
-                                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20)),
                                                 color: Color(0xFF234DF0),
                                               ),
                                               child: const Center(
