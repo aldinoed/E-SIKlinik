@@ -6,6 +6,7 @@ use App\Models\Dokter;
 use App\Models\JadwalDokter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 use Exception;
 
@@ -148,6 +149,19 @@ class DokterController extends Controller
             $jadwal_dokter = JadwalDokter::with('jadwalToDokter')->get();
 
             return response()->json(['message' => 'Success tampil jadwal dokter', 'jadwal_dokter' => $jadwal_dokter]);
+      }
+      public function jadwalToday(String $day)
+      {
+            try {
+                  $jadwal_dokter = DB::table('jadwal_dokters')->where('hari', $day)->get();
+                  if (sizeof($jadwal_dokter) > 0) {
+                        return response()->json(['status' => 200, 'message' => 'Success tampil jadwal dokter', 'jadwal_dokter' => $jadwal_dokter]);
+                  } else {
+                        return response()->json(['status' => 200, 'message' => 'Success tampil jadwal dokter', 'jadwal_dokter' => []]);
+                  }
+            } catch (Exception $exception) {
+                  return response()->json(['status' => 500, 'message' => 'Error: ' . $exception]);
+            }
       }
 
       public function updateJadwal(int $id, Request $request)

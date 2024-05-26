@@ -69,6 +69,7 @@ Route::delete('/dokter/delete/{id}', [DokterController::class, 'destroy'])->name
 
 //JADWAL DOKTER
 Route::get('/jadwal_dokter', [DokterController::class, 'indexJadwal'])->name('jadwal_dokter.index');
+Route::get('/jadwal_dokter/today/{day}', [DokterController::class, 'jadwalToday']);
 Route::post('/jadwal_dokter/create', [DokterController::class, 'storeJadwal'])->name('jadwal_dokter.store');
 Route::post('/jadwal_dokter/update/{id}', [DokterController::class, 'updateJadwal']);
 Route::delete('/jadwal_dokter/delete/{id}', [DokterController::class, 'deleteJadwal'])->name('jadwal_dokter.destroy');
