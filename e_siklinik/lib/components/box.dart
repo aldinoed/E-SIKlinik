@@ -22,6 +22,7 @@ class Box extends StatelessWidget {
         GestureDetector(
           onTap: onTapBox,
           child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 4),
             padding: const EdgeInsets.all(15),
             width: double.infinity,
             height: 100,
@@ -104,7 +105,7 @@ class BoxSearchPage extends StatelessWidget {
         GestureDetector(
           onTap: onTapBox,
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16),
+            margin: const EdgeInsets.symmetric(horizontal: 8),
             padding: const EdgeInsets.all(15),
             width: double.infinity,
             height: 100,
@@ -347,6 +348,7 @@ class BoxRiwayat extends StatelessWidget {
         GestureDetector(
           onTap: onTapBox,
           child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 8),
             padding: const EdgeInsets.all(15),
             width: double.infinity,
             height: 100,

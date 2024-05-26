@@ -1,8 +1,6 @@
 import 'package:e_siklinik/components/box.dart';
-import 'package:e_siklinik/pages/Antrian/antrian.dart';
-import 'package:e_siklinik/testing/antrian/assesmentList.dart';
+import 'package:e_siklinik/pages/Assessment/assessment.dart';
 import 'package:e_siklinik/testing/antrian/listAntrian.dart';
-import 'package:e_siklinik/testing/checkup/addCheckup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -40,28 +38,19 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.symmetric(vertical: 20),
+                margin: const EdgeInsets.only(top: 20),
                 width: double.infinity,
                 height: 160,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Jadwal Antrian",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w600),
-                        ),
-                        TextButton(
-                            onPressed: () {},
-                            child: const Text(
-                              "Tampilkan Semua",
-                              style: TextStyle(color: Colors.grey),
-                            ))
-                      ],
+                    const Text(
+                      "Jadwal Dokter",
+                      style: TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.w600),
                     ),
                     Container(
+                      margin: EdgeInsets.symmetric(horizontal: 4),
                       padding: const EdgeInsets.all(15),
                       width: double.infinity,
                       height: 100,
@@ -78,20 +67,16 @@ class _DashboardState extends State<Dashboard> {
                             ),
                           ],
                           image: const DecorationImage(
-                              image: AssetImage('assets/images/Schedule.png'),
+                              image: AssetImage('assets/images/Schedule2.png'),
                               fit: BoxFit.fill)),
                       child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             "Andru Falah Arifin",
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.w600),
-                          ),
-                          Text(
-                            "3122500038",
-                            style: TextStyle(fontWeight: FontWeight.w600),
                           ),
                           Row(
                             children: [
@@ -115,6 +100,67 @@ class _DashboardState extends State<Dashboard> {
                   ],
                 ),
               ),
+              Container(
+                margin: const EdgeInsets.only(bottom: 20),
+                width: double.infinity,
+                height: 160,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Jadwal Antrian",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w600),
+                        ),
+                        TextButton(
+                            onPressed: () {},
+                            child: const Text(
+                              "Tampilkan Semua",
+                              style: TextStyle(color: Colors.grey),
+                            ))
+                      ],
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 4),
+                      padding: const EdgeInsets.all(15),
+                      width: double.infinity,
+                      height: 100,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              offset: const Offset(-1, 2),
+                              blurRadius: 3,
+                              spreadRadius: 0,
+                            ),
+                          ],
+                          image: const DecorationImage(
+                              image: AssetImage('assets/images/Schedule.png'),
+                              fit: BoxFit.fill)),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Andru Falah Arifin",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w600),
+                          ),
+                          Text(
+                            "3122500038",
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
               const Text(
                 "Utilities",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
@@ -131,7 +177,7 @@ class _DashboardState extends State<Dashboard> {
                       color: Color(0xFF234DF0),
                     ),
                     onTapBox: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const AssesmentList()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const AssesmentPage()));
                     },
                   ),
                   Box(

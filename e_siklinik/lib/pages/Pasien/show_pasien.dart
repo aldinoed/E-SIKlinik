@@ -1,5 +1,5 @@
 import 'package:e_siklinik/components/box.dart';
-import 'package:e_siklinik/pages/data.dart';
+import 'package:e_siklinik/pages/Checkup/riwayat_checkup.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -15,11 +15,13 @@ class _ShowPasienState extends State<ShowPasien> {
   Map<String, dynamic>? pasienDetail;
   bool isLoading = true;
   bool hasError = false;
+  List<dynamic>? riwayat;
 
   @override
   void initState() {
     super.initState();
     _getPasienDetail();
+    _getRiwayatCheckup();
   }
 
   Future<void> _getPasienDetail() async {
@@ -56,6 +58,29 @@ class _ShowPasienState extends State<ShowPasien> {
       });
       print('Error: $error');
     }
+  }
+
+  Future<void> _getRiwayatCheckup() async {
+    try {
+      final response = await http.get(Uri.parse(
+          "http://10.0.2.2:8000/api/riwayat-pasien/${widget.pasienId}"));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data != null && data['checkup'] != null) {
+          setState(() {
+            riwayat = data['checkup'];
+          });
+        }
+      } else {
+        print("Failed to load riwayat checkup");
+      }
+    } catch (error) {
+      print('Error : $error');
+    }
+  }
+
+  String extractDate(String dateTime) {
+    return dateTime.split('T')[0];
   }
 
   @override
@@ -112,94 +137,108 @@ class _ShowPasienState extends State<ShowPasien> {
                       ),
                     ];
                   },
-                  body: pasienDetail != null
+                  body: pasienDetail != null && riwayat != null
                       ? Padding(
-                          padding: EdgeInsets.all(24),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(16),
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 244, 244, 244),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(15)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      offset: const Offset(-1, 2),
-                                      blurRadius: 3,
-                                      spreadRadius: 0,
-                                    ),
-                                  ],
+                          padding: const EdgeInsets.all(24),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(16),
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: const Color.fromARGB(
+                                        255, 244, 244, 244),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(15)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        offset: const Offset(-1, 2),
+                                        blurRadius: 3,
+                                        spreadRadius: 0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 8),
+                                          width: double.infinity,
+                                          decoration: const BoxDecoration(
+                                              border: BorderDirectional(
+                                                  bottom: BorderSide(
+                                                      color: Colors.black))),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                '${pasienDetail!['nama']}',
+                                                style: const TextStyle(
+                                                    fontSize: 24,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                              Text(
+                                                  '${pasienDetail!['pasien_to_prodi']['nama']}'),
+                                              Text('${pasienDetail!['nrp']}')
+                                            ],
+                                          )),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      setInfoDokter('Gender',
+                                          '${pasienDetail!['gender']}'),
+                                      setInfoDokter('Tanggal Lahir',
+                                          '${pasienDetail!['tanggal_lahir']}'),
+                                      setInfoDokter('Alamat',
+                                          '${pasienDetail!['alamat']}'),
+                                      setInfoDokter('Nomor Hp',
+                                          '${pasienDetail!['nomor_hp']}'),
+                                      setInfoDokter('Nomor Wali',
+                                          '${pasienDetail!['nomor_wali']}'),
+                                    ],
+                                  ),
                                 ),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                        padding: EdgeInsets.only(bottom: 8),
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                            border: BorderDirectional(
-                                                bottom: BorderSide(
-                                                    color: Colors.black))),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              '${pasienDetail!['nama']}',
-                                              style: TextStyle(
-                                                  fontSize: 24,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                            Text(
-                                                '${pasienDetail!['pasien_to_prodi']['nama']}'),
-                                            Text('${pasienDetail!['nrp']}')
-                                          ],
-                                        )),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    setInfoDokter(
-                                        'Gender', '${pasienDetail!['gender']}'),
-                                    setInfoDokter('Tanggal Lahir',
-                                        '${pasienDetail!['tanggal_lahir']}'),
-                                    setInfoDokter(
-                                        'Alamat', '${pasienDetail!['alamat']}'),
-                                    setInfoDokter('Nomor Hp',
-                                        '${pasienDetail!['nomor_hp']}'),
-                                    setInfoDokter('Nomor Wali',
-                                        '${pasienDetail!['nomor_wali']}'),
-                                  ],
+                                const SizedBox(
+                                  height: 10,
                                 ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                " Check Up Terakhir",
-                                style: TextStyle(fontWeight: FontWeight.w600),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Flexible(
-                                child: ListView.builder(
-                                  itemCount: 9,
+                                const Text(
+                                  " Check Up Terakhir",
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: riwayat!.length,
                                   itemBuilder: (context, index) {
-                                    return BoxSearchPage(
-                                        onTapBox: () {},
-                                        nama: "Andru Falah Arifin",
-                                        nrp: "3122500048",
-                                        icon: setIcon(Icons.person_outline,
-                                            const Color(0xFF234DF0)),
-                                        prodi: Text("D3 IT"));
+                                    final checkup = riwayat![index];
+                                    final checkupId = checkup['id'];
+                                    return BoxRiwayat(
+                                      onTapBox: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    RiwayatCheckup(
+                                                        checkupId: checkupId)));
+                                      },
+                                      tanggal:
+                                          "${extractDate(checkup['created_at'])}",
+                                      nama:
+                                          '${checkup['check_up_resul_to_assesmen']['assesmen_to_dokter']['nama']}',
+                                    );
                                   },
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         )
                       : const Center(child: Text('No detail available')),

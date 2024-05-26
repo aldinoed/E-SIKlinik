@@ -27,9 +27,10 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        if (data != null && data['checkup'] != null) {
+        if (data != null && data['results'] != null) {
           setState(() {
-            checkupDetail = data['checkup'];
+            checkupDetail = data['results'];
+            print(checkupDetail);
           });
         } else {
           print("No data received from API");
@@ -92,7 +93,7 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
                   const SizedBox(
                     height: 5,
                   ),
-                  Text("${checkupDetail?['created_at']}",
+                  Text("${checkupDetail!['created_at']}",
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         color: Color(0xFF62636C),
@@ -129,15 +130,15 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
                   const SizedBox(
                     height: 10,
                   ),
-                  setInfoPasien("NRP", "${checkupDetail?['check_up_resul_to_assesmen']['assesmen_to_antrian']['antrian_to_pasien'][0]['nrp']}"),
-                  setInfoPasien("Nama", "Andru Falah Arifin"),
-                  setInfoPasien("Program Studi", "D3 Teknik Informatika"),
-                  setInfoPasien("Gender", "Laki-laki"),
-                  setInfoPasien("Tanggal Lahir", "26 Mei 2004"),
+                  setInfoPasien("NRP", "${checkupDetail!['pasien_nrp, pasien.nrp']}"),
+                  setInfoPasien("Nama", "${checkupDetail!['nama_pasien, pasien.id']}"),
+                  setInfoPasien("Program Studi", "${checkupDetail!['nama']}"),
+                  setInfoPasien("Gender", "${checkupDetail!['gender']}"),
+                  setInfoPasien("Tanggal Lahir", "${checkupDetail!['tanggal_lahir']}"),
                   setInfoPasien("Alamat",
-                      "Keputih Tegal Timur II, Sukolilo, Surabaya, Jawa Timur, Indonesia"),
-                  setInfoPasien("No Hp", "089671382734"),
-                  setInfoPasien("No Wali", "089671382734"),
+                      "${checkupDetail!['alamat']}"),
+                  setInfoPasien("No Hp", "${checkupDetail!['nomor_hp']}"),
+                  setInfoPasien("No Wali", "${checkupDetail!['nomor_wali']}"),
                 ],
               ),
             ),
@@ -160,7 +161,7 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
                   ),
                 ],
               ),
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -170,7 +171,7 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
                   SizedBox(
                     height: 5,
                   ),
-                  Text("Dr. Ian Ale Hansyah S.Ked.",
+                  Text("${checkupDetail!['nama_dokter, dokter.id']}",
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         color: Color(0xFF62636C),
@@ -207,8 +208,8 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
                   const SizedBox(
                     height: 5,
                   ),
-                  const Text(
-                    "Loremmmmmm",
+                  Text(
+                    "${checkupDetail!['hasil_diagnosa']}",
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         color: Color(0xFF62636C),

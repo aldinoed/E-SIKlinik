@@ -65,6 +65,7 @@ class _AddJadwalState extends State<AddJadwal> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Jadwal Dokter berhasil ditambahkan')),
         );
+        Navigator.pop(context, true);
       } else {
         final errorData = json.decode(await response.stream.bytesToString());
         print('Gagal menambahkan jadwal dokter: ${errorData['message']}');
@@ -99,7 +100,7 @@ class _AddJadwalState extends State<AddJadwal> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context, true);
+              Navigator.pop(context);
             },
             icon: const Icon(Icons.arrow_back_ios)),
         backgroundColor: Colors.white,

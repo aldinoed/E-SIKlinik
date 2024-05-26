@@ -1,4 +1,3 @@
-import 'package:e_siklinik/components/drawerscreen.dart';
 import 'package:e_siklinik/components/header.dart';
 import 'package:e_siklinik/pages/dashboard.dart';
 import 'package:e_siklinik/pages/data.dart';
@@ -27,10 +26,6 @@ class _ControlPageState extends State<ControlPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xFFF9F9FB),
-        endDrawer: const Drawer(
-          width: 220,
-          child: DrawerScreen(),
-        ),
         appBar: const Header(),
         body: _children[_selectedIndex],
         // backgroundColor: Colors.deepPurple[400],

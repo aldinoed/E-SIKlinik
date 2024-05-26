@@ -1,8 +1,4 @@
-import 'package:e_siklinik/pages/Checkup/checkup.dart';
-import 'package:e_siklinik/testing/antrian/addAssesment.dart';
 import 'package:e_siklinik/testing/checkup/addCheckup.dart';
-import 'package:e_siklinik/testing/pasien/editPasien.dart';
-import 'package:e_siklinik/testing/pasien/showPasien.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -89,7 +85,7 @@ class _AssesmentListState extends State<AssesmentList> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    AddCheckup(assesmentId: assesmentId),
+                                    AddCheckupResult(assesmentId: assesmentId),
                               ),
                             );
                           },

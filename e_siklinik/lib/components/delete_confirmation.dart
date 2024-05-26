@@ -50,6 +50,7 @@ void showDeleteConfirmationDialog(BuildContext context, VoidCallback onDelete) {
               const SizedBox(width: 15,),
               GestureDetector(
                 onTap: () {
+                  Navigator.pop(context);
                   onDelete();
                 },
                 child: Container(

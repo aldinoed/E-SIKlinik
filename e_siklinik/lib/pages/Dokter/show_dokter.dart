@@ -15,6 +15,8 @@ class ShowDokter extends StatefulWidget {
 
 class _ShowDokterState extends State<ShowDokter> {
   Map<String, dynamic>? dokterDetail;
+  List<dynamic>? allRiwayatDokter;
+  List<dynamic>? filteredRiwayatDokter;
   bool isLoading = true;
   bool hasError = false;
 
@@ -22,6 +24,7 @@ class _ShowDokterState extends State<ShowDokter> {
   void initState() {
     super.initState();
     _getDokterDetail();
+    _getRiwayatDokter();
   }
 
   Future<void> _getDokterDetail() async {
@@ -58,6 +61,47 @@ class _ShowDokterState extends State<ShowDokter> {
       });
       print('Error: $error');
     }
+  }
+
+  Future<void> _getRiwayatDokter() async {
+    try {
+      final response = await http.get(Uri.parse(
+          "http://10.0.2.2:8000/api/riwayat-dokter/${widget.dokterId}"));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data != null && data['checkup'] != null) {
+          setState(() {
+            allRiwayatDokter = data['checkup'];
+            filteredRiwayatDokter = allRiwayatDokter;
+          });
+        }
+      } else {
+        print("Failed to load riwayat checkup");
+      }
+    } catch (error) {
+      print('Error : $error');
+    }
+  }
+
+  void _filterRiwayatDokter(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        filteredRiwayatDokter = allRiwayatDokter;
+      });
+    } else {
+      setState(() {
+        filteredRiwayatDokter = allRiwayatDokter?.where((riwayat) {
+          final namaPasien = riwayat['check_up_resul_to_assesmen']
+                  ['assesmen_to_antrian']['antrian_to_pasien']['nama']
+              .toLowerCase();
+          return namaPasien.contains(query.toLowerCase());
+        }).toList();
+      });
+    }
+  }
+
+  String extractDate(String dateTime) {
+    return dateTime.split('T')[0];
   }
 
   @override
@@ -116,119 +160,131 @@ class _ShowDokterState extends State<ShowDokter> {
                   },
                   body: dokterDetail != null
                       ? Padding(
-                          padding: EdgeInsets.all(24),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(16),
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 244, 244, 244),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(15)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      offset: const Offset(-1, 2),
-                                      blurRadius: 3,
-                                      spreadRadius: 0,
-                                    ),
-                                  ],
+                          padding: const EdgeInsets.all(24),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(16),
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: const Color.fromARGB(
+                                        255, 244, 244, 244),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(15)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        offset: const Offset(-1, 2),
+                                        blurRadius: 3,
+                                        spreadRadius: 0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 8),
+                                          width: double.infinity,
+                                          decoration: const BoxDecoration(
+                                              border: BorderDirectional(
+                                                  bottom: BorderSide(
+                                                      color: Colors.black))),
+                                          child: Text(
+                                            '${dokterDetail!['nama']}',
+                                            style: const TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w600),
+                                          )),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      setInfoDokter('Gender',
+                                          '${dokterDetail!['gender']}'),
+                                      setInfoDokter('Tanggal Lahir',
+                                          '${dokterDetail!['tanggal_lahir']}'),
+                                      setInfoDokter('Alamat',
+                                          '${dokterDetail!['alamat']}'),
+                                      setInfoDokter('Nomor Hp',
+                                          '${dokterDetail!['nomor_hp']}'),
+                                    ],
+                                  ),
                                 ),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                        padding: EdgeInsets.only(bottom: 8),
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                            border: BorderDirectional(
-                                                bottom: BorderSide(
-                                                    color: Colors.black))),
-                                        child: Text(
-                                          '${dokterDetail!['nama']}',
-                                          style: TextStyle(
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w600),
-                                        )),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    setInfoDokter(
-                                        'Gender', '${dokterDetail!['gender']}'),
-                                    setInfoDokter('Tanggal Lahir',
-                                        '${dokterDetail!['tanggal_lahir']}'),
-                                    setInfoDokter(
-                                        'Alamat', '${dokterDetail!['alamat']}'),
-                                    setInfoDokter('Nomor Hp',
-                                        '${dokterDetail!['nomor_hp']}'),
-                                    // Text(
-                                    //     'Hari: ${dokterDetail!['dokter_to_jadwal'][0]['hari']}'),
-                                    // Text(
-                                    //     'Jam Mulai: ${dokterDetail!['dokter_to_jadwal'][0]['jadwal_mulai_tugas']}'),
-                                    // Text(
-                                    //     'Jam Selesai: ${dokterDetail!['dokter_to_jadwal'][0]['jadwal_selesai_tugas']}'),
-                                  ],
+                                const SizedBox(
+                                  height: 10,
                                 ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                " Pasien Terakhir",
-                                style: TextStyle(fontWeight: FontWeight.w600),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(top: 10),
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                width: double.infinity,
-                                height: 50,
-                                decoration: const BoxDecoration(
-                                    color: Color(0xFFEFF0F3),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(30))),
-                                child: Row(
-                                  children: [
-                                    Flexible(
-                                      child: TextFormField(
-                                        // onChanged: _filterDokterList,
-                                        maxLines: null,
-                                        decoration: const InputDecoration(
-                                          hintText: 'Search Here',
-                                          border: InputBorder.none,
+                                const Text(
+                                  " Pasien Terakhir",
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(top: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  width: double.infinity,
+                                  height: 50,
+                                  decoration: const BoxDecoration(
+                                      color: Color(0xFFEFF0F3),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(30))),
+                                  child: Row(
+                                    children: [
+                                      Flexible(
+                                        child: TextFormField(
+                                          onChanged: _filterRiwayatDokter,
+                                          maxLines: null,
+                                          decoration: const InputDecoration(
+                                            hintText: 'Search Here',
+                                            border: InputBorder.none,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    const Icon(Icons.search),
-                                  ],
+                                      const Icon(Icons.search),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Flexible(
-                                child: ListView.builder(
-                                  itemCount: 9,
-                                  itemBuilder: (context, index) {
-                                    return BoxSearchPage(
-                                        onTapBox: () {
-                                          // Navigator.push(
-                                          //     context,
-                                          //     MaterialPageRoute(
-                                          //         builder: (context) =>
-                                          //             RiwayatCheckup()));
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                filteredRiwayatDokter != null
+                                    ? ListView.builder(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount:
+                                            filteredRiwayatDokter!.length,
+                                        itemBuilder: (context, index) {
+                                          final riwayat =
+                                              filteredRiwayatDokter![index];
+                                          final checkupId = riwayat['id'];
+                                          return BoxSearchPage(
+                                              onTapBox: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            RiwayatCheckup(
+                                                                checkupId:
+                                                                    checkupId)));
+                                              },
+                                              nama:
+                                                  "${riwayat['check_up_resul_to_assesmen']['assesmen_to_antrian']['antrian_to_pasien']['nama']}",
+                                              nrp:
+                                                  "${riwayat['check_up_resul_to_assesmen']['assesmen_to_antrian']['antrian_to_pasien']['nrp']}",
+                                              icon: setIcon(
+                                                  Icons.person_outline,
+                                                  const Color(0xFF234DF0)),
+                                              prodi: Text(
+                                                  "Tanggal : ${extractDate(riwayat['created_at'])}"));
                                         },
-                                        nama: "Andru Falah Arifin",
-                                        nrp: "3122500048",
-                                        icon: setIcon(Icons.person_outline,
-                                            const Color(0xFF234DF0)),
-                                        prodi: Text("D3 IT"));
-                                  },
-                                ),
-                              ),
-                            ],
+                                      )
+                                    : const Center(
+                                        child: CircularProgressIndicator()),
+                              ],
+                            ),
                           ),
                         )
                       : const Center(child: Text('No detail available')),

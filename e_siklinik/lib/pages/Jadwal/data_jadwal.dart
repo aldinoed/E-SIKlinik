@@ -72,8 +72,25 @@ class _DataJadwalState extends State<DataJadwal> {
     });
   }
 
-  void _deleteItem() {
-    print('Item deleted');
+  void _deleteItem(int id) async {
+    Uri url = Uri.parse('http://10.0.2.2:8000/api/jadwal_dokter/delete/$id');
+    final response = await http.delete(url);
+
+    if(response.statusCode == 200){
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Berhasil hapus jadwal dokter!'),
+        ),
+      );
+      Navigator.pop(context);
+      _refreshData();
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Gagal hapus jadwal dokter!'),
+        ),
+      );
+    }
   }
 
   @override
@@ -179,13 +196,13 @@ class _DataJadwalState extends State<DataJadwal> {
                                     // );
                                     // if (result == true) {
                                     //   Navigator.pop(
-                                    //       context); // Menutup showModalBottomSheet
+                                    //       context);
                                     //   _refreshData();
                                     // }
                                   },
                                   onTapDelete: () {
                                     showDeleteConfirmationDialog(
-                                        context, _deleteItem);
+                                        context, ()=>_deleteItem(jadwal['id']));
                                   },
                                 ),
                               );

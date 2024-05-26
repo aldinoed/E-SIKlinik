@@ -142,9 +142,9 @@ class _LoginPageState extends State<LoginPage> {
                                                     controller: emailController,
                                                     decoration:
                                                         const InputDecoration(
-                                                      border: InputBorder.none,
-                                                      hintText: "Username"
-                                                    ),
+                                                            border: InputBorder
+                                                                .none,
+                                                            hintText: "Email"),
                                                     keyboardType: TextInputType
                                                         .emailAddress,
                                                   ),
@@ -176,9 +176,10 @@ class _LoginPageState extends State<LoginPage> {
                                                     obscureText: true,
                                                     decoration:
                                                         const InputDecoration(
-                                                      border: InputBorder.none,
-                                                      hintText: "Password"
-                                                    ),
+                                                            border: InputBorder
+                                                                .none,
+                                                            hintText:
+                                                                "Password"),
                                                   ),
                                                 ),
                                               ],
