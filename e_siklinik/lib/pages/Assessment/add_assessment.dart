@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 
+import 'assessment.dart';
+
 class AddAssessment extends StatefulWidget {
   final int antrianId;
   const AddAssessment({Key? key, required this.antrianId});
@@ -98,6 +100,10 @@ class _AddAssessmentState extends State<AddAssessment> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Assesment berhasil ditambahkan')),
         );
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const AssesmentPage()));
 
         // Clear input fields
         // dokterIdController.clear();
