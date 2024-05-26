@@ -47,6 +47,7 @@ dependencies:
   dropdown_search: ^5.0.6
   shared_preferences: ^2.2.3
   carousel_slider: ^4.2.1
+  rolling_bottom_bar: ^0.2.2
 
 dev_dependencies:
   flutter_test:

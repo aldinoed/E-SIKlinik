@@ -32,7 +32,7 @@ class Obat {
 }
 
 class _DataObatState extends State<DataObat> {
-  final String apiGetAllObat = "http://192.168.18.40:8080/api/obat";
+  final String apiGetAllObat = "http://10.0.2.2:8000/api/obat";
   List<dynamic> obatList = [];
 
   String query = '';

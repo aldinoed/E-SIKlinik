@@ -487,3 +487,59 @@ class BoxJadwal extends StatelessWidget {
     );
   }
 }
+
+class BoxAssesment extends StatelessWidget {
+  final String no;
+  final String pasien;
+  final String dokter;
+  final VoidCallback onTapBox;
+  const BoxAssesment({super.key, required this.no, required this.pasien, required this.dokter, required this.onTapBox});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: onTapBox,
+          child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 4),
+                      padding: const EdgeInsets.all(15),
+                      width: double.infinity,
+                      height: 100,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              offset: const Offset(-1, 2),
+                              blurRadius: 3,
+                              spreadRadius: 0,
+                            ),
+                          ],),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Nomor Antrean : $no",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w600),
+                          ),
+                          Text(
+                                "$pasien",
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                          Text(
+                                "$dokter",
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                          )
+                        ],
+                      ),
+                    ),
+        )
+      ],
+    );
+  }
+}

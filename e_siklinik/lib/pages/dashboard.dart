@@ -91,16 +91,18 @@ class _DashboardState extends State<Dashboard> {
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9FB),
       body: SafeArea(
+          maintainBottomViewPadding: true,
           child: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 8,
-              ),
-              Center(
+            padding:
+                const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 25),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Center(
                 child: Container(
                   width: 1000,
                   height: 150,
