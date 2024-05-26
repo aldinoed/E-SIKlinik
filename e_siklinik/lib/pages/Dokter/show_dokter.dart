@@ -66,7 +66,7 @@ class _ShowDokterState extends State<ShowDokter> {
   Future<void> _getRiwayatDokter() async {
     try {
       final response = await http.get(Uri.parse(
-          "http://10.0.2.2:8000/api/riwayat-dokter/${widget.dokterId}"));
+          "http://192.168.18.40:8080/api/riwayat-dokter/${widget.dokterId}"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data != null && data['checkup'] != null) {

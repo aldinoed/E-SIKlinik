@@ -1,9 +1,15 @@
+import 'dart:convert';
+
 import 'package:e_siklinik/components/box.dart';
 import 'package:e_siklinik/pages/Assessment/assessment.dart';
 import 'package:e_siklinik/pages/carousel.dart';
 import 'package:e_siklinik/testing/antrian/listAntrian.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+
+import 'Jadwal/jadwal_dokter_model.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -13,11 +19,76 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  late List<JadwalDokter> todayDoctor = [];
+  void _getJadwalToday() async{
+    DateTime today = DateTime.now();
+    String dayName = DateFormat('EEEE').format(today);
+    switch (dayName) {
+      case 'Monday':
+        setState(() {
+          dayName = 'Senin';
+        });
+        break;
+      case 'Tuesday':
+        setState(() {
+          dayName = 'Selasa';
+        });
+        break;
+      case 'Wednesday':
+        setState(() {
+          dayName = 'Rabu';
+        });
+        break;
+      case 'Thursday':
+        setState(() {
+          dayName = 'Kamis';
+        });
+        break;
+      case 'Friday':
+        setState(() {
+          dayName = 'Jum\'at';
+        });
+        break;
+      case 'Saturday':
+        setState(() {
+          dayName = 'Sabtu';
+        });
+        break;
+      case 'Sunday':
+        setState(() {
+          dayName = 'Minggu';
+        });
+        break;
+      default:
+        break;
+    }
+    
+    Uri url = Uri.parse('http://192.168.18.40:8080/api/jadwal_dokter/today/$dayName');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      var jsonData = json.decode(response.body);
+      List<dynamic> jadwalList = jsonData['jadwal_dokter'];
+      setState(() {
+        todayDoctor = jadwalList.map((json) => JadwalDokter.fromJson(json)).toList();
+      });
+      print(todayDoctor);
+    } else {
+      print('Failed to load data');
+    }
+
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getJadwalToday();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            backgroundColor: const Color(0xFFF9F9FB),
-
+      backgroundColor: const Color(0xFFF9F9FB),
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
@@ -28,7 +99,7 @@ class _DashboardState extends State<Dashboard> {
               const SizedBox(
                 height: 8,
               ),
-             Center(
+              Center(
                 child: Container(
                   width: 1000,
                   height: 150,
@@ -44,8 +115,8 @@ class _DashboardState extends State<Dashboard> {
                   children: [
                     const Text(
                       "Jadwal Dokter",
-                      style: TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.w600),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                     ),
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 4),
@@ -175,7 +246,10 @@ class _DashboardState extends State<Dashboard> {
                       color: Color(0xFF234DF0),
                     ),
                     onTapBox: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const AssesmentPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const AssesmentPage()));
                     },
                   ),
                   Box(
@@ -185,7 +259,10 @@ class _DashboardState extends State<Dashboard> {
                     icon: const Icon(Icons.people_alt,
                         size: 25, color: Color(0xFF234DF0)),
                     onTapBox: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> AntrianListPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AntrianListPage()));
                     },
                   ),
                 ],
