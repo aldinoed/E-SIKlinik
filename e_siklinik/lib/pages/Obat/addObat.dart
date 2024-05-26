@@ -1,4 +1,3 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_siklinik/pages/Obat/data_obat.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,15 +22,14 @@ class _AddObatNewState extends State<AddObatNew> {
   final TextEditingController stockController = TextEditingController();
   final TextEditingController hargaController = TextEditingController();
   final TextEditingController imageController = TextEditingController();
-  final String apiPostObat = "http://10.0.2.2:8000/api/obat/insert";
 
-  final String apiGetAllKategori =
-      "http://10.0.2.2:8000/api/kategori-obat";
+  final String apiPostObat = "http://192.168.18.40:8080/api/obat/insert";
+
+  final String apiGetAllKategori = "http://192.168.18.40:8080/api/kategori-obat";
 
   List<dynamic> kategoriList = [];
   String? _selectedKategori;
-  String? _doctors;
-  String? _kategoriObat;
+
   File? _imageFile;
 
   @override
@@ -107,47 +105,10 @@ class _AddObatNewState extends State<AddObatNew> {
     }
   }
 
-  bool _validateForm() {
-    if (namaObatController.text.isEmpty) {
-      _showSnackBar('Nama Obat tidak boleh kosong');
-      return false;
-    }
-    if (_kategoriObat == null || _kategoriObat!.isEmpty) {
-      _showSnackBar('Kategori Obat harus dipilih');
-      return false;
-    }
-    if (tanggalKadaluarsaController.text.isEmpty) {
-      _showSnackBar('Tanggal Kadaluarsa tidak boleh kosong');
-      return false;
-    }
-    if (stockController.text.isEmpty) {
-      _showSnackBar('Stok Obat tidak boleh kosong');
-      return false;
-    }
-    if (hargaController.text.isEmpty) {
-      _showSnackBar('Harga Obat tidak boleh kosong');
-      return false;
-    }
-    if (imageController.text.isEmpty) {
-      _showSnackBar('Gambar tidak boleh kosong');
-      return false;
-    }
-    return true;
-  }
-
-  // Function to show snackbar with a message
-  void _showSnackBar(String message) {
-    final snackBar = SnackBar(
-      content: Text(message),
-      backgroundColor: Colors.red,
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    Colors.red;
-  }
-
+  String? _doctors;
   String? _selectedDate;
 
-  List<String> _Categori = [
+  List _mydoctor = [
     "Clara",
     "John",
     "Rizal",
@@ -293,58 +254,70 @@ class _AddObatNewState extends State<AddObatNew> {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             10.0),
-                                                    color: const Color.fromARGB(
+                                                    color: Color.fromARGB(
                                                         200, 235, 242, 255),
                                                   ),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      DropdownSearch<String>(
-                                                        popupProps:
-                                                            PopupProps.dialog(
-                                                          showSearchBox: true,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child:
+                                                        DropdownButtonFormField<
+                                                            String>(
+                                                      isExpanded: true,
+                                                      icon: ImageIcon(AssetImage(
+                                                          "assets/images/Dropdown.png")),
+                                                      decoration:
+                                                          InputDecoration
+                                                              .collapsed(
+                                                                  hintText: ""),
+                                                      hint: Text(
+                                                        "Pilih Kategori Obat",
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              'Urbanist',
+                                                          fontSize: 16,
+                                                          color: Colors.black,
                                                         ),
-                                                        dropdownDecoratorProps:
-                                                            DropDownDecoratorProps(
-                                                          dropdownSearchDecoration:
-                                                              InputDecoration(
-                                                            hintText:
-                                                                "Pilih Kategori",
-                                                            hintStyle:
-                                                                TextStyle(
-                                                                    fontSize:
-                                                                        12),
-                                                            contentPadding:
-                                                                EdgeInsets
-                                                                    .symmetric(
-                                                              horizontal: 10,
-                                                            ),
-                                                            border: OutlineInputBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10.0),
-                                                                borderSide:
-                                                                    BorderSide
-                                                                        .none),
-                                                          ),
-                                                        ),
-                                                        items: _Categori,
-                                                        selectedItem: _doctors,
-                                                        onChanged: (value) {
-                                                          setState(() {
-                                                            _kategoriObat =
-                                                                value;
-                                                          });
-                                                        },
                                                       ),
-                                                    ],
+                                                      value: _selectedKategori,
+                                                      items: kategoriList.map<
+                                                              DropdownMenuItem<
+                                                                  String>>(
+                                                          (kategori) {
+                                                        return DropdownMenuItem<
+                                                            String>(
+                                                          child: Container(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            constraints:
+                                                                BoxConstraints(
+                                                                    minHeight:
+                                                                        48.0),
+                                                            child: Text(
+                                                              kategori[
+                                                                  'nama_kategori'],
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    'Urbanist',
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          value: kategori['id']
+                                                              .toString(),
+                                                        );
+                                                      }).toList(),
+                                                      onChanged: (value) {
+                                                        setState(() {
+                                                          _selectedKategori =
+                                                              value;
+                                                        });
+                                                      },
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
+                                            )
                                           ],
                                         ),
                                       ),
@@ -380,6 +353,7 @@ class _AddObatNewState extends State<AddObatNew> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Container(
+                                                      height: 40,
                                                       child: TextField(
                                                         controller:
                                                             tanggalKadaluarsaController,
@@ -657,10 +631,8 @@ class _AddObatNewState extends State<AddObatNew> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        if (_validateForm()) {
-                                          // Proceed with form submission
-                                          //addObat(context); // Panggil fungsi addObat saat tombol Submit ditekan
-                                        }
+                                        addObat(
+                                            context); // Panggil fungsi addObat saat tombol Submit ditekan
                                       },
                                       child: SizedBox(
                                         child: Card(

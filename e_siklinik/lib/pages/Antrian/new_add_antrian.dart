@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class CreateAntrianPage extends StatefulWidget {
-  const CreateAntrianPage({Key? key}) : super(key: key);
+class CreateNewAntrian extends StatefulWidget {
+  const CreateNewAntrian({Key? key}) : super(key: key);
 
   @override
-  State<CreateAntrianPage> createState() => _CreateAntrianPageState();
+  State<CreateNewAntrian> createState() => _CreateNewAntrianState();
 }
 
-class _CreateAntrianPageState extends State<CreateAntrianPage> {
+class _CreateNewAntrianState extends State<CreateNewAntrian> {
   final TextEditingController pasienIdController = TextEditingController();
   final TextEditingController noAntrianController = TextEditingController();
 

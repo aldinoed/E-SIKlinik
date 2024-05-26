@@ -92,7 +92,9 @@ class _AssesmentPageState extends State<AssesmentPage> {
                         width: double.infinity,
                         height: 100,
                         decoration: BoxDecoration(
-                          image: const DecorationImage(image: AssetImage('assets/images/Utilities1.png'), fit: BoxFit.fill),
+                          image: const DecorationImage(
+                              image: AssetImage('assets/images/Utilities1.png'),
+                              fit: BoxFit.fill),
                           color: Colors.white,
                           borderRadius:
                               const BorderRadius.all(Radius.circular(15)),
@@ -112,15 +114,18 @@ class _AssesmentPageState extends State<AssesmentPage> {
                             Text(
                               "Nomor Antrean : ${assesment['no_antrian'] ?? ''}",
                               style: const TextStyle(
-                                  fontSize: 12,),
+                                fontSize: 12,
+                              ),
                             ),
                             Text(
                               "${assesment['nama_pasien'] ?? ''}",
-                              style: const TextStyle(fontSize: 17,fontWeight: FontWeight.w500),
+                              style: const TextStyle(
+                                  fontSize: 17, fontWeight: FontWeight.w500),
                             ),
                             Text(
                               "${assesment['nama_dokter'] ?? ''}",
-                              style: const TextStyle(fontSize: 17,fontWeight: FontWeight.w500),
+                              style: const TextStyle(
+                                  fontSize: 17, fontWeight: FontWeight.w500),
                             )
                           ],
                         ),

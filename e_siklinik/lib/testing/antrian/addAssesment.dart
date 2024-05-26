@@ -54,8 +54,7 @@ class _AddAssesmentPageState extends State<AddAssesmentPage> {
   Future<void> _getAntrianDetail() async {
     try {
       final response = await http.get(
-        Uri.parse(
-            "http://192.168.18.40:8080/api/antrian/show/${widget.antrianId}"),
+        Uri.parse("http://192.168.18.40:8080/api/antrian/show/${widget.antrianId}"),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);

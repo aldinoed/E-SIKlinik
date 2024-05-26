@@ -23,8 +23,8 @@ class _ShowPasienDetailState extends State<ShowPasienDetail> {
 
   Future<void> _getPasienDetail() async {
     try {
-      final response = await http.get(Uri.parse(
-          "http://192.168.18.40:8080/api/pasien/show/${widget.pasienId}"));
+      final response = await http.get(
+          Uri.parse("http://192.168.18.40:8080/api/pasien/show/${widget.pasienId}"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data != null && data['pasien'] != null) {

@@ -140,8 +140,6 @@ class DokterController extends Controller
             return response()->json(['message' => 'Success delete data dokter']);
       }
 
-
-
       // Jadwal Dokter
 
       public function indexJadwal()

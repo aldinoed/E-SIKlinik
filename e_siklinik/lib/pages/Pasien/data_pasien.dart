@@ -16,7 +16,7 @@ class DataPasien extends StatefulWidget {
 }
 
 class _DataPasienState extends State<DataPasien> {
-  final String apiGetAllPasien = "http://10.0.2.2:8000/api/pasien";
+  final String apiGetAllPasien = "http://192.168.18.40:8080/api/pasien";
   List<dynamic> pasienList = [];
   List<dynamic> filteredPasienList = [];
 
@@ -60,9 +60,26 @@ class _DataPasienState extends State<DataPasien> {
     });
   }
 
-  void _deleteItem() {
-    print('Item deleted');
-    Navigator.pop(context,true);
+  void _deleteItem(int id) async {
+
+    Uri url = Uri.parse('http://192.168.18.40:8080/api/pasien/delete/$id');
+    final response = await http.delete(url);
+    print('ini id ${response.body}');
+    if(response.statusCode == 200){
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Berhasil hapus data pasien!'),
+        ),
+      );
+      Navigator.pop(context);
+      _refreshData();
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Gagal hapus data pasien!'),
+        ),
+      );
+    }
   }
 
   @override
@@ -168,7 +185,7 @@ class _DataPasienState extends State<DataPasien> {
                                         fontWeight: FontWeight.w300),
                                   )
                                 : const Text("G ada prodi"),
-                            icon: 'http://10.0.2.2:8000/storage/' +
+                            icon: 'http://192.168.18.40:8080/storage/' +
                                 pasien['image'],
                             onTapPop: () {
                               showModalBottomSheet(
@@ -193,7 +210,7 @@ class _DataPasienState extends State<DataPasien> {
                                   },
                                   onTapDelete: () {
                                     showDeleteConfirmationDialog(
-                                        context, _deleteItem);
+                                        context, ()=>{_deleteItem(pasien['id'])});
                                   },
                                 ),
                               );

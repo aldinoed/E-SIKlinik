@@ -1,5 +1,3 @@
-import 'package:e_siklinik/components/box.dart';
-import 'package:e_siklinik/pages/Checkup/riwayat_checkup.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -7,6 +5,7 @@ import 'dart:convert';
 class ShowPasien extends StatefulWidget {
   final int pasienId;
   const ShowPasien({Key? key, required this.pasienId});
+
   @override
   State<ShowPasien> createState() => _ShowPasienState();
 }
@@ -27,9 +26,9 @@ class _ShowPasienState extends State<ShowPasien> {
   Future<void> _getPasienDetail() async {
     try {
       final response = await http.get(
-        Uri.parse("http://10.0.2.2:8000/api/pasien/show/${widget.pasienId}"),
+        Uri.parse("http://192.168.18.40:8080/api/pasien/show/${widget.pasienId}"),
         headers: {'Content-Type': 'application/json'},
-      ).timeout(const Duration(seconds: 30)); // Increased timeout duration
+      ).timeout(const Duration(seconds: 30));
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -69,6 +68,11 @@ class _ShowPasienState extends State<ShowPasien> {
         if (data != null && data['checkup'] != null) {
           setState(() {
             riwayat = data['checkup'];
+            if (riwayat == null) {
+              print('Data kosong akwoakwo');
+            } else {
+              print(riwayat);
+            }
           });
         }
       } else {
@@ -121,7 +125,7 @@ class _ShowPasienState extends State<ShowPasien> {
                           background: pasienDetail != null &&
                                   pasienDetail!['image'] != null
                               ? Image.network(
-                                  'http://10.0.2.2:8000/storage/' +
+                                  'http://192.168.18.40:8080/storage/' +
                                       pasienDetail!['image'],
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {
@@ -208,7 +212,7 @@ class _ShowPasienState extends State<ShowPasien> {
                                   height: 10,
                                 ),
                                 const Text(
-                                  " Check Up Terakhir",
+                                  "Riwayat Checkup",
                                   style: TextStyle(fontWeight: FontWeight.w600),
                                 ),
                                 const SizedBox(
@@ -220,20 +224,37 @@ class _ShowPasienState extends State<ShowPasien> {
                                   itemCount: riwayat!.length,
                                   itemBuilder: (context, index) {
                                     final checkup = riwayat![index];
-                                    final checkupId = checkup['id'];
-                                    return BoxRiwayat(
-                                      onTapBox: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    RiwayatCheckup(
-                                                        checkupId: checkupId)));
-                                      },
-                                      tanggal:
-                                          checkup['created_at'] != null ? extractDate(checkup['created_at']) : 'N/A',
-                                      nama:
-                                          '${checkup['check_up_resul_to_assesmen']['assesmen_to_dokter']['nama']}',
+                                    final nomorAntrian =
+                                        checkup['check_up_resul_to_assesmen']
+                                                    ['assesmen_to_antrian']
+                                                ?['no_antrian'] ??
+                                            '';
+                                    final namaDokter =
+                                        checkup['check_up_resul_to_assesmen']
+                                                    ['assesmen_to_dokter']
+                                                ?['nama'] ??
+                                            '';
+                                    return Card(
+                                      child: ListTile(
+                                        title: Text(
+                                          'Hasil Diagnosa: ${checkup['hasil_diagnosa']}',
+                                        ),
+                                        subtitle: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'No Antrian: $nomorAntrian',
+                                            ),
+                                            Text(
+                                              'Nama Dokter: $namaDokter',
+                                            ),
+                                            Text(
+                                              'Tanggal: ${extractDate(checkup['created_at'])}',
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     );
                                   },
                                 ),

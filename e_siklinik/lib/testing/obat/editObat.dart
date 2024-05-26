@@ -22,8 +22,7 @@ class _EditObatPageState extends State<EditObatPage> {
   String? _selectedKategori;
   final TextEditingController imageController = TextEditingController();
 
-  final String apiGetAllKategoriObat =
-      "http://192.168.18.40:8080/api/kategori-obat";
+  final String apiGetAllKategoriObat = "http://192.168.18.40:8080/api/kategori-obat";
   List<dynamic> kategoriObatList = [];
   File? _imageFile;
 

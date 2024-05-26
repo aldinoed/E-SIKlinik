@@ -54,8 +54,7 @@ class _ShowObatPageState extends State<ShowObatPage> {
                 children: [
                   CircleAvatar(
                     backgroundImage: NetworkImage(
-                      'http://192.168.18.40:8080/storage/' +
-                          obatDetail!['image'],
+                      'http://192.168.18.40:8080/storage/' + obatDetail!['image'],
                     ),
                   ),
                   Text('Nama Obat: ${obatDetail!['nama_obat']}'),

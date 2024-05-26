@@ -24,8 +24,8 @@ class JadwalDokter {
       jadwalMulaiTugas: json['jadwal_mulai_tugas'],
       jadwalSelesaiTugas: json['jadwal_selesai_tugas'],
       dokterId: json['dokter_id'],
-      createdAt: json['created_at'] ?? "",
-      updatedAt: json['updated_at'] ?? "",
+      createdAt: json['created_at'].toString(),
+      updatedAt: json['updated_at'].toString(),
     );
   }
 }

@@ -32,17 +32,14 @@ class AntrianController extends Controller
      */
     public function store(Request $request)
     {
-        $antrianNumberChecker = $this->nomorAntrianChecker();
+
 
         try {
-            if ($antrianNumberChecker === 0) {
-                return response()->json(['status' => 400, 'message' => 'Tidak bisa input tanggal kemarin!']);
-            }
             AntrianTable::create([
                 'pasien_id' => $request->pasien_id,
-                'no_antrian' => $antrianNumberChecker,
+                'no_antrian' => $request->no_antrian,
             ]);
-            return response()->json(["status" => 200, "messasge" => "Nomor antrian $antrianNumberChecker"]);
+            return response()->json(["status" => 200, "messasge" => "Nomor antrian "]);
         } catch (Exception $exception) {
             return response()->json(["status" => 500, "messasge" => "Error: " . $exception]);
         }

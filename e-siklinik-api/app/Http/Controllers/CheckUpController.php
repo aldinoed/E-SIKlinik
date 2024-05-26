@@ -55,12 +55,27 @@ class CheckUpController extends Controller
       {
 
             $checkup = CheckUpResult::with(
-                        'checkUpResulToAssesmen.assesmenToDokter',
-                        'checkUpResulToAssesmen.assesmenToAntrian.antrianToPasien.pasienToProdi',
-                        'checkUpResultToDetailResep.detailResepToObat'
-                  )->get();
+                  'checkUpResulToAssesmen.assesmenToDokter',
+                  'checkUpResulToAssesmen.assesmenToAntrian.antrianToPasien.pasienToProdi',
+                  'checkUpResultToDetailResep.detailResepToObat'
+            )->get();
             return response()->json(['status' => 200, 'checkup' => $checkup]);
       }
+
+      public function indexTerbaru()
+{
+    $checkup = CheckUpResult::with(
+                    'checkUpResulToAssesmen.assesmenToDokter',
+                    'checkUpResulToAssesmen.assesmenToAntrian.antrianToPasien.pasienToProdi',
+                    'checkUpResultToDetailResep.detailResepToObat'
+                )
+                ->orderBy('created_at', 'desc')
+                ->take(5)
+                ->get();
+
+    return response()->json(['status' => 200, 'checkup' => $checkup]);
+}
+
 
       public function riwayatPasien(int $pasienId)
       {
@@ -111,9 +126,9 @@ class CheckUpController extends Controller
                   ->join('antrian', 'checkup_assesmens.antrian_id', '=', 'antrian.id')
                   ->join('pasien', 'antrian.pasien_id', '=', 'pasien.id')
                   ->join('prodi', 'pasien.prodi_id', '=', 'prodi.id')
+                  ->leftJoin('check_up_results', 'checkup_assesmens.id', '=', 'check_up_results.assesmen_id')
+                  ->whereNull('check_up_results.id')
                   ->addSelect('checkup_assesmens.*', 'antrian.*', 'pasien.*', 'prodi.nama')
-
-
                   ->get();
             if ($response->count() == 0) {
                   return response()->json(['status' => 400, 'results' => 'Belum ada data']);

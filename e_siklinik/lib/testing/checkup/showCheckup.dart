@@ -21,8 +21,8 @@ class _ShowCheckupDetailState extends State<ShowCheckupDetail> {
 
   Future<void> _getCheckupDetail() async {
     try {
-      final response = await http.get(
-          Uri.parse("http://192.168.18.40:8080/api/checkup-result/show/${widget.checkupId}"));
+      final response = await http.get(Uri.parse(
+          "http://192.168.18.40:8080/api/checkup-result/show/${widget.checkupId}"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data != null && data['results'] != null) {
@@ -51,8 +51,10 @@ class _ShowCheckupDetailState extends State<ShowCheckupDetail> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text('No Assesmen: ${checkupDetail!['assesmen_id']}'),
-                  Text('Nama Dokter: ${checkupDetail!['nama_dokter, dokter.id']}'),
-                  Text('Nama Pasien: ${checkupDetail!['nama_pasien, pasien.id']}'),
+                  Text(
+                      'Nama Dokter: ${checkupDetail!['nama_dokter, dokter.id']}'),
+                  Text(
+                      'Nama Pasien: ${checkupDetail!['nama_pasien, pasien.id']}'),
                   Text('Hasil Diagnosa : ${checkupDetail!['hasil_diagnosa']}'),
                   Text('Antrian Id: ${checkupDetail!['antrian_id']}'),
                   Text('Prodi: ${checkupDetail!['nama']}'),
