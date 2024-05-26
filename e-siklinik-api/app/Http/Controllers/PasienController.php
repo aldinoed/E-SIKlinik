@@ -19,7 +19,6 @@ class PasienController extends Controller
     {
         $pasien = PasienTable::with('pasienToProdi')->where('is_disabled','=', false)->get();
 
-
         //return view ('pasien_index')->with('pasien', $pasien);
        return response()->json(['message' => 'Success tampil Pasien', 'pasien'=> $pasien]);
     }

@@ -62,6 +62,21 @@ class CheckUpController extends Controller
             return response()->json(['status' => 200, 'checkup' => $checkup]);
       }
 
+      public function indexTerbaru()
+{
+    $checkup = CheckUpResult::with(
+                    'checkUpResulToAssesmen.assesmenToDokter',
+                    'checkUpResulToAssesmen.assesmenToAntrian.antrianToPasien.pasienToProdi',
+                    'checkUpResultToDetailResep.detailResepToObat'
+                )
+                ->orderBy('created_at', 'desc')
+                ->take(5)
+                ->get();
+
+    return response()->json(['status' => 200, 'checkup' => $checkup]);
+}
+
+
       public function riwayatPasien(int $pasienId)
       {
             // Ambil data checkup berdasarkan pasien_id yang diberikan
