@@ -143,6 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                                                     decoration:
                                                         const InputDecoration(
                                                       border: InputBorder.none,
+                                                      hintText: "Username"
                                                     ),
                                                     keyboardType: TextInputType
                                                         .emailAddress,
@@ -176,6 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                                                     decoration:
                                                         const InputDecoration(
                                                       border: InputBorder.none,
+                                                      hintText: "Password"
                                                     ),
                                                   ),
                                                 ),

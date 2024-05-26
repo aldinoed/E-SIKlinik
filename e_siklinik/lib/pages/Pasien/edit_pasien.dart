@@ -1,3 +1,4 @@
+import 'package:e_siklinik/components/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -16,15 +17,17 @@ class EditPasien extends StatefulWidget {
 class _EditPasienState extends State<EditPasien> {
   final String apiGetAllProdi = "http://192.168.18.40:8080/api/prodi";
   List<dynamic> prodiList = [];
+  String? selectedGender;
+  final List<String> genders = ["Laki-laki", "Perempuan"];
 
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _namaController;
   late TextEditingController _nrpController;
-  late TextEditingController _genderController;
   late TextEditingController _tanggalLahirController;
   late TextEditingController _alamatController;
   late TextEditingController _nomorHpController;
   late TextEditingController _nomorWaliController;
+  late TextEditingController _prodiController;
   String? _selectedProdiId;
   final TextEditingController imageController = TextEditingController();
 
@@ -33,9 +36,10 @@ class _EditPasienState extends State<EditPasien> {
   @override
   void initState() {
     super.initState();
+    _prodiController = TextEditingController(text: widget.pasien['prodi']);
     _namaController = TextEditingController(text: widget.pasien['nama']);
     _nrpController = TextEditingController(text: widget.pasien['nrp']);
-    _genderController = TextEditingController(text: widget.pasien['gender']);
+    selectedGender = widget.pasien['gender'];
     _tanggalLahirController =
         TextEditingController(text: widget.pasien['tanggal_lahir']);
     _alamatController = TextEditingController(text: widget.pasien['alamat']);
@@ -49,9 +53,9 @@ class _EditPasienState extends State<EditPasien> {
 
   @override
   void dispose() {
+    _prodiController.dispose();
     _namaController.dispose();
     _nrpController.dispose();
-    _genderController.dispose();
     _tanggalLahirController.dispose();
     _alamatController.dispose();
     _nomorHpController.dispose();
@@ -67,7 +71,7 @@ class _EditPasienState extends State<EditPasien> {
     // Menambahkan data yang akan diperbarui
     request.fields['nama'] = _namaController.text;
     request.fields['nrp'] = _nrpController.text;
-    request.fields['gender'] = _genderController.text;
+    request.fields['gender'] = selectedGender ?? '';
     request.fields['tanggal_lahir'] = _tanggalLahirController.text;
     request.fields['alamat'] = _alamatController.text;
     request.fields['nomor_hp'] = _nomorHpController.text;
@@ -202,29 +206,59 @@ class _EditPasienState extends State<EditPasien> {
                       style:
                           TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
                     ),
-                    DropdownButtonFormField<String>(
-                      value: _selectedProdiId,
-                      decoration: const InputDecoration(
-                        labelText: 'Prodi',
+                    Container(
+                      height: 50,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 2),
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                          color: Color(0xFFEFF0F3)),
+                      child: AutocompleteTextField(
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Prodi tidak boleh kosong';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                            hintText:
+                                '${widget.pasien['pasien_to_prodi']['nama']}',
+                            border: InputBorder.none),
+                        items: prodiList
+                            .map((prodi) => prodi['nama'] as String)
+                            .toList(),
+                        onItemSelect: (value) {
+                          final selectedProdi = prodiList
+                              .firstWhere((prodi) => prodi['nama'] == value);
+                          setState(() {
+                            _selectedProdiId = selectedProdi['id'].toString();
+                          });
+                        },
                       ),
-                      items: prodiList.map((prodi) {
-                        return DropdownMenuItem<String>(
-                          value: prodi['id'].toString(),
-                          child: Text(prodi?['nama'] ?? ''),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedProdiId = value;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Prodi tidak boleh kosong';
-                        }
-                        return null;
-                      },
                     ),
+                    // DropdownButtonFormField<String>(
+                    //   value: _selectedProdiId,
+                    //   decoration: const InputDecoration(
+                    //     labelText: 'Prodi',
+                    //   ),
+                    //   items: prodiList.map((prodi) {
+                    //     return DropdownMenuItem<String>(
+                    //       value: prodi['id'].toString(),
+                    //       child: Text(prodi?['nama'] ?? ''),
+                    //     );
+                    //   }).toList(),
+                    //   onChanged: (value) {
+                    //     setState(() {
+                    //       _selectedProdiId = value;
+                    //     });
+                    //   },
+                    //   validator: (value) {
+                    //     if (value == null) {
+                    //       return 'Prodi tidak boleh kosong';
+                    //     }
+                    //     return null;
+                    //   },
+                    // ),
                     const SizedBox(
                       height: 10,
                     ),
@@ -277,13 +311,25 @@ class _EditPasienState extends State<EditPasien> {
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(15)),
                                       color: Color(0xFFEFF0F3)),
-                                  child: TextFormField(
-                                    controller: _genderController,
+                                  child: DropdownButtonFormField<String>(
+                                    value: selectedGender,
                                     decoration: const InputDecoration(
-                                        hintText: "Gender",
-                                        border: InputBorder.none),
+                                      hintText: "Gender",
+                                      border: InputBorder.none,
+                                    ),
+                                    items: genders.map((String gender) {
+                                      return DropdownMenuItem<String>(
+                                        value: gender,
+                                        child: Text(gender),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        selectedGender = newValue;
+                                      });
+                                    },
                                     validator: (value) {
-                                      if (value!.isEmpty) {
+                                      if (value == null || value.isEmpty) {
                                         return 'Jenis kelamin tidak boleh kosong';
                                       }
                                       return null;
@@ -491,7 +537,7 @@ class _EditPasienState extends State<EditPasien> {
                           child: const Padding(
                             padding: EdgeInsets.symmetric(vertical: 12.0),
                             child: Text(
-                              'Simpan Perubahan',
+                              'Update',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xFFFCFCFD)),

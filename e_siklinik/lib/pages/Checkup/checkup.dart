@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:dropdown_search/dropdown_search.dart';
+import 'package:e_siklinik/components/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -386,64 +386,21 @@ class _AddCheckupState extends State<AddCheckup> {
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(15)),
                                     color: Color(0xFFEFF0F3)),
-                                child: DropdownSearch<String>(
-                                  popupProps: PopupProps.menu(
-                                    showSearchBox: true,
-                                    searchFieldProps: TextFieldProps(
-                                      decoration: InputDecoration(
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                horizontal: 16, vertical: 8),
-                                        hintText: 'Cari Obat',
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          borderSide: const BorderSide(
-                                              color: Colors.grey),
-                                        ),
-                                      ),
-                                    ),
-                                    constraints: const BoxConstraints(
-                                      maxHeight: 250,
-                                      maxWidth: double.infinity,
-                                    ),
-                                    menuProps: const MenuProps(
-                                      backgroundColor: Color(0xFFEFF0F3),
-                                      elevation: 2,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(15),
-                                            bottomRight: Radius.circular(15)),
-                                      ),
-                                    ),
-                                  ),
+                                child: AutocompleteTextField(
+                                  decoration: const InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: "Nama Obat"),
                                   items: obatList
                                       .map(
                                           (obat) => obat['nama_obat'] as String)
                                       .toList(),
-                                  onChanged: (value) {
+                                  onItemSelect: (value) {
                                     final selectedObat = obatList.firstWhere(
                                         (obat) => obat['nama_obat'] == value);
                                     setState(() {
                                       selectedObatId = selectedObat['id'];
                                     });
                                   },
-                                  dropdownDecoratorProps:
-                                      DropDownDecoratorProps(
-                                    dropdownSearchDecoration: InputDecoration(
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              horizontal: 3),
-                                      hintText: 'Nama obat',
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                    ),
-                                  ),
-                                  filterFn: (obat, filter) => obat
-                                      .toLowerCase()
-                                      .contains(filter.toLowerCase()),
                                 )),
                           ),
                           const SizedBox(width: 5),
@@ -546,7 +503,7 @@ class _AddCheckupState extends State<AddCheckup> {
                       child: const Padding(
                         padding: EdgeInsets.symmetric(vertical: 12.0),
                         child: Text(
-                          'Simpan',
+                          'Submit',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Color(0xFFFCFCFD)),

@@ -214,11 +214,11 @@ class _ShowDokterState extends State<ShowDokter> {
                                   itemBuilder: (context, index) {
                                     return BoxSearchPage(
                                         onTapBox: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      RiwayatCheckup()));
+                                          // Navigator.push(
+                                          //     context,
+                                          //     MaterialPageRoute(
+                                          //         builder: (context) =>
+                                          //             RiwayatCheckup()));
                                         },
                                         nama: "Andru Falah Arifin",
                                         nrp: "3122500048",

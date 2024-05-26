@@ -27,31 +27,13 @@ class _AddDokterState extends State<AddDokter> {
 
   List<dynamic> dokterList = [];
   File? _imageFile;
+  String? selectedGender;
+  final List<String> genders = ["Laki-laki", "Perempuan"];
 
   @override
   void initState() {
     super.initState();
   }
-
-  // Future<void> _getAllProdi() async {
-  //   try {
-  //     final response = await http.get(Uri.parse(apiGetAllJadwalDokter));
-  //     if (response.statusCode == 200) {
-  //       final data = json.decode(response.body);
-  //       if (data != null && data['jadwal_dokter'] != null) {
-  //         setState(() {
-  //           dokterList = data['jadwal_dokter'];
-  //         });
-  //       } else {
-  //         print("No data received from API");
-  //       }
-  //     } else {
-  //       print("Failed to load prodi");
-  //     }
-  //   } catch (error) {
-  //     print('Error : $error');
-  //   }
-  // }
 
   Future<void> addDokter(BuildContext context) async {
     try {
@@ -102,7 +84,7 @@ class _AddDokterState extends State<AddDokter> {
         appBar: AppBar(
           leading: IconButton(
               onPressed: () {
-                Navigator.pop(context, true);
+                Navigator.pop(context);
               },
               icon: const Icon(Icons.arrow_back_ios)),
           backgroundColor: Colors.white,
@@ -173,10 +155,11 @@ class _AddDokterState extends State<AddDokter> {
                                   ),
                                   Container(
                                     height: 50,
-                                    padding:
-                                    const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 2),
                                     decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
                                       color: Color(0xFFEFF0F3),
                                     ),
                                     child: DropdownButtonFormField(
@@ -185,14 +168,16 @@ class _AddDokterState extends State<AddDokter> {
                                           genderController = value;
                                         });
                                       },
-                                      items: gender.map<DropdownMenuItem>((item) {
+                                      items:
+                                          gender.map<DropdownMenuItem>((item) {
                                         return DropdownMenuItem(
                                           value: item,
                                           child: Text(item),
                                         );
                                       }).toList(),
                                       decoration: const InputDecoration(
-                                          hintText: "Gender", border: InputBorder.none),
+                                          hintText: "Gender",
+                                          border: InputBorder.none),
                                     ),
                                   ),
                                 ],

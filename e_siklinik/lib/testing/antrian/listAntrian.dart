@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:e_siklinik/pages/Antrian/add_antrian.dart';
-import 'package:e_siklinik/pages/Antrian/add_assessment.dart';
+import 'package:e_siklinik/pages/Assessment/add_assessment.dart';
 import 'package:e_siklinik/testing/antrian/addAssesment.dart';
 import 'package:e_siklinik/testing/antrian/assesmentList.dart';
 import 'package:e_siklinik/testing/antrian/assesmentShow.dart';
