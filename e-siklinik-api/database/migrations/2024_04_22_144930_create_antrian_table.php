@@ -6,24 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
-        Schema::create('antrian', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('pasien_id')->constrained('pasien')->cascadeOnUpdate();
-            $table->integer('no_antrian');
-            $table->timestamps();
-        });
-    }
+      /**
+       * Run the migrations.
+       */
+      public function up(): void
+      {
+            Schema::create('antrian', function (Blueprint $table) {
+                  $table->id();
+                  $table->foreignId('pasien_id')->constrained('pasien')->cascadeOnUpdate()->cascadeOnDelete();
+                  $table->integer('no_antrian');
+                  $table->timestamps();
+            });
+      }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('antrian');
-    }
+      /**
+       * Reverse the migrations.
+       */
+      public function down(): void
+      {
+            Schema::dropIfExists('antrian');
+      }
 };
