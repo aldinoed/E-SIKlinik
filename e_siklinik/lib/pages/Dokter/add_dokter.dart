@@ -13,15 +13,17 @@ class AddDokter extends StatefulWidget {
 
 class _AddDokterState extends State<AddDokter> {
   final TextEditingController namaController = TextEditingController();
-  final TextEditingController genderController = TextEditingController();
+  final List<String> gender = ['Laki-Laki', 'Perempuan'];
+  String genderController = '';
   final TextEditingController alamatController = TextEditingController();
   final TextEditingController noHpController = TextEditingController();
   //final TextEditingController jadwalController = TextEditingController();
   final TextEditingController imageController = TextEditingController();
   final TextEditingController tanggalLahirController = TextEditingController();
 
-  final String apiPostDokter = "http://192.168.43.246:8080/api/dokter/create";
-  final String apiGetAllJadwalDokter = "http://192.168.43.246:8080/api/jadwal_dokter";
+  final String apiPostDokter = "http://192.168.18.40:8080/api/dokter/create";
+  final String apiGetAllJadwalDokter =
+      "http://192.168.18.40:8080/api/jadwal_dokter";
 
   List<dynamic> dokterList = [];
   File? _imageFile;
@@ -55,7 +57,7 @@ class _AddDokterState extends State<AddDokter> {
     try {
       var request = http.MultipartRequest('POST', Uri.parse(apiPostDokter));
       request.fields['nama'] = namaController.text;
-      request.fields['gender'] = genderController.text;
+      request.fields['gender'] = genderController;
       request.fields['tanggal_lahir'] = tanggalLahirController.text;
       request.fields['alamat'] = alamatController.text;
       request.fields['nomor_hp'] = noHpController.text;
@@ -80,7 +82,7 @@ class _AddDokterState extends State<AddDokter> {
           const SnackBar(content: Text('Dokter berhasil ditambahkan')),
         );
         namaController.clear();
-        genderController.clear();
+        // genderController.clear();
         tanggalLahirController.clear();
         alamatController.clear();
         noHpController.clear();
@@ -171,17 +173,26 @@ class _AddDokterState extends State<AddDokter> {
                                   ),
                                   Container(
                                     height: 50,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16, vertical: 2),
+                                    padding:
+                                    const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
                                     decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(15)),
-                                        color: Color(0xFFEFF0F3)),
-                                    child: TextFormField(
-                                      controller: genderController,
+                                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                                      color: Color(0xFFEFF0F3),
+                                    ),
+                                    child: DropdownButtonFormField(
+                                      onChanged: (value) {
+                                        setState(() {
+                                          genderController = value;
+                                        });
+                                      },
+                                      items: gender.map<DropdownMenuItem>((item) {
+                                        return DropdownMenuItem(
+                                          value: item,
+                                          child: Text(item),
+                                        );
+                                      }).toList(),
                                       decoration: const InputDecoration(
-                                          hintText: "Gender",
-                                          border: InputBorder.none),
+                                          hintText: "Gender", border: InputBorder.none),
                                     ),
                                   ),
                                 ],

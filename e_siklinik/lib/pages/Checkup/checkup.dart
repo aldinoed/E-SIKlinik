@@ -15,13 +15,15 @@ class AddCheckup extends StatefulWidget {
 
 class _AddCheckupState extends State<AddCheckup> {
   final TextEditingController hasilDiagnosaController = TextEditingController();
-  final TextEditingController jumlahPemakaianController = TextEditingController();
-  final TextEditingController waktuPemakaianController = TextEditingController();
+  final TextEditingController jumlahPemakaianController =
+      TextEditingController();
+  final TextEditingController waktuPemakaianController =
+      TextEditingController();
   final TextEditingController imageController = TextEditingController();
 
   final String apiPostCheckupResult =
-      "http://192.168.43.246:8080/api/checkup-obat/insert";
-  final String apiGetAllObat = "http://192.168.43.246:8080/api/obat";
+      "http://192.168.18.40:8080/api/checkup-obat/insert";
+  final String apiGetAllObat = "http://192.168.18.40:8080/api/obat";
 
   List<dynamic> obatList = [];
   Map<String, dynamic>? assesmentDetail;
@@ -60,7 +62,7 @@ class _AddCheckupState extends State<AddCheckup> {
     try {
       final response = await http.get(
         Uri.parse(
-            "http://192.168.43.246:8080/api/checkup-assesmen/show/${widget.assesmentId}"),
+            "http://192.168.18.40:8080/api/checkup-assesmen/show/${widget.assesmentId}"),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -133,7 +135,7 @@ class _AddCheckupState extends State<AddCheckup> {
       );
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -200,7 +202,7 @@ class _AddCheckupState extends State<AddCheckup> {
                                   const BorderRadius.all(Radius.circular(15)),
                               image: DecorationImage(
                                   image: NetworkImage(
-                                      'http://192.168.43.246:8080/storage/' +
+                                      'http://192.168.18.40:8080/storage/' +
                                           assesmentDetail?['image']),
                                   fit: BoxFit.fill)),
                         )
@@ -367,145 +369,163 @@ class _AddCheckupState extends State<AddCheckup> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                  "Tambah Resep Obat",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 50,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16),
-                        decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                            color: Color(0xFFEFF0F3)),
-                        child: DropdownSearch<String>(
-  popupProps: PopupProps.menu(
-    showSearchBox: true,
-    searchFieldProps: TextFieldProps(
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        hintText: 'Cari Obat',
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(color: Colors.grey),
-        ),
-      ),
-    ),
-    constraints: const BoxConstraints(
-      maxHeight: 250,
-      maxWidth: double.infinity,
-    ),
-    menuProps: const MenuProps(
-      backgroundColor: Color(0xFFEFF0F3),
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(15),
-            bottomRight: Radius.circular(15)),
-      ),
-    ),
-  ),
-  items: obatList.map((obat) => obat['nama_obat'] as String).toList(),
-  onChanged: (value) {
-    final selectedObat = obatList.firstWhere((obat) => obat['nama_obat'] == value);
-    setState(() {
-      selectedObatId = selectedObat['id'];
-    });
-  },
-  dropdownDecoratorProps: DropDownDecoratorProps(
-    dropdownSearchDecoration: InputDecoration(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 3),
-      hintText: 'Nama obat',
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(15),
-        borderSide: BorderSide.none,
-      ),
-    ),
-  ),
-  filterFn: (obat, filter) => obat.toLowerCase().contains(filter.toLowerCase()),
-)
+                        "Tambah Resep Obat",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 18),
                       ),
-                    ),
-                    const SizedBox(width: 5),
-                    GestureDetector(
-                      onTap: addResepObat,
-                      child: Container(
-                        width: 45,
-                        height: 50,
-                        decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                            color: Color(0xFFEFF0F3)),
-                        child: const Center(child: const Icon(Icons.add)),
+                      const SizedBox(height: 10),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Container(
+                                height: 50,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                decoration: const BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15)),
+                                    color: Color(0xFFEFF0F3)),
+                                child: DropdownSearch<String>(
+                                  popupProps: PopupProps.menu(
+                                    showSearchBox: true,
+                                    searchFieldProps: TextFieldProps(
+                                      decoration: InputDecoration(
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 16, vertical: 8),
+                                        hintText: 'Cari Obat',
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          borderSide: const BorderSide(
+                                              color: Colors.grey),
+                                        ),
+                                      ),
+                                    ),
+                                    constraints: const BoxConstraints(
+                                      maxHeight: 250,
+                                      maxWidth: double.infinity,
+                                    ),
+                                    menuProps: const MenuProps(
+                                      backgroundColor: Color(0xFFEFF0F3),
+                                      elevation: 2,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(15),
+                                            bottomRight: Radius.circular(15)),
+                                      ),
+                                    ),
+                                  ),
+                                  items: obatList
+                                      .map(
+                                          (obat) => obat['nama_obat'] as String)
+                                      .toList(),
+                                  onChanged: (value) {
+                                    final selectedObat = obatList.firstWhere(
+                                        (obat) => obat['nama_obat'] == value);
+                                    setState(() {
+                                      selectedObatId = selectedObat['id'];
+                                    });
+                                  },
+                                  dropdownDecoratorProps:
+                                      DropDownDecoratorProps(
+                                    dropdownSearchDecoration: InputDecoration(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 3),
+                                      hintText: 'Nama obat',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                    ),
+                                  ),
+                                  filterFn: (obat, filter) => obat
+                                      .toLowerCase()
+                                      .contains(filter.toLowerCase()),
+                                )),
+                          ),
+                          const SizedBox(width: 5),
+                          GestureDetector(
+                            onTap: addResepObat,
+                            child: Container(
+                              width: 45,
+                              height: 50,
+                              decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15)),
+                                  color: Color(0xFFEFF0F3)),
+                              child: const Center(child: const Icon(Icons.add)),
+                            ),
+                          )
+                        ],
                       ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 5),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        height: 50,
-                        margin: const EdgeInsets.only(top: 5),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16,),
-                        decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                            color: Color(0xFFEFF0F3)),
-                        child: TextFormField(
-                          textAlignVertical: TextAlignVertical.center,
-                          controller: jumlahPemakaianController,
-                          decoration: const InputDecoration(
-                              hintText: "Jumlah Pemakaian",
-                              hintStyle: TextStyle(fontSize: 12),
-                              border: InputBorder.none),
-                        ),
+                      const SizedBox(height: 5),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              height: 50,
+                              margin: const EdgeInsets.only(top: 5),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15)),
+                                  color: Color(0xFFEFF0F3)),
+                              child: TextFormField(
+                                textAlignVertical: TextAlignVertical.center,
+                                controller: jumlahPemakaianController,
+                                decoration: const InputDecoration(
+                                    hintText: "Jumlah Pemakaian",
+                                    hintStyle: TextStyle(fontSize: 12),
+                                    border: InputBorder.none),
+                              ),
+                            ),
+                          ),
+                          const Text(
+                            " X ",
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.w700),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              height: 50,
+                              margin: const EdgeInsets.only(top: 5),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15)),
+                                  color: Color(0xFFEFF0F3)),
+                              child: TextFormField(
+                                textAlignVertical: TextAlignVertical.center,
+                                controller: waktuPemakaianController,
+                                decoration: const InputDecoration(
+                                    hintText: "Waktu Pemakaian",
+                                    hintStyle: TextStyle(fontSize: 12),
+                                    border: InputBorder.none),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 50,
+                          )
+                        ],
                       ),
-                    ),
-                    const Text(
-                      " X ",
-                      style: TextStyle(
-                          fontSize: 15, fontWeight: FontWeight.w700),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        height: 50,
-                        margin: const EdgeInsets.only(top: 5),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16),
-                        decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                            color: Color(0xFFEFF0F3)),
-                        child: TextFormField(
-                          textAlignVertical: TextAlignVertical.center,
-                          controller: waktuPemakaianController,
-                          decoration: const InputDecoration(
-                              hintText: "Waktu Pemakaian",
-                              hintStyle: TextStyle(fontSize: 12),
-                              border: InputBorder.none),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 50,
-                    )
-                  ],
-                ),
-                const SizedBox(height: 15),
-                ...resepObatList.map((resep) {
-                  final obat = obatList.firstWhere(
-                      (obat) => obat['id'] == resep['obat_id'],
-                      orElse: () => {'nama_obat': 'Unknown'});
-                  return Text(
-                      '- ${obat['nama_obat']}  ${resep['jumlah_pemakaian']} x ${resep['waktu_pemakaian']} Hari');
-                }).toList(),
+                      const SizedBox(height: 15),
+                      ...resepObatList.map((resep) {
+                        final obat = obatList.firstWhere(
+                            (obat) => obat['id'] == resep['obat_id'],
+                            orElse: () => {'nama_obat': 'Unknown'});
+                        return Text(
+                            '- ${obat['nama_obat']}  ${resep['jumlah_pemakaian']} x ${resep['waktu_pemakaian']} Hari');
+                      }).toList(),
                     ],
                   ),
                 ),

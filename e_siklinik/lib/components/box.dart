@@ -462,7 +462,7 @@ class BoxJadwal extends StatelessWidget {
                       Text(
                         jadwal,
                         style: const TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 17),
+                            fontWeight: FontWeight.w600, fontSize: 15),
                       ),
                       Text(
                         dokter,

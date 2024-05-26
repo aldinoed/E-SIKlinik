@@ -25,7 +25,7 @@ class _ShowPasienState extends State<ShowPasien> {
   Future<void> _getPasienDetail() async {
     try {
       final response = await http.get(
-        Uri.parse("http://10.0.2.2:8000/api/pasien/show/${widget.pasienId}"),
+        Uri.parse("http://192.168.18.40:8080/api/pasien/show/${widget.pasienId}"),
         headers: {'Content-Type': 'application/json'},
       ).timeout(const Duration(seconds: 30)); // Increased timeout duration
 
@@ -96,7 +96,7 @@ class _ShowPasienState extends State<ShowPasien> {
                           background: pasienDetail != null &&
                                   pasienDetail!['image'] != null
                               ? Image.network(
-                                  'http://10.0.2.2:8000/storage/' +
+                                  'http://192.168.18.40:8080/storage/' +
                                       pasienDetail!['image'],
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {

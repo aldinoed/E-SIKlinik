@@ -14,8 +14,8 @@ class _AddAntrianState extends State<AddAntrian> {
   final TextEditingController noAntrianController = TextEditingController();
   final TextEditingController searchController = TextEditingController();
 
-  final String apiPostAntrian = "http://192.168.43.246:8080/api/antrian/create";
-  final String apiGetAllPasien = "http://192.168.43.246:8080/api/pasien";
+  final String apiPostAntrian = "http://192.168.18.40:8080/api/antrian/create";
+  final String apiGetAllPasien = "http://192.168.18.40:8080/api/pasien";
 
   List<dynamic> pasienList = [];
   List<dynamic> filteredPasienList = [];
@@ -55,7 +55,8 @@ class _AddAntrianState extends State<AddAntrian> {
           final namaLower = pasien['nama'].toString().toLowerCase();
           final nrpLower = pasien['nrp'].toString().toLowerCase();
           final searchLower = query.toLowerCase();
-          return namaLower.contains(searchLower) || nrpLower.contains(searchLower);
+          return namaLower.contains(searchLower) ||
+              nrpLower.contains(searchLower);
         }).toList();
       });
     } else {
@@ -204,7 +205,8 @@ class _AddAntrianState extends State<AddAntrian> {
                                 height: 100,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: const BorderRadius.all(Radius.circular(15)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(15)),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.grey.withOpacity(0.5),
@@ -228,8 +230,10 @@ class _AddAntrianState extends State<AddAntrian> {
                                     ),
                                     const SizedBox(width: 15),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           pasien['nama'],
@@ -290,7 +294,7 @@ class _AddAntrianState extends State<AddAntrian> {
                                   const BorderRadius.all(Radius.circular(15)),
                               image: DecorationImage(
                                   image: NetworkImage(
-                                      'http://192.168.43.246:8080/storage/' +
+                                      'http://192.168.18.40:8080/storage/' +
                                           selectedPasien!['image']),
                                   fit: BoxFit.fill)),
                         ),
@@ -303,9 +307,10 @@ class _AddAntrianState extends State<AddAntrian> {
                         setInfoPasien("Tanggal Lahir",
                             "${selectedPasien!['tanggal_lahir']}"),
                         setInfoPasien("Alamat", "${selectedPasien!['alamat']}"),
-                        setInfoPasien("No Hp", "${selectedPasien!['nomor_hp']}"),
-                        setInfoPasien("No Wali",
-                            "${selectedPasien!['nomor_wali']}"),
+                        setInfoPasien(
+                            "No Hp", "${selectedPasien!['nomor_hp']}"),
+                        setInfoPasien(
+                            "No Wali", "${selectedPasien!['nomor_wali']}"),
                       ],
                     ),
                   ),
@@ -313,7 +318,6 @@ class _AddAntrianState extends State<AddAntrian> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      
                       ElevatedButton(
                         onPressed: handleCancel,
                         style: ElevatedButton.styleFrom(
@@ -363,7 +367,6 @@ class _AddAntrianState extends State<AddAntrian> {
     );
   }
 }
-
 
 Widget setInfoPasien(String label, String value) {
   return Row(

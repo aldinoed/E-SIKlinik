@@ -14,7 +14,7 @@ class AntrianListPage extends StatefulWidget {
 
 class _AntrianListPageState extends State<AntrianListPage> {
   List<dynamic> antrianList = [];
-  final String apiGetAntrian = "http://192.168.43.246:8080/api/antrian";
+  final String apiGetAntrian = "http://192.168.18.40:8080/api/antrian";
 
   @override
   void initState() {
@@ -45,7 +45,7 @@ class _AntrianListPageState extends State<AntrianListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
@@ -85,8 +85,9 @@ class _AntrianListPageState extends State<AntrianListPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                AddAssessment(antrianId: antrianId,),
+                            builder: (context) => AddAssessment(
+                              antrianId: antrianId,
+                            ),
                           ),
                         );
                       },

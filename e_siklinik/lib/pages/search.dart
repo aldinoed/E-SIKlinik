@@ -14,7 +14,7 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   List<dynamic> checkupList = [];
-  final String apiGetCheckup = "http://192.168.43.246:8080/api/checkup-result";
+  final String apiGetCheckup = "http://192.168.18.40:8080/api/checkup-result";
 
   @override
   void initState() {
@@ -143,12 +143,13 @@ class _SearchState extends State<Search> {
               final checkup = checkupList[index];
               return BoxSearchPage(
                 onTapBox: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> const Hasil()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Hasil()));
                 },
-                nama: checkup['check_up_resul_to_assesmen']['assesmen_to_antrian']
-                    ['antrian_to_pasien']['nama'],
-                nrp: checkup['check_up_resul_to_assesmen']['assesmen_to_antrian']
-                    ['antrian_to_pasien']['nrp'],
+                nama: checkup['check_up_resul_to_assesmen']
+                    ['assesmen_to_antrian']['antrian_to_pasien']['nama'],
+                nrp: checkup['check_up_resul_to_assesmen']
+                    ['assesmen_to_antrian']['antrian_to_pasien']['nrp'],
                 icon: setIcon(Icons.person_outline, const Color(0xFF234DF0)),
                 prodi: Text(
                   checkup['check_up_resul_to_assesmen']['assesmen_to_antrian']

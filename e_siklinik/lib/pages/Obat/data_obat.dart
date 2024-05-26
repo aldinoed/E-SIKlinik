@@ -13,7 +13,6 @@ class DataObat extends StatefulWidget {
 
   @override
   State<DataObat> createState() => _DataObatState();
-  
 }
 
 class Obat {
@@ -23,11 +22,16 @@ class Obat {
   final DateTime exp;
   final int stok;
 
-  Obat({required this.id, required this.nama, required this.kategori, required this.exp, required this.stok});
+  Obat(
+      {required this.id,
+      required this.nama,
+      required this.kategori,
+      required this.exp,
+      required this.stok});
 }
 
 class _DataObatState extends State<DataObat> {
-  final String apiGetAllObat = "http://192.168.43.246:8080/api/obat";
+  final String apiGetAllObat = "http://192.168.18.40:8080/api/obat";
   List<dynamic> obatList = [];
 
   String query = '';
@@ -54,98 +58,96 @@ class _DataObatState extends State<DataObat> {
   }
 
   List<Obat> obat_obat = [
-  Obat(
-    id: 1,
-    nama: 'Paracetamol',
-    kategori: 'Obat Keras',
-    exp: DateTime(2024, 12, 31),
-    stok: 100,
-  ),
-  Obat(
-    id: 2,
-    nama: 'Loratadine',
-    kategori: 'Bebas',
-    exp: DateTime(2023, 10, 15),
-    stok: 50,
-  ),
-  Obat(
-    id: 3,
-    nama: 'Asam Mefenamat',
-    kategori: 'OHT',
-    exp: DateTime(2025, 5, 20),
-    stok: 80,
-  ),
-  Obat(
-    id: 4,
-    nama: 'Serbuk Jahe',
-    kategori: 'Jamu',
-    exp: DateTime(2023, 8, 10),
-    stok: 30,
-  ),
-  Obat(
-    id: 5,
-    nama: 'Multivitamin',
-    kategori: 'FIT',
-    exp: DateTime(2023, 6, 25),
-    stok: 120,
-  ),
-  Obat(
-    id: 6,
-    nama: 'Morphine',
-    kategori: 'Narkotika',
-    exp: DateTime(2024, 4, 5),
-    stok: 10,
-  ),
-  Obat(
-    id: 7,
-    nama: 'Nikotin',
-    kategori: 'Bebas Terbatas',
-    exp: DateTime(2024, 4, 5),
-    stok: 10,
-  ),
-];
+    Obat(
+      id: 1,
+      nama: 'Paracetamol',
+      kategori: 'Obat Keras',
+      exp: DateTime(2024, 12, 31),
+      stok: 100,
+    ),
+    Obat(
+      id: 2,
+      nama: 'Loratadine',
+      kategori: 'Bebas',
+      exp: DateTime(2023, 10, 15),
+      stok: 50,
+    ),
+    Obat(
+      id: 3,
+      nama: 'Asam Mefenamat',
+      kategori: 'OHT',
+      exp: DateTime(2025, 5, 20),
+      stok: 80,
+    ),
+    Obat(
+      id: 4,
+      nama: 'Serbuk Jahe',
+      kategori: 'Jamu',
+      exp: DateTime(2023, 8, 10),
+      stok: 30,
+    ),
+    Obat(
+      id: 5,
+      nama: 'Multivitamin',
+      kategori: 'FIT',
+      exp: DateTime(2023, 6, 25),
+      stok: 120,
+    ),
+    Obat(
+      id: 6,
+      nama: 'Morphine',
+      kategori: 'Narkotika',
+      exp: DateTime(2024, 4, 5),
+      stok: 10,
+    ),
+    Obat(
+      id: 7,
+      nama: 'Nikotin',
+      kategori: 'Bebas Terbatas',
+      exp: DateTime(2024, 4, 5),
+      stok: 10,
+    ),
+  ];
 
-String getLogoByCategory(String category) {
-  switch (category) {
-    case 'Obat Keras':
-      return 'assets/images/obat.png';
-    case 'Bebas':
-      return 'assets/images/OBAT_BEBAS.png';
-    case 'OHT':
-      return 'assets/images/OHT.png';
-    case 'Jamu':
-      return 'assets/images/JAMU.png';
-    case 'FIT':
-      return 'assets/images/FITOFARMAKA.png';
-    case 'Narkotika':
-      return 'assets/images/narkotik.png';
-    case 'Bebas Terbatas':
-      return 'assets/images/OBT.png';
-    default:
-      return 'assets/images/obat.png';
+  String getLogoByCategory(String category) {
+    switch (category) {
+      case 'Obat Keras':
+        return 'assets/images/obat.png';
+      case 'Bebas':
+        return 'assets/images/OBAT_BEBAS.png';
+      case 'OHT':
+        return 'assets/images/OHT.png';
+      case 'Jamu':
+        return 'assets/images/JAMU.png';
+      case 'FIT':
+        return 'assets/images/FITOFARMAKA.png';
+      case 'Narkotika':
+        return 'assets/images/narkotik.png';
+      case 'Bebas Terbatas':
+        return 'assets/images/OBT.png';
+      default:
+        return 'assets/images/obat.png';
+    }
   }
-}
-  
 
   List<Obat> filteredData = [];
 
-
   @override
-void initState() {
-  super.initState();
-  // _getAllObat();
-  filteredData = List<Obat>.from(obat_obat);
-}
+  void initState() {
+    super.initState();
+    // _getAllObat();
+    filteredData = List<Obat>.from(obat_obat);
+  }
 
   void onQueryChanged(String newQuery) {
-  setState(() {
-    query = newQuery;
-    filteredData = obat_obat
-        .where(
-            (obat) => obat.nama.toLowerCase().contains(query.toLowerCase()))
-        .toList();
-  });
-}
+    setState(() {
+      query = newQuery;
+      filteredData = obat_obat
+          .where(
+              (obat) => obat.nama.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -192,80 +194,82 @@ void initState() {
           ),
           Expanded(
             child: GridView.builder(
-  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-    crossAxisCount: 2,
-    mainAxisSpacing: 8.0,
-    crossAxisSpacing: 8.0,
-    childAspectRatio: MediaQuery.of(context).size.width /
-        (MediaQuery.of(context).size.height / 2.5),
-  ),
-  itemCount: filteredData.length, // Use filteredData length
-  itemBuilder: (BuildContext context, int index) {
-    final obat = filteredData[index]; // Access obat from filteredData
-    return IntrinsicHeight(
-      child: Card(
-        elevation: 3,
-        child: GestureDetector(
-           behavior: HitTestBehavior.translucent, // Allow scrolling when clicking on the card
-          onTap: () {
-            // Handle card tap
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              color: Colors.white,
-            ),
-            child: ListView(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              children: [
-                ListTile(
-                  leading: CircleAvatar(
-                    radius: 11,
-                    backgroundColor: Colors.transparent,
-                    child: Image.asset(
-                      getLogoByCategory(obat.kategori),
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                  trailing: Container(
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.more_vert),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        obat.nama, // Use obat.nama instead of filteredData[index]
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8.0,
+                crossAxisSpacing: 8.0,
+                childAspectRatio: MediaQuery.of(context).size.width /
+                    (MediaQuery.of(context).size.height / 2.5),
+              ),
+              itemCount: filteredData.length, // Use filteredData length
+              itemBuilder: (BuildContext context, int index) {
+                final obat =
+                    filteredData[index]; // Access obat from filteredData
+                return IntrinsicHeight(
+                  child: Card(
+                    elevation: 3,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior
+                          .translucent, // Allow scrolling when clicking on the card
+                      onTap: () {
+                        // Handle card tap
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.white,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                        child: ListView(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          children: [
+                            ListTile(
+                              leading: CircleAvatar(
+                                radius: 11,
+                                backgroundColor: Colors.transparent,
+                                child: Image.asset(
+                                  getLogoByCategory(obat.kategori),
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              trailing: Container(
+                                child: IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(Icons.more_vert),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    obat.nama, // Use obat.nama instead of filteredData[index]
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text('EXP: '),
+                                  Text('Stok: ${obat.stok}')
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                      Text('EXP: '),
-                      Text('Stok: ${obat.stok}')
-                    ],
+                    ),
                   ),
-                )
-              ],
+                );
+              },
             ),
-          ),
-        ),
-      ),
-    );
-  },
-),
-
 
             // GridView.builder(
             //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

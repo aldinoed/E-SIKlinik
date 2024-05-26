@@ -23,8 +23,8 @@ class _AddPasienState extends State<AddPasien> {
   final TextEditingController prodiController = TextEditingController();
   final TextEditingController tanggalLahirController = TextEditingController();
 
-  final String apiPostPasien = "http://192.168.43.246:8080/api/pasien/create";
-  final String apiGetAllProdi = "http://192.168.43.246:8080/api/prodi";
+  final String apiPostPasien = "http://192.168.18.40:8080/api/pasien/create";
+  final String apiGetAllProdi = "http://192.168.18.40:8080/api/prodi";
 
   List<dynamic> prodiList = [];
 

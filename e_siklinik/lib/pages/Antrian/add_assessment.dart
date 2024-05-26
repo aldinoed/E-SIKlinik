@@ -16,10 +16,10 @@ class _AddAssessmentState extends State<AddAssessment> {
   final TextEditingController antrianController = TextEditingController();
 
   final String apiPostAssesment =
-      "http://192.168.43.246:8080/api/checkup-assesmen/insert";
+      "http://192.168.18.40:8080/api/checkup-assesmen/insert";
   List<dynamic>? antrianDetail;
 
-  final String apiGetAllDokter = "http://192.168.43.246:8080/api/dokter";
+  final String apiGetAllDokter = "http://192.168.18.40:8080/api/dokter";
   List<dynamic> dokterList = [];
   File? _imageFile;
 
@@ -53,7 +53,8 @@ class _AddAssessmentState extends State<AddAssessment> {
   Future<void> _getAntrianDetail() async {
     try {
       final response = await http.get(
-        Uri.parse("http://192.168.43.246:8080/api/antrian/show/${widget.antrianId}"),
+        Uri.parse(
+            "http://192.168.18.40:8080/api/antrian/show/${widget.antrianId}"),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -168,17 +169,17 @@ class _AddAssessmentState extends State<AddAssessment> {
                         const SizedBox(height: 15),
                         if (antrianDetail != null && antrianDetail!.isNotEmpty)
                           Container(
-                          height: 180,
-                          width: 115,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(15)),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      'http://192.168.43.246:8080/storage/' +
-                                          antrianDetail?[0]['image']),
-                                  fit: BoxFit.fill)),
-                        )
+                            height: 180,
+                            width: 115,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(15)),
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        'http://192.168.18.40:8080/storage/' +
+                                            antrianDetail?[0]['image']),
+                                    fit: BoxFit.fill)),
+                          )
                         else
                           const SizedBox(),
                         const SizedBox(height: 15),
@@ -186,13 +187,16 @@ class _AddAssessmentState extends State<AddAssessment> {
                         setInfoPasien("Nama", "${antrianDetail?[0]['nama']}"),
                         setInfoPasien("Program Studi",
                             "${antrianDetail?[0]['pasien_to_prodi']?['nama']}"),
-                        setInfoPasien("Gender", "${antrianDetail?[0]['gender']}"),
+                        setInfoPasien(
+                            "Gender", "${antrianDetail?[0]['gender']}"),
                         setInfoPasien("Tanggal Lahir",
                             "${antrianDetail?[0]['tanggal_lahir']}"),
-                        setInfoPasien("Alamat", "${antrianDetail?[0]['alamat']}"),
-                        setInfoPasien("No Hp", "${antrianDetail?[0]['nomor_hp']}"),
-                        setInfoPasien("No Wali",
-                            "${antrianDetail?[0]['nomor_wali']}"),
+                        setInfoPasien(
+                            "Alamat", "${antrianDetail?[0]['alamat']}"),
+                        setInfoPasien(
+                            "No Hp", "${antrianDetail?[0]['nomor_hp']}"),
+                        setInfoPasien(
+                            "No Wali", "${antrianDetail?[0]['nomor_wali']}"),
                       ],
                     ),
                   ),
@@ -214,14 +218,15 @@ class _AddAssessmentState extends State<AddAssessment> {
                     ),
                     child: Container(
                       height: 50,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                    color: Color(0xFFEFF0F3),
-                  ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 2),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        color: Color(0xFFEFF0F3),
+                      ),
                       child: DropdownButtonFormField(
-                        borderRadius: const BorderRadius.all(Radius.circular(15)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
                         value: null,
                         onChanged: (value) {
                           setState(() {
@@ -235,9 +240,7 @@ class _AddAssessmentState extends State<AddAssessment> {
                           );
                         }).toList(),
                         decoration: const InputDecoration(
-                          hintText: "Nama Dokter",
-                          border: InputBorder.none
-                        ),
+                            hintText: "Nama Dokter", border: InputBorder.none),
                       ),
                     ),
                   ),

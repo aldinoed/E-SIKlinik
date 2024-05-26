@@ -23,9 +23,10 @@ class _AddObatNewState extends State<AddObatNew> {
   final TextEditingController stockController = TextEditingController();
   final TextEditingController hargaController = TextEditingController();
   final TextEditingController imageController = TextEditingController();
-  final String apiPostObat = "http://192.168.43.246:8080/api/obat/insert";
+  final String apiPostObat = "http://192.168.18.40:8080/api/obat/insert";
 
-  final String apiGetAllKategori = "http://192.168.43.246:8080/api/kategori-obat";
+  final String apiGetAllKategori =
+      "http://192.168.18.40:8080/api/kategori-obat";
 
   List<dynamic> kategoriList = [];
   String? _selectedKategori;
@@ -105,7 +106,8 @@ class _AddObatNewState extends State<AddObatNew> {
       print('Error: $error');
     }
   }
-   bool _validateForm() {
+
+  bool _validateForm() {
     if (namaObatController.text.isEmpty) {
       _showSnackBar('Nama Obat tidak boleh kosong');
       return false;
@@ -135,7 +137,10 @@ class _AddObatNewState extends State<AddObatNew> {
 
   // Function to show snackbar with a message
   void _showSnackBar(String message) {
-    final snackBar = SnackBar(content: Text(message),backgroundColor: Colors.red,);
+    final snackBar = SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red,
+    );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
     Colors.red;
   }
@@ -278,48 +283,68 @@ class _AddObatNewState extends State<AddObatNew> {
                                               ),
                                             ),
                                             SizedBox(
-                                        child: Card(
-                                          child: Container(
-                                           
-                                            width: MediaQuery.of(context).size.width / 2.5,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                              color: const Color.fromARGB(200, 235, 242, 255),
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                DropdownSearch<String>(
-                                                  popupProps: PopupProps.dialog(
-                                                    showSearchBox: true,
+                                              child: Card(
+                                                child: Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      2.5,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.0),
+                                                    color: const Color.fromARGB(
+                                                        200, 235, 242, 255),
                                                   ),
-                                                  dropdownDecoratorProps: DropDownDecoratorProps(
-                                                    dropdownSearchDecoration: InputDecoration(
-                                                      hintText: "Pilih Kategori",
-                                                      hintStyle: TextStyle(fontSize: 12),
-                                                      contentPadding: EdgeInsets.symmetric(horizontal: 10,),
-                                                      border: OutlineInputBorder(
-                                                        borderRadius: BorderRadius.circular(10.0),
-                                                        borderSide: BorderSide.none
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      DropdownSearch<String>(
+                                                        popupProps:
+                                                            PopupProps.dialog(
+                                                          showSearchBox: true,
+                                                        ),
+                                                        dropdownDecoratorProps:
+                                                            DropDownDecoratorProps(
+                                                          dropdownSearchDecoration:
+                                                              InputDecoration(
+                                                            hintText:
+                                                                "Pilih Kategori",
+                                                            hintStyle:
+                                                                TextStyle(
+                                                                    fontSize:
+                                                                        12),
+                                                            contentPadding:
+                                                                EdgeInsets
+                                                                    .symmetric(
+                                                              horizontal: 10,
+                                                            ),
+                                                            border: OutlineInputBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10.0),
+                                                                borderSide:
+                                                                    BorderSide
+                                                                        .none),
+                                                          ),
+                                                        ),
+                                                        items: _Categori,
+                                                        selectedItem: _doctors,
+                                                        onChanged: (value) {
+                                                          setState(() {
+                                                            _kategoriObat =
+                                                                value;
+                                                          });
+                                                        },
                                                       ),
-                                                    ),
+                                                    ],
                                                   ),
-                                                  items: _Categori,
-                                                  selectedItem: _doctors,
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      _kategoriObat = value;
-                                                    });
-                                                  
-                                                  },
                                                 ),
-                                              ],
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                      ),
                                           ],
                                         ),
                                       ),
@@ -355,7 +380,6 @@ class _AddObatNewState extends State<AddObatNew> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Container(
-                                                      
                                                       child: TextField(
                                                         controller:
                                                             tanggalKadaluarsaController,
@@ -633,10 +657,10 @@ class _AddObatNewState extends State<AddObatNew> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                         if (_validateForm()) {
+                                        if (_validateForm()) {
                                           // Proceed with form submission
                                           //addObat(context); // Panggil fungsi addObat saat tombol Submit ditekan
-                                        }                                        
+                                        }
                                       },
                                       child: SizedBox(
                                         child: Card(
