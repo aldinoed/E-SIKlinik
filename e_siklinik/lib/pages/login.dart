@@ -1,5 +1,6 @@
 import 'package:e_siklinik/auth/auth.dart';
 import 'package:e_siklinik/control.dart';
+import 'package:e_siklinik/pages/Assessment/assessment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -20,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
     SharedPreferences cookie = await SharedPreferences.getInstance();
     cookie.setString('token', token);
     cookie.setString('name', name);
-    cookie.setInt('isAdmin', isAdmin);
+    isAdmin == 1? cookie.setInt('isAdmin', isAdmin): cookie.setInt('isAdmin', 0);
   }
 
   @override
@@ -211,11 +212,17 @@ class _LoginPageState extends State<LoginPage> {
                                                                 Colors.white),
                                                       )),
                                                 );
-                                                Navigator.pushReplacement(
+                                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                                final int isAdminAuth = pref.getInt('isAdmin')!;
+                                                isAdminAuth == 1 ? Navigator.pushReplacement(
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            const ControlPage()));
+                                                        const ControlPage())) : Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                        const AssesmentPage()));
                                               } else {
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
