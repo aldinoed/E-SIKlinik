@@ -1,5 +1,6 @@
 import 'package:e_siklinik/components/box.dart';
 import 'package:e_siklinik/pages/Assessment/assessment.dart';
+import 'package:e_siklinik/pages/carousel.dart';
 import 'package:e_siklinik/testing/antrian/listAntrian.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,14 +28,11 @@ class _DashboardState extends State<Dashboard> {
               const SizedBox(
                 height: 8,
               ),
-              Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                  color: Color(0xFFD9D9D9),
-                ),
-                width: double.infinity,
-                height: 150,
-                child: const Center(
+             Center(
+                child: Container(
+                  width: 1000,
+                  height: 150,
+                  child: Carouselku(),
                 ),
               ),
               Container(

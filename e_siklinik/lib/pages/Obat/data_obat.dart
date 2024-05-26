@@ -1,5 +1,6 @@
 import 'package:e_siklinik/pages/Obat/addObat.dart';
 import 'package:e_siklinik/pages/Obat/add_obat.dart';
+import 'package:e_siklinik/pages/Obat/detail_obat.dart';
 import 'package:e_siklinik/testing/obat/addObat.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -212,7 +213,12 @@ class _DataObatState extends State<DataObat> {
                       behavior: HitTestBehavior
                           .translucent, // Allow scrolling when clicking on the card
                       onTap: () {
-                        // Handle card tap
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailObat(),
+                          ),
+                        );
                       },
                       child: Container(
                         decoration: BoxDecoration(
