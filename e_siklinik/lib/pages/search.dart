@@ -14,7 +14,9 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   List<dynamic> checkupList = [];
+  List<dynamic> filteredCheckupList = [];
   final String apiGetCheckup = "http://10.0.2.2:8000/api/checkup-result";
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -27,9 +29,14 @@ class _SearchState extends State<Search> {
       final response = await http.get(Uri.parse(apiGetCheckup));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+        print(data); // Cetak data untuk memverifikasi hasil respons API
         if (data != null && data['checkup'] != null) {
           setState(() {
             checkupList = data['checkup'];
+            // Sort checkupList by created_at in descending order
+            checkupList.sort((a, b) =>
+                DateTime.parse(b['created_at']).compareTo(DateTime.parse(a['created_at'])));
+            filteredCheckupList = checkupList; // Inisialisasi daftar hasil pencarian
           });
         } else {
           print("No data received from API");
@@ -39,6 +46,22 @@ class _SearchState extends State<Search> {
       }
     } catch (error) {
       print('Error: $error');
+    }
+  }
+
+  void _filterCheckupList(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        filteredCheckupList = checkupList;
+      });
+    } else {
+      setState(() {
+        filteredCheckupList = checkupList.where((checkup) {
+          final patientName = checkup['check_up_resul_to_assesmen']
+              ['assesmen_to_antrian']['antrian_to_pasien']['nama'].toLowerCase();
+          return patientName.contains(query.toLowerCase());
+        }).toList();
+      });
     }
   }
 
@@ -110,7 +133,9 @@ class _SearchState extends State<Search> {
         children: [
           Flexible(
             child: TextFormField(
+              controller: searchController,
               maxLines: null,
+              onChanged: _filterCheckupList,
               decoration: const InputDecoration(
                 hintText: 'Search Here',
                 border: InputBorder.none,
@@ -138,7 +163,10 @@ class _SearchState extends State<Search> {
   }
 
   Widget _buildCheckupList() {
-    return checkupList.isEmpty
+    // Limit the list to 5 items
+    List<dynamic> limitedCheckupList = filteredCheckupList.take(5).toList();
+
+    return limitedCheckupList.isEmpty
         ? const Center(
             child: Text(
               'Checkup Kosong',
@@ -148,9 +176,9 @@ class _SearchState extends State<Search> {
         : ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: checkupList.length,
+            itemCount: limitedCheckupList.length,
             itemBuilder: (BuildContext context, int index) {
-              final checkup = checkupList[index];
+              final checkup = limitedCheckupList[index];
               final checkupId = checkup['id'];
               return BoxSearchPage(
                 onTapBox: () {
@@ -174,31 +202,3 @@ class _SearchState extends State<Search> {
           );
   }
 }
-
-// Card(
-              //   child: ListTile(
-              //     title: Text(checkup['hasil_diagnosa'].toString()),
-              //     subtitle: Column(
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: [
-              //         Text(checkup['check_up_resul_to_assesmen']['assesmen_to_antrian']
-              //             ['antrian_to_pasien']['nama']),
-              //         Text(checkup['check_up_resul_to_assesmen']['assesmen_to_antrian']
-              //             ['antrian_to_pasien']['pasien_to_prodi']['nama']),
-              //         Text(checkup['check_up_resul_to_assesmen']
-              //             ['assesmen_to_dokter']['nama']),
-              //       ],
-              //     ),
-              //     trailing: SizedBox(
-              //       width: 100,
-              //       child: ListView.builder(
-              //         shrinkWrap: true,
-              //         itemCount: checkup['check_up_result_to_detail_resep'].length,
-              //         itemBuilder: (BuildContext context, int resepIndex) {
-              //           final resep = checkup['check_up_result_to_detail_resep'][resepIndex];
-              //           return Text(resep['detail_resep_to_obat']['nama_obat']);
-              //         },
-              //       ),
-              //     ),
-              //   ),
-              // );
