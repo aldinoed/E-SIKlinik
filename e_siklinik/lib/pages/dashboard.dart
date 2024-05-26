@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:e_siklinik/components/box.dart';
+import 'package:e_siklinik/pages/Antrian/list_antrian.dart';
 import 'package:e_siklinik/pages/Assessment/assessment.dart';
 import 'package:e_siklinik/pages/carousel_banner.dart';
 import 'package:e_siklinik/pages/carousel_jadwal.dart';
@@ -205,7 +206,7 @@ class _DashboardState extends State<Dashboard> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AntrianListPage()));
+                              builder: (context) => ListAntrianNew()));
                     },
                   ),
                 ],
