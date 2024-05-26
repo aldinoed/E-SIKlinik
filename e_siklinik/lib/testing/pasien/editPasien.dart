@@ -14,7 +14,7 @@ class EditPasienPage extends StatefulWidget {
 }
 
 class _EditPasienPageState extends State<EditPasienPage> {
-  final String apiGetAllProdi = "http://192.168.43.246:8080/api/prodi";
+  final String apiGetAllProdi = "http://192.168.18.40:8080/api/prodi";
   List<dynamic> prodiList = [];
 
   final _formKey = GlobalKey<FormState>();
@@ -61,7 +61,7 @@ class _EditPasienPageState extends State<EditPasienPage> {
 
   Future<void> _updatePasien() async {
     final id = widget.pasien['id'];
-    final url = Uri.parse('http://192.168.43.246:8080/api/pasien/update/$id');
+    final url = Uri.parse('http://192.168.18.40:8080/api/pasien/update/$id');
     final request = http.MultipartRequest('POST', url);
 
     // Menambahkan data yang akan diperbarui
@@ -228,8 +228,7 @@ class _EditPasienPageState extends State<EditPasienPage> {
                 items: prodiList.map((prodi) {
                   return DropdownMenuItem<String>(
                     value: prodi['id'].toString(),
-                    child: Text(prodi?['nama'] ??
-                        ''), 
+                    child: Text(prodi?['nama'] ?? ''),
                   );
                 }).toList(),
                 onChanged: (value) {

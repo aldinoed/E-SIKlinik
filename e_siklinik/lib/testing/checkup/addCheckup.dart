@@ -16,8 +16,9 @@ class _AddCheckupResultState extends State<AddCheckupResult> {
   final TextEditingController hasilDiagnosaController = TextEditingController();
   final TextEditingController imageController = TextEditingController();
 
-  final String apiPostCheckupResult = "http://10.0.2.2:8000/api/checkup-obat/insert";
-  final String apiGetAllObat = "http://10.0.2.2:8000/api/obat";
+  final String apiPostCheckupResult =
+      "http://192.168.18.40:8080/api/checkup-obat/insert";
+  final String apiGetAllObat = "http://192.168.18.40:8080/api/obat";
 
   List<dynamic> obatList = [];
   Map<String, dynamic>? assesmentDetail;
@@ -54,7 +55,8 @@ class _AddCheckupResultState extends State<AddCheckupResult> {
   Future<void> _getAssesmentDetail() async {
     try {
       final response = await http.get(
-        Uri.parse("http://10.0.2.2:8000/api/checkup-assesmen/show/${widget.assesmentId}"),
+        Uri.parse(
+            "http://192.168.18.40:8080/api/checkup-assesmen/show/${widget.assesmentId}"),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -75,7 +77,8 @@ class _AddCheckupResultState extends State<AddCheckupResult> {
 
   Future<void> addCheckupWithResepObat(BuildContext context) async {
     try {
-      var request = http.MultipartRequest('POST', Uri.parse(apiPostCheckupResult));
+      var request =
+          http.MultipartRequest('POST', Uri.parse(apiPostCheckupResult));
       request.fields['hasil_diagnosa'] = hasilDiagnosaController.text;
       request.fields['assesmen_id'] = widget.assesmentId.toString();
 

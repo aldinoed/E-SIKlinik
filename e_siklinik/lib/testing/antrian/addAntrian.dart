@@ -15,12 +15,11 @@ class _CreateAntrianPageState extends State<CreateAntrianPage> {
   final TextEditingController pasienIdController = TextEditingController();
   final TextEditingController noAntrianController = TextEditingController();
 
-  final String apiPostAntrian = "http://192.168.43.246:8080/api/antrian/create";
+  final String apiPostAntrian = "http://192.168.18.40:8080/api/antrian/create";
 
-  final String apiGetAllPasien = "http://192.168.43.246:8080/api/pasien";
+  final String apiGetAllPasien = "http://192.168.18.40:8080/api/pasien";
 
   List<dynamic> pasienList = [];
-
 
   @override
   void initState() {
@@ -54,12 +53,11 @@ class _CreateAntrianPageState extends State<CreateAntrianPage> {
       request.fields['pasien_id'] = pasienIdController.text;
       request.fields['no_antrian'] = noAntrianController.text;
 
-
       var response = await request.send();
 
       if (response.statusCode == 200) {
-        final obat =
-            json.decode(await response.stream.bytesToString()); // ['obat] coba ga pake ini
+        final obat = json.decode(
+            await response.stream.bytesToString()); // ['obat] coba ga pake ini
         print('Antrian berhasil ditambahkan: $obat');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Antrian berhasil ditambahkan')),

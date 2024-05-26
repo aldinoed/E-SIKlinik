@@ -12,13 +12,15 @@ class AddJadwal extends StatefulWidget {
 
 class _AddJadwalState extends State<AddJadwal> {
   final TextEditingController dokterIdController = TextEditingController();
-  final TextEditingController hariController = TextEditingController();
+  String hariController = '';
   final TextEditingController jamMulaiController = TextEditingController();
   final TextEditingController jamSelesaiController = TextEditingController();
+  final List<String> days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jum\'at'];
+  final List<String> gender = ['Laki-Laki', 'Perempuan'];
 
   final String apiPostJadwalDokter =
-      "http://10.0.2.2:8000/api/jadwal_dokter/create";
-  final String apiGetAllDokter = "http://10.0.2.2:8000/api/dokter";
+      "http://192.168.18.40:8080/api/jadwal_dokter/create";
+  final String apiGetAllDokter = "http://192.168.18.40:8080/api/dokter";
   List<dynamic> dokterList = [];
 
   @override
@@ -52,7 +54,7 @@ class _AddJadwalState extends State<AddJadwal> {
       var request =
           http.MultipartRequest('POST', Uri.parse(apiPostJadwalDokter));
       request.fields['dokter_id'] = dokterIdController.text;
-      request.fields['hari'] = hariController.text;
+      request.fields['hari'] = hariController;
       request.fields['jadwal_mulai_tugas'] = jamMulaiController.text;
       request.fields['jadwal_selesai_tugas'] = jamSelesaiController.text;
 
@@ -175,14 +177,25 @@ class _AddJadwalState extends State<AddJadwal> {
                   Container(
                     height: 50,
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
                     decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        color: Color(0xFFEFF0F3)),
-                    child: TextFormField(
-                      controller: hariController,
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      color: Color(0xFFEFF0F3),
+                    ),
+                    child: DropdownButtonFormField(
+                      onChanged: (value) {
+                        setState(() {
+                         hariController = value;
+                        });
+                      },
+                      items: days.map<DropdownMenuItem>((day) {
+                        return DropdownMenuItem(
+                          value: day,
+                          child: Text(day),
+                        );
+                      }).toList(),
                       decoration: const InputDecoration(
-                          hintText: "Hari", border: InputBorder.none),
+                          hintText: "Hari Tugas", border: InputBorder.none),
                     ),
                   ),
                   const SizedBox(

@@ -7,178 +7,197 @@ use App\Models\JadwalDokter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+use Exception;
+
 class DokterController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $dokter = Dokter::with('dokterToJadwal')->where('is_disabled', '=', false)->get();
+      /**
+       * Display a listing of the resource.
+       */
+      public function index()
+      {
+            $dokter = Dokter::with('dokterToJadwal')->where('is_disabled', '=', false)->get();
 
-        //return view('dokter_index')->with('dokter', $dokter);
+            //return view('dokter_index')->with('dokter', $dokter);
 
-        return response()->json(['message' => 'Succes tampil dokter', 'dokter'=> $dokter]);
-    }
+            return response()->json(['message' => 'Succes tampil dokter', 'dokter' => $dokter]);
+      }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        $dokter = Dokter::all();
+      /**
+       * Show the form for creating a new resource.
+       */
+      public function create()
+      {
+            $dokter = Dokter::all();
 
-        return response()->json(['message' => 'Succes tampil dokter', 'dokter'=> $dokter]);
-    }
+            return response()->json(['message' => 'Succes tampil dokter', 'dokter' => $dokter]);
+      }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $file = $request->file('image');
-        $path = time() . '_' . $request->name . '.' . $file->getClientOriginalExtension();
+      /**
+       * Store a newly created resource in storage.
+       */
+      public function store(Request $request)
+      {
+            $file = $request->file('image');
+            $path = time() . '_' . $request->name . '.' . $file->getClientOriginalExtension();
 
-        Storage::disk('local')->put('public/' . $path, file_get_contents($file));
+            Storage::disk('local')->put('public/' . $path, file_get_contents($file));
 
-        $dokter = Dokter::create([
-            'nama'=> $request->nama,
-            'gender'=> $request->gender,
-            'tanggal_lahir'=> $request->tanggal_lahir,
-            'alamat'=> $request->alamat,
-            'nomor_hp' => $request->nomor_hp,
-            'image'=> $path
+            $dokter = Dokter::create([
+                  'nama' => $request->nama,
+                  'gender' => $request->gender,
+                  'tanggal_lahir' => $request->tanggal_lahir,
+                  'alamat' => $request->alamat,
+                  'nomor_hp' => $request->nomor_hp,
+                  'image' => $path
 
-        ]);
+            ]);
 
-        return response()->json(['message' => 'Succes inpurt dokter', 'dokter'=> $dokter]);
-    }
+            return response()->json(['message' => 'Succes inpurt dokter', 'dokter' => $dokter]);
+      }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        $dokter = Dokter::with('dokterToJadwal')->find($id);
+      /**
+       * Display the specified resource.
+       */
+      public function show(string $id)
+      {
+            $dokter = Dokter::with('dokterToJadwal')->find($id);
 
-        return response()->json(['message' => 'Success tampil data dokter', 'dokter' => $dokter]);
-    }
+            return response()->json(['message' => 'Success tampil data dokter', 'dokter' => $dokter]);
+      }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        $dokter = Dokter::find($id);
+      /**
+       * Show the form for editing the specified resource.
+       */
+      public function edit(string $id)
+      {
+            $dokter = Dokter::find($id);
 
-        return response()->json(['message' => 'Success tampil data dokter', 'dokter' => $dokter]);
-    }
+            return response()->json(['message' => 'Success tampil data dokter', 'dokter' => $dokter]);
+      }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
-    {
+      /**
+       * Update the specified resource in storage.
+       */
+      public function update(Request $request, $id)
+      {
 
-    $dokter = Dokter::find($id);
+            $dokter = Dokter::find($id);
 
-    if (!$dokter) {
-        return response()->json(['message' => 'Dokter not found'], 404);
-    }
+            if (!$dokter) {
+                  return response()->json(['message' => 'Dokter not found'], 404);
+            }
 
-    if ($request->hasFile('image')) {
-        $file = $request->file('image');
-        $path = time() . '_' . $request->name . '.' . $file->getClientOriginalExtension();
-
-
-        $file->storeAs('public', $path);
+            if ($request->hasFile('image')) {
+                  $file = $request->file('image');
+                  $path = time() . '_' . $request->name . '.' . $file->getClientOriginalExtension();
 
 
-        if ($dokter->image) {
-            Storage::disk('local')->delete('public/' . $dokter->image);
-        }
+                  $file->storeAs('public', $path);
 
 
-        $dokter->image = $path;
-    }
-
-    if ($request->has('nama')) {
-        $dokter->nama = $request->nama;
-    }
-
-    if ($request->has('gender')) {
-        $dokter->gender = $request->gender;
-    }
-
-    if ($request->has('tanggal_lahir')) {
-        $dokter->tanggal_lahir = $request->tanggal_lahir;
-    }
-
-    if ($request->has('alamat')) {
-        $dokter->alamat = $request->alamat;
-    }
-
-    if ($request->has('nomor_hp')) {
-        $dokter->nomor_hp = $request->nomor_hp;
-    }
-
-    $dokter->save();
-
-    return response()->json(['message' => 'Success update data Dokter', 'dokter' => $dokter]);
-
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $dokter = Dokter::findOrFail($id);
-        $dokter->delete();
-        return response()->json(['message' => 'Success delete data dokter']);
-    }
+                  if ($dokter->image) {
+                        Storage::disk('local')->delete('public/' . $dokter->image);
+                  }
 
 
+                  $dokter->image = $path;
+            }
 
-    // Jadwal Dokter
+            if ($request->has('nama')) {
+                  $dokter->nama = $request->nama;
+            }
 
-    public function indexJadwal()
-{
-    $jadwal_dokter = JadwalDokter::with('jadwalToDokter')->get();
+            if ($request->has('gender')) {
+                  $dokter->gender = $request->gender;
+            }
 
-    return response()->json(['message' => 'Success tampil jadwal dokter', 'jadwal_dokter'=> $jadwal_dokter]);
-}
+            if ($request->has('tanggal_lahir')) {
+                  $dokter->tanggal_lahir = $request->tanggal_lahir;
+            }
+
+            if ($request->has('alamat')) {
+                  $dokter->alamat = $request->alamat;
+            }
+
+            if ($request->has('nomor_hp')) {
+                  $dokter->nomor_hp = $request->nomor_hp;
+            }
+
+            $dokter->save();
+
+            return response()->json(['message' => 'Success update data Dokter', 'dokter' => $dokter]);
+      }
+
+      /**
+       * Remove the specified resource from storage.
+       */
+      public function destroy(string $id)
+      {
+            $dokter = Dokter::findOrFail($id);
+            $dokter->delete();
+            return response()->json(['message' => 'Success delete data dokter']);
+      }
 
 
-    public function storeJadwal(Request $request){
 
-        $jadwal_dokter = JadwalDokter::create([
-            'dokter_id' => $request->dokter_id,
-            'hari'=> $request->hari,
-            'jadwal_mulai_tugas' => $request->jadwal_mulai_tugas,
-            'jadwal_selesai_tugas' => $request->jadwal_selesai_tugas
-        ]);
+      // Jadwal Dokter
 
-        return response()->json(['message' => 'Succes input jadwal dokter', 'jadwal_dokter'=> $jadwal_dokter]);
-    }
+      public function indexJadwal()
+      {
+            $jadwal_dokter = JadwalDokter::with('jadwalToDokter')->get();
 
-    public function deleteJadwal($id){
-        $jadwal_dokter = JadwalDokter::find($id);
-        $jadwal_dokter->delete();
-        return response()->json(['message' => 'Success delete data jadwal dokter']);
-    }
+            return response()->json(['message' => 'Success tampil jadwal dokter', 'jadwal_dokter' => $jadwal_dokter]);
+      }
 
-    public function disabledDokter($id){
-        $dokter = Dokter::find($id);
-        if($dokter->is_disabled == false){
-        $dokter->is_disabled = true;
-        $dokter->save();
-        return response()->json(['message' => 'Success disable data dokter']);
-        }
-            if($dokter->is_disabled == true){
-                    $dokter->is_disabled = false;
-                    $dokter->save();
-                    return response()->json(['message' => 'Success aktifkan data dokter']);
-                            }
-    }
+      public function updateJadwal(int $id, Request $request)
+      {
+            try {
+                  $jadwalDokter = JadwalDokter::find($id);
+                  $jadwalDokter->hari = $request->hari;
+                  $jadwalDokter->jadwal_mulai_tugas = $request->jadwal_mulai_tugas;
+                  $jadwalDokter->jadwal_selesai_tugas = $request->jadwal_selesai_tugas;
+                  $jadwalDokter->save();
+
+                  return response()->json(['status' => 200, 'message' => 'Berhasil update jadwal dokter']);
+            } catch (Exception $exception) {
+                  return response()->json(['status' => 500, 'message' => 'Gagal update jadwal dokter']);
+            }
+      }
+
+
+      public function storeJadwal(Request $request)
+      {
+
+            $jadwal_dokter = JadwalDokter::create([
+                  'dokter_id' => $request->dokter_id,
+                  'hari' => $request->hari,
+                  'jadwal_mulai_tugas' => $request->jadwal_mulai_tugas,
+                  'jadwal_selesai_tugas' => $request->jadwal_selesai_tugas
+            ]);
+
+            return response()->json(['message' => 'Succes input jadwal dokter', 'jadwal_dokter' => $jadwal_dokter]);
+      }
+
+      public function deleteJadwal($id)
+      {
+            $jadwal_dokter = JadwalDokter::find($id);
+            $jadwal_dokter->delete();
+            return response()->json(['message' => 'Success delete data jadwal dokter']);
+      }
+
+      public function disabledDokter($id)
+      {
+            $dokter = Dokter::find($id);
+            if ($dokter->is_disabled == false) {
+                  $dokter->is_disabled = true;
+                  $dokter->save();
+                  return response()->json(['message' => 'Success disable data dokter']);
+            }
+            if ($dokter->is_disabled == true) {
+                  $dokter->is_disabled = false;
+                  $dokter->save();
+                  return response()->json(['message' => 'Success aktifkan data dokter']);
+            }
+      }
 }

@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+      return $request->user();
 });
 
 //AUTH
@@ -70,6 +70,7 @@ Route::delete('/dokter/delete/{id}', [DokterController::class, 'destroy'])->name
 //JADWAL DOKTER
 Route::get('/jadwal_dokter', [DokterController::class, 'indexJadwal'])->name('jadwal_dokter.index');
 Route::post('/jadwal_dokter/create', [DokterController::class, 'storeJadwal'])->name('jadwal_dokter.store');
+Route::post('/jadwal_dokter/update/{id}', [DokterController::class, 'updateJadwal']);
 Route::delete('/jadwal_dokter/delete/{id}', [DokterController::class, 'deleteJadwal'])->name('jadwal_dokter.destroy');
 
 //OBAT Controller
@@ -99,4 +100,3 @@ Route::post('/detail-resep-obat/insert', [DetailResepObatController::class, 'sto
 Route::get('/detail-resep-obat/show/{id}', [DetailResepObatController::class, 'show']);
 Route::delete('/detail-resep-obat/{id}/delete', [DetailResepObatController::class, 'destroy']);
 Route::post('/checkup-obat/insert', [CheckUpController::class, 'storeCheckupWithResepObat']);
-

@@ -13,15 +13,17 @@ class AddDokter extends StatefulWidget {
 
 class _AddDokterState extends State<AddDokter> {
   final TextEditingController namaController = TextEditingController();
-  final TextEditingController genderController = TextEditingController();
+  final List<String> gender = ['Laki-Laki', 'Perempuan'];
+  String genderController = '';
   final TextEditingController alamatController = TextEditingController();
   final TextEditingController noHpController = TextEditingController();
   //final TextEditingController jadwalController = TextEditingController();
   final TextEditingController imageController = TextEditingController();
   final TextEditingController tanggalLahirController = TextEditingController();
 
-  final String apiPostDokter = "http://10.0.2.2:8000/api/dokter/create";
-  final String apiGetAllJadwalDokter = "http://10.0.2.2:8000/api/jadwal_dokter";
+  final String apiPostDokter = "http://192.168.18.40:8080/api/dokter/create";
+  final String apiGetAllJadwalDokter =
+      "http://192.168.18.40:8080/api/jadwal_dokter";
 
   List<dynamic> dokterList = [];
   File? _imageFile;
@@ -37,7 +39,7 @@ class _AddDokterState extends State<AddDokter> {
     try {
       var request = http.MultipartRequest('POST', Uri.parse(apiPostDokter));
       request.fields['nama'] = namaController.text;
-      request.fields['gender'] = selectedGender ?? "";
+      request.fields['gender'] = genderController;
       request.fields['tanggal_lahir'] = tanggalLahirController.text;
       request.fields['alamat'] = alamatController.text;
       request.fields['nomor_hp'] = noHpController.text;
@@ -61,14 +63,12 @@ class _AddDokterState extends State<AddDokter> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Dokter berhasil ditambahkan')),
         );
-        // namaController.clear();
-        // selectedGender = null;
-        // tanggalLahirController.clear();
-        // alamatController.clear();
-        // noHpController.clear();
-        // _imageFile = null;
-        Navigator.pop(context, true);
-
+        namaController.clear();
+        // genderController.clear();
+        tanggalLahirController.clear();
+        alamatController.clear();
+        noHpController.clear();
+        _imageFile = null;
       } else {
         print('Gagal menambahkan Dokter');
       }
@@ -158,26 +158,26 @@ class _AddDokterState extends State<AddDokter> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 16, vertical: 2),
                                     decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(15)),
-                                        color: Color(0xFFEFF0F3)),
-                                    child: DropdownButtonFormField<String>(
-                                      value: selectedGender,
-                                      decoration: const InputDecoration(
-                                        hintText: "Gender",
-                                        border: InputBorder.none,
-                                      ),
-                                      items: genders.map((String gender) {
-                                        return DropdownMenuItem<String>(
-                                          value: gender,
-                                          child: Text(gender),
-                                        );
-                                      }).toList(),
-                                      onChanged: (newValue) {
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                      color: Color(0xFFEFF0F3),
+                                    ),
+                                    child: DropdownButtonFormField(
+                                      onChanged: (value) {
                                         setState(() {
-                                          selectedGender = newValue;
+                                          genderController = value;
                                         });
                                       },
+                                      items:
+                                          gender.map<DropdownMenuItem>((item) {
+                                        return DropdownMenuItem(
+                                          value: item,
+                                          child: Text(item),
+                                        );
+                                      }).toList(),
+                                      decoration: const InputDecoration(
+                                          hintText: "Gender",
+                                          border: InputBorder.none),
                                     ),
                                   ),
                                 ],
