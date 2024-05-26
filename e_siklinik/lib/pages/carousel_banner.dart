@@ -9,11 +9,11 @@ final List<String> imgList = [
 
 ];
 
-class Carouselku extends StatefulWidget {
-  const Carouselku({super.key});
+class CarouselBanner extends StatefulWidget {
+  const CarouselBanner({super.key});
 
   @override
-  State<Carouselku> createState() => _CarouselkuState();
+  State<CarouselBanner> createState() => _CarouselBannerState();
 }
 
 final List<Widget> imageSliders = imgList
@@ -54,7 +54,7 @@ final List<Widget> imageSliders = imgList
         ))
     .toList();
 
-class _CarouselkuState extends State<Carouselku> {
+class _CarouselBannerState extends State<CarouselBanner> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

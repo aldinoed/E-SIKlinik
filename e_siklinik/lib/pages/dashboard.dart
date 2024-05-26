@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:e_siklinik/components/box.dart';
 import 'package:e_siklinik/pages/Assessment/assessment.dart';
-import 'package:e_siklinik/pages/carousel.dart';
+import 'package:e_siklinik/pages/carousel_banner.dart';
+import 'package:e_siklinik/pages/carousel_jadwal.dart';
 import 'package:e_siklinik/testing/antrian/listAntrian.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +64,7 @@ class _DashboardState extends State<Dashboard> {
         break;
     }
     
-    Uri url = Uri.parse('http://192.168.18.40:8080/api/jadwal_dokter/today/$dayName');
+    Uri url = Uri.parse('http://10.0.2.2:8000/api/jadwal_dokter/today/$dayName');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
@@ -103,71 +104,11 @@ class _DashboardState extends State<Dashboard> {
                 child: Container(
                   width: 1000,
                   height: 150,
-                  child: Carouselku(),
+                  child: CarouselBanner(),
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 20),
-                width: double.infinity,
-                height: 160,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Jadwal Dokter",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 4),
-                      padding: const EdgeInsets.all(15),
-                      width: double.infinity,
-                      height: 100,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(15)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              offset: const Offset(-1, 2),
-                              blurRadius: 3,
-                              spreadRadius: 0,
-                            ),
-                          ],
-                          image: const DecorationImage(
-                              image: AssetImage('assets/images/Schedule2.png'),
-                              fit: BoxFit.fill)),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Andru Falah Arifin",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w600),
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.timer_outlined,
-                                color: Color(0xFF234DF0),
-                                size: 18,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                "13.00 - 13.30",
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                child: CarouselJadwal(),
               ),
               Container(
                 margin: const EdgeInsets.only(bottom: 20),
