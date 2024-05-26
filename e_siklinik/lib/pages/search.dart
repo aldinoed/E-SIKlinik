@@ -14,7 +14,7 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   List<dynamic> checkupList = [];
-  final String apiGetCheckup = "http://192.168.18.40:8080/api/checkup-result";
+  final String apiGetCheckup = "http://10.0.2.2:8000/api/checkup-result";
 
   @override
   void initState() {
@@ -47,6 +47,7 @@ class _SearchState extends State<Search> {
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9FB),
       body: SafeArea(
+        maintainBottomViewPadding: true,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: SingleChildScrollView(
@@ -64,6 +65,9 @@ class _SearchState extends State<Search> {
                 ),
                 const SizedBox(height: 10),
                 _buildCheckupList(),
+                const SizedBox(
+                  height: 70,
+                )
               ],
             ),
           ),
@@ -75,14 +79,21 @@ class _SearchState extends State<Search> {
   Widget _buildHeader() {
     return Container(
       decoration: BoxDecoration(
+        border: Border.all(color: Color(0xFF234DF0), width: 2),
         borderRadius: const BorderRadius.all(Radius.circular(15)),
-        border: Border.all(color: const Color(0xFF234DF0)),
+        image: const DecorationImage(
+            image: AssetImage('assets/images/Search.jpeg'), fit: BoxFit.fill),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            offset: const Offset(-1, 2),
+            blurRadius: 3,
+            spreadRadius: 0,
+          ),
+        ],
       ),
       width: double.infinity,
       height: 150,
-      child: const Center(
-        child: Text("Cari Riwayat Pasien"),
-      ),
     );
   }
 

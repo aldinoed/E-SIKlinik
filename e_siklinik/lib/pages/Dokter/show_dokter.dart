@@ -30,7 +30,7 @@ class _ShowDokterState extends State<ShowDokter> {
   Future<void> _getDokterDetail() async {
     try {
       final response = await http.get(
-        Uri.parse("http://192.168.18.40:8080/api/dokter/show/${widget.dokterId}"),
+        Uri.parse("http://10.0.2.2:8000/api/dokter/show/${widget.dokterId}"),
         headers: {'Content-Type': 'application/json'},
       ).timeout(const Duration(seconds: 30)); // Increased timeout duration
 
@@ -93,7 +93,7 @@ class _ShowDokterState extends State<ShowDokter> {
         filteredRiwayatDokter = allRiwayatDokter?.where((riwayat) {
           final namaPasien = riwayat['check_up_resul_to_assesmen']
                   ['assesmen_to_antrian']['antrian_to_pasien']['nama']
-              .toLowerCase();
+              ?.toLowerCase() ?? '';
           return namaPasien.contains(query.toLowerCase());
         }).toList();
       });
@@ -142,7 +142,7 @@ class _ShowDokterState extends State<ShowDokter> {
                           background: dokterDetail != null &&
                                   dokterDetail!['image'] != null
                               ? Image.network(
-                                  'http://192.168.18.40:8080/storage/' +
+                                  'http://10.0.2.2:8000/storage/' +
                                       dokterDetail!['image'],
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {
@@ -194,7 +194,7 @@ class _ShowDokterState extends State<ShowDokter> {
                                                   bottom: BorderSide(
                                                       color: Colors.black))),
                                           child: Text(
-                                            '${dokterDetail!['nama']}',
+                                            dokterDetail!['nama'] ?? '',
                                             style: const TextStyle(
                                                 fontSize: 24,
                                                 fontWeight: FontWeight.w600),
@@ -203,13 +203,13 @@ class _ShowDokterState extends State<ShowDokter> {
                                         height: 8,
                                       ),
                                       setInfoDokter('Gender',
-                                          '${dokterDetail!['gender']}'),
+                                          dokterDetail!['gender'] ?? ''),
                                       setInfoDokter('Tanggal Lahir',
-                                          '${dokterDetail!['tanggal_lahir']}'),
+                                          dokterDetail!['tanggal_lahir'] ?? ''),
                                       setInfoDokter('Alamat',
-                                          '${dokterDetail!['alamat']}'),
+                                          dokterDetail!['alamat'] ?? ''),
                                       setInfoDokter('Nomor Hp',
-                                          '${dokterDetail!['nomor_hp']}'),
+                                          dokterDetail!['nomor_hp'] ?? ''),
                                     ],
                                   ),
                                 ),
@@ -271,14 +271,14 @@ class _ShowDokterState extends State<ShowDokter> {
                                                                     checkupId)));
                                               },
                                               nama:
-                                                  "${riwayat['check_up_resul_to_assesmen']['assesmen_to_antrian']['antrian_to_pasien']['nama']}",
+                                                  "${riwayat['check_up_resul_to_assesmen']['assesmen_to_antrian']['antrian_to_pasien']['nama'] ?? ''}",
                                               nrp:
-                                                  "${riwayat['check_up_resul_to_assesmen']['assesmen_to_antrian']['antrian_to_pasien']['nrp']}",
+                                                  "${riwayat['check_up_resul_to_assesmen']['assesmen_to_antrian']['antrian_to_pasien']['nrp'] ?? ''}",
                                               icon: setIcon(
                                                   Icons.person_outline,
                                                   const Color(0xFF234DF0)),
                                               prodi: Text(
-                                                  "Tanggal : ${extractDate(riwayat['created_at'])}"));
+                                                  "Tanggal : ${riwayat['created_at'] != null ? extractDate(riwayat['created_at']) : 'N/A'}"));
                                         },
                                       )
                                     : const Center(

@@ -18,7 +18,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     return PreferredSize(
       preferredSize: preferredSize,
       child: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
         elevation: 2,
         shadowColor: Colors.black,
         title: const Text(

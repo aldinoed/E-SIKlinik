@@ -21,92 +21,96 @@ class _DataState extends State<Data> {
     return Scaffold(
       backgroundColor: Color(0xFFF9F9FB),
       body: SafeArea(
+          maintainBottomViewPadding: true,
           child: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 8,
-              ),
-              Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                  color: Color(0xFFD9D9D9),
-                ),
-                width: double.infinity,
-                height: 150,
-                child: const Center(),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                "Database",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-              ),
-              Column(
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(
                     height: 8,
                   ),
-                  Box(
-                    title: "Pasien",
-                    desc: "Add, Edit, Delete Data\nPasien",
-                    bgimage: '',
-                    icon:
-                        setIcon(Icons.person_outline, const Color(0xFF234DF0)),
-                    onTapBox: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const DataPasien()));
-                    },
+                  Container(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      color: Color(0xFFD9D9D9),
+                    ),
+                    width: double.infinity,
+                    height: 150,
+                    child: const Center(),
                   ),
-                  Box(
-                    title: "Dokter",
-                    desc: "Add, Edit, Delete Data\nDokter",
-                    bgimage: '',
-                    icon: setIcon(
-                        FontAwesome.stethoscope, const Color(0xFF234DF0)),
-                    onTapBox: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const DataDokter()));
-                    },
+                  const SizedBox(
+                    height: 20,
                   ),
-                  Box(
-                    title: "Obat",
-                    desc: "Add, Edit, Delete Data\nObat",
-                    bgimage: '',
-                    icon: setIcon(RpgAwesome.pill, const Color(0xFF234DF0)),
-                    onTapBox: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const DataObat()));
-                    },
+                  const Text(
+                    "Database",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                   ),
-                  Box(
-                      title: "Jadwal Dokter",
-                      desc: "Add, Edit, Delete Data\nJadwal Dokter",
-                      bgimage: '',
-                      icon:
-                          setIcon(Entypo.back_in_time, const Color(0xFF234DF0)),
-                      onTapBox: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DataJadwal()));
-                      })
+                  Column(
+                    children: [
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Box(
+                        title: "Pasien",
+                        desc: "Add, Edit, Delete Data\nPasien",
+                        bgimage: '',
+                        icon: setIcon(
+                            Icons.person_outline, const Color(0xFF234DF0)),
+                        onTapBox: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const DataPasien()));
+                        },
+                      ),
+                      Box(
+                        title: "Dokter",
+                        desc: "Add, Edit, Delete Data\nDokter",
+                        bgimage: '',
+                        icon: setIcon(
+                            FontAwesome.stethoscope, const Color(0xFF234DF0)),
+                        onTapBox: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const DataDokter()));
+                        },
+                      ),
+                      Box(
+                        title: "Obat",
+                        desc: "Add, Edit, Delete Data\nObat",
+                        bgimage: '',
+                        icon: setIcon(RpgAwesome.pill, const Color(0xFF234DF0)),
+                        onTapBox: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const DataObat()));
+                        },
+                      ),
+                      Box(
+                          title: "Jadwal Dokter",
+                          desc: "Add, Edit, Delete Data\nJadwal Dokter",
+                          bgimage: '',
+                          icon: setIcon(
+                              Entypo.back_in_time, const Color(0xFF234DF0)),
+                          onTapBox: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DataJadwal()));
+                          })
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 70,
+                  )
                 ],
-              )
-            ],
-          ),
-        ),
-      )),
+              ),
+            ),
+          )),
     );
   }
 }

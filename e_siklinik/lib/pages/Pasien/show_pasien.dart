@@ -27,7 +27,7 @@ class _ShowPasienState extends State<ShowPasien> {
   Future<void> _getPasienDetail() async {
     try {
       final response = await http.get(
-        Uri.parse("http://192.168.18.40:8080/api/pasien/show/${widget.pasienId}"),
+        Uri.parse("http://10.0.2.2:8000/api/pasien/show/${widget.pasienId}"),
         headers: {'Content-Type': 'application/json'},
       ).timeout(const Duration(seconds: 30)); // Increased timeout duration
 
@@ -121,7 +121,7 @@ class _ShowPasienState extends State<ShowPasien> {
                           background: pasienDetail != null &&
                                   pasienDetail!['image'] != null
                               ? Image.network(
-                                  'http://192.168.18.40:8080/storage/' +
+                                  'http://10.0.2.2:8000/storage/' +
                                       pasienDetail!['image'],
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {
@@ -231,7 +231,7 @@ class _ShowPasienState extends State<ShowPasien> {
                                                         checkupId: checkupId)));
                                       },
                                       tanggal:
-                                          "${extractDate(checkup['created_at'])}",
+                                          checkup['created_at'] != null ? extractDate(checkup['created_at']) : 'N/A',
                                       nama:
                                           '${checkup['check_up_resul_to_assesmen']['assesmen_to_dokter']['nama']}',
                                     );
