@@ -22,7 +22,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   late List<JadwalDokter> todayDoctor = [];
-  void _getJadwalToday() async{
+  void _getJadwalToday() async {
     DateTime today = DateTime.now();
     String dayName = DateFormat('EEEE').format(today);
     switch (dayName) {
@@ -64,20 +64,21 @@ class _DashboardState extends State<Dashboard> {
       default:
         break;
     }
-    
-    Uri url = Uri.parse('http://192.168.43.246:8080/api/jadwal_dokter/today/$dayName');
+
+    Uri url = Uri.parse(
+        'http://192.168.43.246:8080/api/jadwal_dokter/today/$dayName');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
       List<dynamic> jadwalList = jsonData['jadwal_dokter'];
       setState(() {
-        todayDoctor = jadwalList.map((json) => JadwalDokter.fromJson(json)).toList();
+        todayDoctor =
+            jadwalList.map((json) => JadwalDokter.fromJson(json)).toList();
       });
       print(todayDoctor);
     } else {
       print('Failed to load data');
     }
-
   }
 
   @override
@@ -104,117 +105,121 @@ class _DashboardState extends State<Dashboard> {
                     height: 8,
                   ),
                   Center(
-                child: Container(
-                  width: 1000,
-                  height: 150,
-                  child: CarouselBanner(),
-                ),
-              ),
-              Container(
-                child: CarouselJadwal(),
-              ),
-              Container(
-                margin: const EdgeInsets.only(bottom: 20),
-                width: double.infinity,
-                height: 160,
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Container(
+                      width: 1000,
+                      height: 150,
+                      child: CarouselBanner(),
+                    ),
+                  ),
+                  Container(
+                    child: CarouselJadwal(),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 20),
+                    width: double.infinity,
+                    height: 160,
+                    child: Column(
                       children: [
-                        const Text(
-                          "Jadwal Antrian",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w600),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "Jadwal Antrian",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w600),
+                            ),
+                            TextButton(
+                                onPressed: () {},
+                                child: const Text(
+                                  "Tampilkan Semua",
+                                  style: TextStyle(color: Colors.grey),
+                                ))
+                          ],
                         ),
-                        TextButton(
-                            onPressed: () {},
-                            child: const Text(
-                              "Tampilkan Semua",
-                              style: TextStyle(color: Colors.grey),
-                            ))
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 4),
+                          padding: const EdgeInsets.all(15),
+                          width: double.infinity,
+                          height: 100,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(15)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  offset: const Offset(-1, 2),
+                                  blurRadius: 3,
+                                  spreadRadius: 0,
+                                ),
+                              ],
+                              image: const DecorationImage(
+                                  image:
+                                      AssetImage('assets/images/Schedule.png'),
+                                  fit: BoxFit.fill)),
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Andru Falah Arifin",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                              Text(
+                                "3122500038",
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                        )
                       ],
                     ),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 4),
-                      padding: const EdgeInsets.all(15),
-                      width: double.infinity,
-                      height: 100,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(15)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              offset: const Offset(-1, 2),
-                              blurRadius: 3,
-                              spreadRadius: 0,
-                            ),
-                          ],
-                          image: const DecorationImage(
-                              image: AssetImage('assets/images/Schedule.png'),
-                              fit: BoxFit.fill)),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Andru Falah Arifin",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w600),
-                          ),
-                          Text(
-                            "3122500038",
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                        ],
+                  ),
+                  const Text(
+                    "Utilities",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                  ),
+                  Column(
+                    children: [
+                      Box(
+                        title: 'Check Up',
+                        desc: 'Tambahkan Hasil Check Up Pasien',
+                        bgimage: 'assets/images/Utilities1.png',
+                        icon: const Icon(
+                          Icons.data_saver_on,
+                          size: 25,
+                          color: Color(0xFF234DF0),
+                        ),
+                        onTapBox: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const AssesmentPage()));
+                        },
                       ),
-                    )
-                  ],
-                ),
-              ),
-              const Text(
-                "Utilities",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-              ),
-              Column(
-                children: [
-                  Box(
-                    title: 'Check Up',
-                    desc: 'Tambahkan Hasil Check Up Pasien',
-                    bgimage: 'assets/images/Utilities1.png',
-                    icon: const Icon(
-                      Icons.data_saver_on,
-                      size: 25,
-                      color: Color(0xFF234DF0),
-                    ),
-                    onTapBox: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AssesmentPage()));
-                    },
+                      Box(
+                        title: 'Jadwal Antrean',
+                        desc: 'Mengatur Jadwal Antrean Pasien',
+                        bgimage: 'assets/images/Utilities2.png',
+                        icon: const Icon(Icons.people_alt,
+                            size: 25, color: Color(0xFF234DF0)),
+                        onTapBox: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ListAntrianNew()));
+                        },
+                      ),
+                    ],
                   ),
-                  Box(
-                    title: 'Jadwal Antrean',
-                    desc: 'Mengatur Jadwal Antrean Pasien',
-                    bgimage: 'assets/images/Utilities2.png',
-                    icon: const Icon(Icons.people_alt,
-                        size: 25, color: Color(0xFF234DF0)),
-                    onTapBox: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ListAntrianNew()));
-                    },
-                  ),
+                  SizedBox(
+                    height: 70,
+                  )
                 ],
               ),
-            ],
-          ),
-        ),
-      )),
+            ),
+          )),
     );
   }
 }
