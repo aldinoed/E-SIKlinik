@@ -57,6 +57,7 @@ Route::delete('/prodi/delete/{id}', [ProdiController::class, 'destroy'])->name('
 Route::get('/antrian', [AntrianController::class, 'index'])->name('antrian.index');
 Route::get('/antrian/show/{id}', [AntrianController::class, 'show'])->name('antrian.show');
 Route::post('/antrian/create', [AntrianController::class, 'store'])->name('antrian.store');
+Route::get('/antrian/finished-assesmen', [AntrianController::class, 'finishedAssesmen']);
 //Route::post('/antrian', [AntrianController::class, 'upadte'])->name('antrian.upadte');
 
 //DOKTER

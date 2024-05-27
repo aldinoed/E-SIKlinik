@@ -15,7 +15,7 @@ class EditPasien extends StatefulWidget {
 }
 
 class _EditPasienState extends State<EditPasien> {
-  final String apiGetAllProdi = "http://192.168.18.40:8080/api/prodi";
+  final String apiGetAllProdi = "http://192.168.43.246:8080/api/prodi";
   List<dynamic> prodiList = [];
   String? selectedGender;
   final List<String> genders = ["Laki-laki", "Perempuan"];
@@ -65,7 +65,7 @@ class _EditPasienState extends State<EditPasien> {
 
   Future<void> _updatePasien() async {
     final id = widget.pasien['id'];
-    final url = Uri.parse('http://192.168.18.40:8080/api/pasien/update/$id');
+    final url = Uri.parse('http://192.168.43.246:8080/api/pasien/update/$id');
     final request = http.MultipartRequest('POST', url);
 
     // Menambahkan data yang akan diperbarui

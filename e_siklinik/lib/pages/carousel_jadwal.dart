@@ -12,7 +12,7 @@ class CarouselJadwal extends StatefulWidget {
 }
 
 class _CarouselJadwalState extends State<CarouselJadwal> {
-  final String apiGetAllJadwalDokter = "http://192.168.18.40:8080/api/jadwal_dokter";
+  final String apiGetAllJadwalDokter = "http://192.168.43.246:8080/api/jadwal_dokter";
   List<dynamic> jadwalList = [];
 
   @override

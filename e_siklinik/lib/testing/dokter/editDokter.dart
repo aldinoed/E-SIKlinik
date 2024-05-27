@@ -48,7 +48,7 @@ class _EditDokterPageState extends State<EditDokterPage> {
 
   Future<void> _updateDokter() async {
     final id = widget.dokter['id'];
-    final url = Uri.parse('http://192.168.18.40:8080/api/dokter/update/$id');
+    final url = Uri.parse('http://192.168.43.246:8080/api/dokter/update/$id');
     final request = http.MultipartRequest('POST', url);
 
     // Menambahkan data yang akan diperbarui

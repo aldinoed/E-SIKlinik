@@ -16,19 +16,37 @@ class ListAntrianNew extends StatefulWidget {
 class _ListAntrianNewState extends State<ListAntrianNew> {
   List<dynamic> antrianList = [];
   List<dynamic> filteredAntrianList = [];
+  List<dynamic> finishedAssesmen = [];
   DateTime selectedDate = DateTime.now();
   late DateTime _focusedDay;
   late DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.week;
+  int counter = 0;
 
-  final String apiGetAntrian = "http://192.168.18.40:8080/api/antrian";
+  final String apiGetAntrian = "http://192.168.43.246:8080/api/antrian";
 
   @override
   void initState() {
     super.initState();
     _focusedDay = DateTime.now();
     _selectedDay = selectedDate;
+    _getFinishedAssesmen();
     _getAllAntrian();
+
+  }
+
+  Future<void> _getFinishedAssesmen()async{
+    Uri finishedUrl = Uri.parse('http://192.168.43.246:8080/api/antrian/finished-assesmen');
+    try{
+      final response = await http.get(finishedUrl);
+      if(response.statusCode ==200){
+        final data = json.decode(response.body);
+        finishedAssesmen = data['results'];
+      }
+
+    }catch(error){
+      print('Error: $error');
+    }
   }
 
   Future<void> _getAllAntrian() async {
@@ -97,7 +115,7 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
           _buildCalendar(),
           Expanded(
               child: filteredAntrianList.isEmpty
-                  ? Center(
+                  ? const Center(
                       child: Text(
                         'Antrian Kosong',
                         style: TextStyle(fontSize: 18.0),
@@ -108,32 +126,41 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
                       itemBuilder: (BuildContext context, int index) {
                         final antrian = filteredAntrianList[index];
                         final antrianId = antrian['id'];
+                        bool antrianState = false;
+                        antrianState = antrian['status'] != 'Belum' ;
                         return Card(
                           margin:
-                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
                           ),
                           elevation: 4,
                           child: ListTile(
-                            contentPadding: EdgeInsets.symmetric(
+                            contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 12),
                             leading: CircleAvatar(
+
+                              backgroundColor: Colors.blue,
                               child: Text(
                                 antrian['no_antrian'].toString(),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              backgroundColor: Colors.blue,
                             ),
-                            title: Text(
-                              antrian['antrian_to_pasien']['nama'],
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                antrianStateWidget(antrian['status']),
+                                Text(
+                                  antrian['antrian_to_pasien']['nama'],
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                             subtitle: Text(
                               'Antrian Nomor: ${antrian['no_antrian']}',
@@ -142,7 +169,7 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
                                 color: Colors.grey[600],
                               ),
                             ),
-                            trailing: IconButton(
+                            trailing: antrianState ?  SizedBox(width: 1, height: 1,): IconButton(
                               icon: Icon(Icons.add),
                               onPressed: () {
                                 Navigator.push(
@@ -154,7 +181,7 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
                                   ),
                                 );
                               },
-                            ),
+                            )
                           ),
                         );
                       },
@@ -166,7 +193,7 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
 
   Widget _buildCalendar() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10.0),
+      margin: const EdgeInsets.symmetric(horizontal: 10.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(27.0),
         border: Border.all(color: Colors.grey[300]!),
@@ -192,7 +219,7 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
             _focusedDay = focusedDay;
           });
         },
-        calendarStyle: CalendarStyle(
+        calendarStyle: const CalendarStyle(
           selectedDecoration: BoxDecoration(
             color: Color.fromARGB(164, 87, 137, 239),
             shape: BoxShape.circle,
@@ -267,4 +294,34 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
         return '';
     }
   }
+}
+
+Widget antrianStateWidget(String state){
+  Color stateColor =  Colors.red;
+  String stateText = 'Dalam Antrian';
+
+  switch(state){
+    case 'Sedang' : stateColor = Colors.yellow;
+    stateText = 'Dalam Pemeriksaan';
+    break;
+    case 'Selesai':
+      stateColor= Colors.green;
+      stateText = 'Sudah Ditangani';
+      break;
+    default:
+      break;
+  }
+
+  return Row(
+    children: [
+      Container(width: 10, height: 10,decoration: BoxDecoration(color: stateColor,borderRadius: BorderRadius.circular(50)),),
+      Container(
+        margin: EdgeInsets.only(left: 7),
+        child: Text(
+          stateText,
+          style: TextStyle(fontSize: 12),
+        ),
+      ),
+    ],
+  );
 }

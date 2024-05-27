@@ -20,8 +20,8 @@ class _AddCheckupState extends State<AddCheckup> {
   final TextEditingController imageController = TextEditingController();
 
   final String apiPostCheckupResult =
-      "http://192.168.18.40:8080/api/checkup-obat/insert";
-  final String apiGetAllObat = "http://192.168.18.40:8080/api/obat";
+      "http://192.168.43.246:8080/api/checkup-obat/insert";
+  final String apiGetAllObat = "http://192.168.43.246:8080/api/obat";
 
   List<dynamic> obatList = [];
   Map<String, dynamic>? assesmentDetail;
@@ -60,7 +60,7 @@ class _AddCheckupState extends State<AddCheckup> {
     try {
       final response = await http.get(
         Uri.parse(
-            "http://192.168.18.40:8080/api/checkup-assesmen/show/${widget.assesmentId}"),
+            "http://192.168.43.246:8080/api/checkup-assesmen/show/${widget.assesmentId}"),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -98,6 +98,7 @@ class _AddCheckupState extends State<AddCheckup> {
       request.fields['resep_obat'] = json.encode(resepObatList);
 
       var response = await request.send();
+    print(request.fields['hasil']);
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -200,7 +201,7 @@ class _AddCheckupState extends State<AddCheckup> {
                                   const BorderRadius.all(Radius.circular(15)),
                               image: DecorationImage(
                                   image: NetworkImage(
-                                      'http://192.168.18.40:8080/storage/' +
+                                      'http://192.168.43.246:8080/storage/' +
                                           assesmentDetail?['image']),
                                   fit: BoxFit.fill)),
                         )
