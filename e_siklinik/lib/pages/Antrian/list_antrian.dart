@@ -21,7 +21,7 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
   late DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.week;
 
-  final String apiGetAntrian = "http://192.168.18.40:8080/api/antrian";
+  final String apiGetAntrian = "http://192.168.24.175:8080/api/antrian";
 
   @override
   void initState() {

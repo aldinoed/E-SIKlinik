@@ -19,7 +19,7 @@ class _DataState extends State<Data> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF9F9FB),
+      backgroundColor: const Color(0xFFF9F9FB),
       body: SafeArea(
           maintainBottomViewPadding: true,
           child: Padding(
@@ -32,10 +32,22 @@ class _DataState extends State<Data> {
                     height: 8,
                   ),
                   Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      color: Color(0xFFD9D9D9),
-                    ),
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            offset: const Offset(-1, 2),
+                            blurRadius: 3,
+                            spreadRadius: 0,
+                          ),
+                        ],
+                        border: Border.all(
+                            color: const Color(0xFF234DF0), width: 2),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
+                        image: const DecorationImage(
+                            image: AssetImage('assets/images/BannerData.jpeg'),
+                            fit: BoxFit.fill)),
                     width: double.infinity,
                     height: 150,
                     child: const Center(),
@@ -100,7 +112,7 @@ class _DataState extends State<Data> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => DataJadwal()));
+                                    builder: (context) => const DataJadwal()));
                           })
                     ],
                   ),

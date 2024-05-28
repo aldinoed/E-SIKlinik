@@ -12,7 +12,7 @@ class CarouselJadwal extends StatefulWidget {
 }
 
 class _CarouselJadwalState extends State<CarouselJadwal> {
-  final String apiGetAllJadwalDokter = "http://192.168.18.40:8080/api/jadwal_dokter";
+  final String apiGetAllJadwalDokter = "http://192.168.24.175:8080/api/jadwal_dokter";
   List<dynamic> jadwalList = [];
 
   @override
@@ -45,7 +45,6 @@ class _CarouselJadwalState extends State<CarouselJadwal> {
     await _getAllJadwal();
   }
 
- 
   final List<Map<String, dynamic>> doctorSchedules = [
     {
       'name': 'Andru Falah Arifin',
@@ -62,86 +61,87 @@ class _CarouselJadwalState extends State<CarouselJadwal> {
     // Add more schedules here
   ];
 
- @override
-Widget build(BuildContext context) {
-  return Container(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          "Jadwal Dokter",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Jadwal Dokter",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-        ),
-        CarouselSlider(
-          options: CarouselOptions(
-            autoPlay: true,
-            aspectRatio: 3.3,
-            viewportFraction: 1.0,
-            enlargeCenterPage: true,
-          ),
-          items: jadwalList.map((jadwal) {
-            return Builder(
-              builder: (BuildContext context) {
-                return Container(
-                  padding: const EdgeInsets.all(15),
-                  width: double.infinity,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.all(Radius.circular(16)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        offset: const Offset(0, 2),
-                        blurRadius: 5,
-                        spreadRadius: 2,
-                      ),
-                    ],
-                    image: const DecorationImage(
-                      image: AssetImage('assets/images/Schedule2.png'),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        jadwal['jadwal_to_dokter']['nama'],
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
+          CarouselSlider(
+            options: CarouselOptions(
+              autoPlay: true,
+              aspectRatio: 3.3,
+              viewportFraction: 1.0,
+              enlargeCenterPage: true,
+            ),
+            items: jadwalList.map((jadwal) {
+              return Builder(
+                builder: (BuildContext context) {
+                  return Container(
+                    margin: EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(15),
+                    width: double.infinity,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: const BorderRadius.all(Radius.circular(16)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          offset: const Offset(-1, 2),
+                          blurRadius: 3,
+                          spreadRadius: 0,
                         ),
+                      ],
+                      image: const DecorationImage(
+                        image: AssetImage('assets/images/Schedule2.png'),
+                        fit: BoxFit.fill,
                       ),
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.timer_outlined,
-                            color: Color(0xFF234DF0),
-                            size: 18,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          jadwal['jadwal_to_dokter']['nama'],
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
                           ),
-                          const SizedBox(width: 5),
-                          Text(
-                            '${jadwal['jadwal_mulai_tugas'].substring(0, 5)} - ${jadwal['jadwal_selesai_tugas'].substring(0, 5)}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500,
+                        ),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.timer_outlined,
+                              color: Color(0xFF234DF0),
+                              size: 18,
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              },
-            );
-          }).toList(),
-        ),
-      ],
-    ),
-  );
-}
+                            const SizedBox(width: 5),
+                            Text(
+                              '${jadwal['jadwal_mulai_tugas'].substring(0, 5)} - ${jadwal['jadwal_selesai_tugas'].substring(0, 5)}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
 }
