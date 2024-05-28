@@ -213,16 +213,11 @@ class _LoginPageState extends State<LoginPage> {
                                                       )),
                                                 );
                                                 SharedPreferences pref = await SharedPreferences.getInstance();
-                                                final int isAdminAuth = pref.getInt('isAdmin')!;
-                                                isAdminAuth == 1 ? Navigator.pushReplacement(
+                                                 Navigator.pushReplacement(
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                        const ControlPage())) : Navigator.pushReplacement(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                        const AssesmentPage()));
+                                                        const ControlPage())) ;
                                               } else {
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(

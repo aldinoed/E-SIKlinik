@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AntrianTable;
 use App\Models\CheckupAssesmen;
 use App\Models\CheckUpResult;
 use App\Models\DetailResepObat;
@@ -63,18 +64,18 @@ class CheckUpController extends Controller
       }
 
       public function indexTerbaru()
-{
-    $checkup = CheckUpResult::with(
-                    'checkUpResulToAssesmen.assesmenToDokter',
-                    'checkUpResulToAssesmen.assesmenToAntrian.antrianToPasien.pasienToProdi',
-                    'checkUpResultToDetailResep.detailResepToObat'
-                )
-                ->orderBy('created_at', 'desc')
-                ->take(5)
-                ->get();
+      {
+            $checkup = CheckUpResult::with(
+                  'checkUpResulToAssesmen.assesmenToDokter',
+                  'checkUpResulToAssesmen.assesmenToAntrian.antrianToPasien.pasienToProdi',
+                  'checkUpResultToDetailResep.detailResepToObat'
+            )
+                  ->orderBy('created_at', 'desc')
+                  ->take(5)
+                  ->get();
 
-    return response()->json(['status' => 200, 'checkup' => $checkup]);
-}
+            return response()->json(['status' => 200, 'checkup' => $checkup]);
+      }
 
 
       public function riwayatPasien(int $pasienId)
@@ -163,6 +164,7 @@ class CheckUpController extends Controller
                               'hasil_diagnosa' => $request->hasil_diagnosa,
                               'url_file' => $path,
                         ]);
+
                         if ($response) {
                               return response()->json(["status" => 200, "message" => "Berhasil input hasil checkup"]);
                         } else {
@@ -181,9 +183,13 @@ class CheckUpController extends Controller
             try {
                   $response = CheckupAssesmen::create([
                         'antrian_id' => $request->antrian_id,
-                        'dokter_id' => $request->dokter_id
+                        'dokter_id' => $request->dokter_id,
                   ]);
                   if (isNull($response)) {
+
+                        $res = AntrianTable::findOrFail($request->antrian_id);
+                        $res->status = 'Sedang';
+                        $res->save();
                         return response()->json(["status" => 200, "message" => "Berhasil input assesmen"]);
                   } else {
                         throw new Exception();
@@ -317,9 +323,19 @@ class CheckUpController extends Controller
                         }
 
                         DB::commit();
-                        return response()->json(["status" => 200, "message" => "Berhasil input hasil checkup dan resep obat"]);
-                  } else {
-                        throw new Exception("Gagal menyimpan hasil checkup");
+                        $antrianId = DB::table('checkup_assesmens')
+                              ->where('checkup_assesmens.id', $request->assesmen_id)
+                              ->value('antrian_id'); // Use value() to directly get the antrian_id
+
+                        if ($antrianId) {
+                              // Find the corresponding antrian record and update its status
+                              $res = AntrianTable::findOrFail($antrianId);
+                              $res->status = 'Selesai';
+                              $res->save();
+                              return response()->json(["status" => 200, "message" => "Berhasil input hasil checkup dan resep obat"]);
+                        } else {
+                              throw new Exception("Gagal menyimpan hasil checkup");
+                        }
                   }
             } catch (Exception $exception) {
                   DB::rollBack();

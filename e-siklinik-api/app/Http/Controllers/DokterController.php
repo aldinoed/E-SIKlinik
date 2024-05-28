@@ -151,7 +151,10 @@ class DokterController extends Controller
       public function jadwalToday(String $day)
       {
             try {
-                  $jadwal_dokter = DB::table('jadwal_dokters')->where('hari', $day)->get();
+                  $jadwal_dokter = DB::table('jadwal_dokters')->select('jadwal_dokters.id', 'jadwal_dokters.hari', 'jadwal_dokters.jadwal_mulai_tugas', 'jadwal_dokters.jadwal_selesai_tugas', 'jadwal_dokters.dokter_id', 'jadwal_dokters.created_at', 'jadwal_dokters.updated_at')
+                        ->join('dokter', 'jadwal_dokters.dokter_id', '=', 'dokter.id')
+                        ->addSelect('dokter.*')
+                        ->where('jadwal_dokters.hari', $day)->get();
                   if (sizeof($jadwal_dokter) > 0) {
                         return response()->json(['status' => 200, 'message' => 'Success tampil jadwal dokter', 'jadwal_dokter' => $jadwal_dokter]);
                   } else {

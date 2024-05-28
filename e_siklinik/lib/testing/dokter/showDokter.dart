@@ -25,7 +25,7 @@ class _ShowDokterPageState extends State<ShowDokterPage> {
     try {
       final response = await http.get(
         Uri.parse(
-            "http://192.168.18.40:8080/api/dokter/show/${widget.dokterId}"),
+            "http://192.168.43.246:8080/api/dokter/show/${widget.dokterId}"),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -47,7 +47,7 @@ class _ShowDokterPageState extends State<ShowDokterPage> {
   Future<void> _getRiwayatDokter() async {
     try {
       final response = await http.get(Uri.parse(
-          "http://192.168.18.40:8080/api/riwayat-dokter/${widget.dokterId}"));
+          "http://192.168.43.246:8080/api/riwayat-dokter/${widget.dokterId}"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data != null && data['checkup'] != null) {
@@ -79,7 +79,7 @@ class _ShowDokterPageState extends State<ShowDokterPage> {
                     children: [
                       CircleAvatar(
                         backgroundImage: NetworkImage(
-                          'http://192.168.18.40:8080/storage/' +
+                          'http://192.168.43.246:8080/storage/' +
                               dokterDetail!['image'],
                         ),
                       ),

@@ -12,7 +12,8 @@ class AssesmentPage extends StatefulWidget {
 }
 
 class _AssesmentPageState extends State<AssesmentPage> {
-  final String apiGetAllAssesment = "http://192.168.24.175:8080/api/checkup-assesmen";
+  final String apiGetAllAssesment =
+      "http://192.168.43.246:8080/api/checkup-assesmen";
   List<dynamic> assesmentList = [];
 
   @override
@@ -27,6 +28,7 @@ class _AssesmentPageState extends State<AssesmentPage> {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data != null && data['results'] != null) {
+          print(response.body);
           setState(() {
             assesmentList = data['results'];
           });
@@ -74,8 +76,7 @@ class _AssesmentPageState extends State<AssesmentPage> {
                   itemCount: assesmentList.length,
                   itemBuilder: (BuildContext context, int index) {
                     final assesment = assesmentList[index];
-                    final assesmentId = assesment['id'];
-
+                    final assesmentId = assesment['checkup_assesmen_id'];
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(
