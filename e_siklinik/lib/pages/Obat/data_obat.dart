@@ -15,7 +15,7 @@ class DataObat extends StatefulWidget {
 }
 
 class _DataObatState extends State<DataObat> {
-  final String apiGetAllObat = "http://192.168.100.66:8080/api/obat";
+  final String apiGetAllObat = "http://10.0.2.2:8000/api/obat";
   List<dynamic> obatList = [];
 
   String query = '';
@@ -74,24 +74,24 @@ class _DataObatState extends State<DataObat> {
   }
 
   String _getImage(int kategoriObat) {
-  if (kategoriObat == 1) {
-    return 'assets/images/OB.png';
-  } else if (kategoriObat == 2) {
-    return 'assets/images/OBT.png';
-  } else if (kategoriObat == 3) {
-    return 'assets/images/OK.png';
-  }else if (kategoriObat == 4) {
-    return 'assets/images/ON.png';
-  }else if (kategoriObat == 5) {
-    return 'assets/images/OJ.png';
-  }else if (kategoriObat == 6) {
-    return 'assets/images/OH.png';
-  }else if (kategoriObat == 7) {
-    return 'assets/images/OF.png';
-  }else {
-    return 'assets/images/OD.png';
+    if (kategoriObat == 1) {
+      return 'assets/images/OB.png';
+    } else if (kategoriObat == 2) {
+      return 'assets/images/OBT.png';
+    } else if (kategoriObat == 3) {
+      return 'assets/images/OK.png';
+    } else if (kategoriObat == 4) {
+      return 'assets/images/ON.png';
+    } else if (kategoriObat == 5) {
+      return 'assets/images/OJ.png';
+    } else if (kategoriObat == 6) {
+      return 'assets/images/OH.png';
+    } else if (kategoriObat == 7) {
+      return 'assets/images/OF.png';
+    } else {
+      return 'assets/images/OD.png';
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +163,8 @@ class _DataObatState extends State<DataObat> {
                             leading: CircleAvatar(
                               radius: 10,
                               backgroundColor: Colors.transparent,
-                              child: Image.asset(_getImage(obat['kategori_id']),
+                              child: Image.asset(
+                                _getImage(obat['kategori_id']),
                                 width: 40,
                                 height: 40,
                                 fit: BoxFit.fill,

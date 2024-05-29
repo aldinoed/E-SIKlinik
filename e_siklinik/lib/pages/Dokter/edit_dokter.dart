@@ -46,7 +46,7 @@ class _EditDokterState extends State<EditDokter> {
 
   Future<void> _updateDokter() async {
     final id = widget.dokter['id'];
-    final url = Uri.parse('http://192.168.100.66:8080/api/dokter/update/$id');
+    final url = Uri.parse('http://10.0.2.2:8000/api/dokter/update/$id');
     final request = http.MultipartRequest('POST', url);
 
     // Menambahkan data yang akan diperbarui
@@ -179,29 +179,29 @@ class _EditDokterState extends State<EditDokter> {
                                           BorderRadius.all(Radius.circular(15)),
                                       color: Color(0xFFEFF0F3)),
                                   child: DropdownButtonFormField<String>(
-              value: selectedGender,
-              decoration: const InputDecoration(
-                hintText: "Gender",
-                border: InputBorder.none,
-              ),
-              items: genders.map((String gender) {
-                return DropdownMenuItem<String>(
-                  value: gender,
-                  child: Text(gender),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedGender = newValue;
-                });
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Jenis kelamin tidak boleh kosong';
-                }
-                return null;
-              },
-            ),
+                                    value: selectedGender,
+                                    decoration: const InputDecoration(
+                                      hintText: "Gender",
+                                      border: InputBorder.none,
+                                    ),
+                                    items: genders.map((String gender) {
+                                      return DropdownMenuItem<String>(
+                                        value: gender,
+                                        child: Text(gender),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        selectedGender = newValue;
+                                      });
+                                    },
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Jenis kelamin tidak boleh kosong';
+                                      }
+                                      return null;
+                                    },
+                                  ),
                                 ),
                               ],
                             )),

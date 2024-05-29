@@ -23,8 +23,8 @@ class _AddPasienState extends State<AddPasien> {
   final TextEditingController prodiController = TextEditingController();
   final TextEditingController tanggalLahirController = TextEditingController();
 
-  final String apiPostPasien = "http://192.168.100.66:8080/api/pasien/create";
-  final String apiGetAllProdi = "http://192.168.100.66:8080/api/prodi";
+  final String apiPostPasien = "http://10.0.2.2:8000/api/pasien/create";
+  final String apiGetAllProdi = "http://10.0.2.2:8000/api/prodi";
 
   List<dynamic> prodiList = [];
   String? selectedGender;
@@ -164,8 +164,8 @@ class _AddPasienState extends State<AddPasien> {
                     children: [
                       const Text(
                         "Nama",
-                        style:
-                            TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 17),
                       ),
                       Container(
                         height: 50,
@@ -187,8 +187,8 @@ class _AddPasienState extends State<AddPasien> {
                       ),
                       const Text(
                         "Program Studi",
-                        style:
-                            TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 17),
                       ),
                       Container(
                         height: 50,
@@ -226,8 +226,8 @@ class _AddPasienState extends State<AddPasien> {
                       ),
                       const Text(
                         "NRP",
-                        style:
-                            TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 17),
                       ),
                       Container(
                         height: 50,
@@ -343,8 +343,8 @@ class _AddPasienState extends State<AddPasien> {
                       ),
                       const Text(
                         "Alamat",
-                        style:
-                            TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 17),
                       ),
                       Container(
                         height: 100,
@@ -365,8 +365,8 @@ class _AddPasienState extends State<AddPasien> {
                       ),
                       const Text(
                         "Nomor Handphone",
-                        style:
-                            TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 17),
                       ),
                       Container(
                         height: 50,
@@ -387,8 +387,8 @@ class _AddPasienState extends State<AddPasien> {
                       ),
                       const Text(
                         "Nomor Handphone Wali",
-                        style:
-                            TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 17),
                       ),
                       Container(
                         height: 50,
@@ -409,8 +409,8 @@ class _AddPasienState extends State<AddPasien> {
                       ),
                       const Text(
                         "Foto Pasien",
-                        style:
-                            TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 17),
                       ),
                       Container(
                         height: 50,
@@ -447,7 +447,8 @@ class _AddPasienState extends State<AddPasien> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           ElevatedButton(
-                            onPressed: isLoading ? null : () => addPasien(context),
+                            onPressed:
+                                isLoading ? null : () => addPasien(context),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF234DF0),
                               shape: RoundedRectangleBorder(

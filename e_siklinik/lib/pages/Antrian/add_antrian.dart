@@ -14,8 +14,8 @@ class _AddAntrianState extends State<AddAntrian> {
   final TextEditingController noAntrianController = TextEditingController();
   final TextEditingController searchController = TextEditingController();
 
-  final String apiPostAntrian = "http://192.168.100.66:8080/api/antrian/create";
-  final String apiGetAllPasien = "http://192.168.100.66:8080/api/pasien";
+  final String apiPostAntrian = "http://10.0.2.2:8000/api/antrian/create";
+  final String apiGetAllPasien = "http://10.0.2.2:8000/api/pasien";
 
   List<dynamic> pasienList = [];
   List<dynamic> filteredPasienList = [];
@@ -71,7 +71,7 @@ class _AddAntrianState extends State<AddAntrian> {
       var request = http.MultipartRequest('POST', Uri.parse(apiPostAntrian));
       request.fields['pasien_id'] = selectedPasien?['id'].toString() ?? '';
       request.fields['no_antrian'] = noAntrianController.text;
-      
+
       // Menambahkan tanggal saat ini ke request
       String currentDate = DateTime.now().toIso8601String();
       request.fields['tanggal'] = currentDate;
@@ -90,7 +90,7 @@ class _AddAntrianState extends State<AddAntrian> {
         setState(() {
           selectedPasien = null;
         });
-        Navigator.pop(context,true);
+        Navigator.pop(context, true);
       } else {
         final errorData = json.decode(await response.stream.bytesToString());
         print('Gagal menambahkan antrian: ${errorData['message']}');
@@ -162,18 +162,16 @@ class _AddAntrianState extends State<AddAntrian> {
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 16),
                   height: 50,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 2),
-                        decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                            color: Color(0xFFEFF0F3)),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                  decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      color: Color(0xFFEFF0F3)),
                   child: TextFormField(
-                  controller: noAntrianController,
-                  decoration: const InputDecoration(
-                    hintText: "No Antrian",
-                    border: InputBorder.none
+                    controller: noAntrianController,
+                    decoration: const InputDecoration(
+                        hintText: "No Antrian", border: InputBorder.none),
                   ),
-                                ),
                 ),
                 if (selectedPasien == null) ...[
                   Container(
@@ -314,7 +312,7 @@ class _AddAntrianState extends State<AddAntrian> {
                                   const BorderRadius.all(Radius.circular(15)),
                               image: DecorationImage(
                                   image: NetworkImage(
-                                      'http://192.168.100.66:8080/storage/' +
+                                      'http://10.0.2.2:8000/storage/' +
                                           selectedPasien!['image']),
                                   fit: BoxFit.fill)),
                         ),

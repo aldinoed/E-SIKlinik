@@ -21,9 +21,8 @@ class _AddDokterState extends State<AddDokter> {
   final TextEditingController imageController = TextEditingController();
   final TextEditingController tanggalLahirController = TextEditingController();
 
-  final String apiPostDokter = "http://192.168.100.66:8080/api/dokter/create";
-  final String apiGetAllJadwalDokter =
-      "http://192.168.100.66:8080/api/jadwal_dokter";
+  final String apiPostDokter = "http://10.0.2.2:8000/api/dokter/create";
+  final String apiGetAllJadwalDokter = "http://10.0.2.2:8000/api/jadwal_dokter";
 
   List<dynamic> dokterList = [];
   File? _imageFile;
@@ -70,7 +69,7 @@ class _AddDokterState extends State<AddDokter> {
         noHpController.clear();
         _imageFile = null;
 
-        Navigator.pop(context,true);
+        Navigator.pop(context, true);
       } else {
         print('Gagal menambahkan Dokter');
       }

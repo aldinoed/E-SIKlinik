@@ -16,7 +16,7 @@ class DataJadwal extends StatefulWidget {
 }
 
 class _DataJadwalState extends State<DataJadwal> {
-  final String apiGetAllJadwalDokter = "http://192.168.100.66:8080/api/jadwal_dokter";
+  final String apiGetAllJadwalDokter = "http://10.0.2.2:8000/api/jadwal_dokter";
   List<dynamic> jadwalList = [];
   List<dynamic> filteredJadwalList = [];
 
@@ -59,9 +59,7 @@ class _DataJadwalState extends State<DataJadwal> {
               jadwal['jadwal_to_dokter']['nama']
                   .toLowerCase()
                   .contains(searchText.toLowerCase()) ||
-              jadwal['hari']
-                  .toLowerCase()
-                  .contains(searchText.toLowerCase()) ||
+              jadwal['hari'].toLowerCase().contains(searchText.toLowerCase()) ||
               jadwal['jadwal_mulai_tugas']
                   .toLowerCase()
                   .contains(searchText.toLowerCase()) ||
@@ -73,10 +71,10 @@ class _DataJadwalState extends State<DataJadwal> {
   }
 
   void _deleteItem(int id) async {
-    Uri url = Uri.parse('http://192.168.100.66:8080/api/jadwal_dokter/delete/$id');
+    Uri url = Uri.parse('http://10.0.2.2:8000/api/jadwal_dokter/delete/$id');
     final response = await http.delete(url);
 
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Berhasil hapus jadwal dokter!'),
@@ -84,7 +82,7 @@ class _DataJadwalState extends State<DataJadwal> {
       );
       Navigator.pop(context);
       _refreshData();
-    }else{
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Gagal hapus jadwal dokter!'),
@@ -92,13 +90,13 @@ class _DataJadwalState extends State<DataJadwal> {
       );
     }
   }
-  String formatTime(String time) {
-  if (time.length >= 5) {
-    return time.substring(0, 5); // Mengambil hanya jam dan menit
-  }
-  return time;
-}
 
+  String formatTime(String time) {
+    if (time.length >= 5) {
+      return time.substring(0, 5); // Mengambil hanya jam dan menit
+    }
+    return time;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -183,12 +181,15 @@ class _DataJadwalState extends State<DataJadwal> {
                         itemCount: filteredJadwalList.length,
                         itemBuilder: (BuildContext context, int index) {
                           final jadwal = filteredJadwalList[index];
-                          final jamMulai = formatTime(jadwal['jadwal_mulai_tugas']);
-                        final jamSelesai = formatTime(jadwal['jadwal_selesai_tugas']);
+                          final jamMulai =
+                              formatTime(jadwal['jadwal_mulai_tugas']);
+                          final jamSelesai =
+                              formatTime(jadwal['jadwal_selesai_tugas']);
 
                           return BoxJadwal(
                             dokter: "${jadwal['jadwal_to_dokter']['nama']}",
-                            jadwal: "${jadwal['hari']}, $jamMulai - $jamSelesai",
+                            jadwal:
+                                "${jadwal['hari']}, $jamMulai - $jamSelesai",
                             onTapPop: () {
                               showModalBottomSheet(
                                 isScrollControlled: true,
@@ -208,8 +209,8 @@ class _DataJadwalState extends State<DataJadwal> {
                                     }
                                   },
                                   onTapDelete: () {
-                                    showDeleteConfirmationDialog(
-                                        context, ()=>_deleteItem(jadwal['id']));
+                                    showDeleteConfirmationDialog(context,
+                                        () => _deleteItem(jadwal['id']));
                                   },
                                 ),
                               );

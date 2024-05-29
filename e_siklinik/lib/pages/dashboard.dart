@@ -23,58 +23,59 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   late List<JadwalDokter> todayDoctor = [];
   void _getJadwalToday() async {
-  try {
-    DateTime today = DateTime.now();
-    String dayName = DateFormat('EEEE').format(today);
-    switch (dayName) {
-      case 'Monday':
-        dayName = 'Senin';
-        break;
-      case 'Tuesday':
-        dayName = 'Selasa';
-        break;
-      case 'Wednesday':
-        dayName = 'Rabu';
-        break;
-      case 'Thursday':
-        dayName = 'Kamis';
-        break;
-      case 'Friday':
-        dayName = 'Jum\'at';
-        break;
-      case 'Saturday':
-        dayName = 'Sabtu';
-        break;
-      case 'Sunday':
-        dayName = 'Minggu';
-        break;
-      default:
-        break;
-    }
-
-    Uri url = Uri.parse('http://192.168.100.66:8080/api/jadwal_dokter/today/$dayName');
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      var jsonData = json.decode(response.body);
-      if (jsonData != null && jsonData['jadwal_dokter'] != null) {
-        List<dynamic> jadwalList = jsonData['jadwal_dokter'];
-        setState(() {
-          todayDoctor = jadwalList.map((json) => JadwalDokter.fromJson(json)).toList();
-        });
-      } else {
-        print('No schedule found for today');
-        setState(() {
-          todayDoctor = []; // Set an empty list if no schedule is found
-        });
+    try {
+      DateTime today = DateTime.now();
+      String dayName = DateFormat('EEEE').format(today);
+      switch (dayName) {
+        case 'Monday':
+          dayName = 'Senin';
+          break;
+        case 'Tuesday':
+          dayName = 'Selasa';
+          break;
+        case 'Wednesday':
+          dayName = 'Rabu';
+          break;
+        case 'Thursday':
+          dayName = 'Kamis';
+          break;
+        case 'Friday':
+          dayName = 'Jum\'at';
+          break;
+        case 'Saturday':
+          dayName = 'Sabtu';
+          break;
+        case 'Sunday':
+          dayName = 'Minggu';
+          break;
+        default:
+          break;
       }
-    } else {
-      print('Failed to load data');
-    }
-  } catch (error) {
-    print('An error occurred: $error');
-  }
-}
 
+      Uri url =
+          Uri.parse('http://10.0.2.2:8000/api/jadwal_dokter/today/$dayName');
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        var jsonData = json.decode(response.body);
+        if (jsonData != null && jsonData['jadwal_dokter'] != null) {
+          List<dynamic> jadwalList = jsonData['jadwal_dokter'];
+          setState(() {
+            todayDoctor =
+                jadwalList.map((json) => JadwalDokter.fromJson(json)).toList();
+          });
+        } else {
+          print('No schedule found for today');
+          setState(() {
+            todayDoctor = []; // Set an empty list if no schedule is found
+          });
+        }
+      } else {
+        print('Failed to load data');
+      }
+    } catch (error) {
+      print('An error occurred: $error');
+    }
+  }
 
   @override
   void initState() {

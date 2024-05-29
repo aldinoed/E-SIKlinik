@@ -19,8 +19,8 @@ class _AddJadwalState extends State<AddJadwal> {
   final List<String> gender = ['Laki-Laki', 'Perempuan'];
 
   final String apiPostJadwalDokter =
-      "http://192.168.100.66:8080/api/jadwal_dokter/create";
-  final String apiGetAllDokter = "http://192.168.100.66:8080/api/dokter";
+      "http://10.0.2.2:8000/api/jadwal_dokter/create";
+  final String apiGetAllDokter = "http://10.0.2.2:8000/api/dokter";
   List<dynamic> dokterList = [];
 
   @override
@@ -177,7 +177,7 @@ class _AddJadwalState extends State<AddJadwal> {
                   Container(
                     height: 50,
                     padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       color: Color(0xFFEFF0F3),
@@ -185,7 +185,7 @@ class _AddJadwalState extends State<AddJadwal> {
                     child: DropdownButtonFormField(
                       onChanged: (value) {
                         setState(() {
-                         hariController = value;
+                          hariController = value;
                         });
                       },
                       items: days.map<DropdownMenuItem>((day) {

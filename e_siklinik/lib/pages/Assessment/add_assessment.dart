@@ -18,10 +18,10 @@ class _AddAssessmentState extends State<AddAssessment> {
   final TextEditingController antrianController = TextEditingController();
 
   final String apiPostAssesment =
-      "http://192.168.100.66:8080/api/checkup-assesmen/insert";
+      "http://10.0.2.2:8000/api/checkup-assesmen/insert";
   List<dynamic>? antrianDetail;
 
-  final String apiGetAllDokter = "http://192.168.100.66:8080/api/dokter";
+  final String apiGetAllDokter = "http://10.0.2.2:8000/api/dokter";
   List<dynamic> dokterList = [];
   File? _imageFile;
 
@@ -55,8 +55,7 @@ class _AddAssessmentState extends State<AddAssessment> {
   Future<void> _getAntrianDetail() async {
     try {
       final response = await http.get(
-        Uri.parse(
-            "http://192.168.100.66:8080/api/antrian/show/${widget.antrianId}"),
+        Uri.parse("http://10.0.2.2:8000/api/antrian/show/${widget.antrianId}"),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -100,10 +99,8 @@ class _AddAssessmentState extends State<AddAssessment> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Assesment berhasil ditambahkan')),
         );
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const AssesmentPage()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const AssesmentPage()));
 
         // Clear input fields
         // dokterIdController.clear();
@@ -182,7 +179,7 @@ class _AddAssessmentState extends State<AddAssessment> {
                                     const BorderRadius.all(Radius.circular(15)),
                                 image: DecorationImage(
                                     image: NetworkImage(
-                                        'http://192.168.100.66:8080/storage/' +
+                                        'http://10.0.2.2:8000/storage/' +
                                             antrianDetail?[0]['image']),
                                     fit: BoxFit.fill)),
                           )
