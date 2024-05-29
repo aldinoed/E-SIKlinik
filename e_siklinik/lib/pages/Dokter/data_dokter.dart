@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:e_siklinik/components/bottomsheet.dart';
 import 'package:e_siklinik/components/box.dart';
 import 'package:e_siklinik/components/delete_confirmation.dart';
@@ -7,6 +6,7 @@ import 'package:e_siklinik/pages/Dokter/edit_dokter.dart';
 import 'package:e_siklinik/pages/Dokter/show_dokter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
 class DataDokter extends StatefulWidget {
   const DataDokter({super.key});
@@ -17,6 +17,7 @@ class DataDokter extends StatefulWidget {
 
 class _DataDokterState extends State<DataDokter> {
   final String apiGetAllDokter = "http://10.0.2.2:8000/api/dokter";
+
   List<dynamic> dokterList = [];
   List<dynamic> filteredDokterList = [];
 
@@ -62,8 +63,30 @@ class _DataDokterState extends State<DataDokter> {
     });
   }
 
-  void _deleteItem() {
-    print('Item deleted');
+  Future<void> _disableDokter(int dokterId) async {
+    try {
+      final response = await http.put(
+          Uri.parse("http://10.0.2.2:8000/api/dokter/disabled/$dokterId"));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        print('Success: ${data['message']}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Success: ${data['message']}')),
+        );
+        _refreshData();
+      } else {
+        final errorData = json.decode(response.body);
+        print('Failed: ${errorData['message']}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed: ${errorData['message']}')),
+        );
+      }
+    } catch (error) {
+      print('Error: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $error')),
+      );
+    }
   }
 
   @override
@@ -181,8 +204,8 @@ class _DataDokterState extends State<DataDokter> {
                                           }
                                         },
                                         onTapDelete: () {
-                                          showDeleteConfirmationDialog(
-                                              context, _deleteItem);
+                                          showDeleteConfirmationDialog(context,
+                                              () => _disableDokter(dokterId));
                                         },
                                       ));
                             },

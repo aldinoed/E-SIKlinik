@@ -118,8 +118,7 @@ class _EditJadwalState extends State<EditJadwal> {
     return TimeOfDay(hour: hour, minute: minute);
   }
 
-  Future<void> _selectTime(
-      BuildContext context, TextEditingController controller, bool isStartTime) async {
+  Future<void> _selectTime(BuildContext context, TextEditingController controller, bool isStartTime) async {
     dynamic time = parseTimeOfDay(controller.text);
     final TimeOfDay? picked = await showTimePicker(
       context: context,
@@ -183,8 +182,8 @@ class _EditJadwalState extends State<EditJadwal> {
                   children: [
                     const Text(
                       "Informasi Dokter",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 17),
                     ),
                     Container(
                       height: 50,
@@ -194,28 +193,13 @@ class _EditJadwalState extends State<EditJadwal> {
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                         color: Color(0xFFEFF0F3),
                       ),
-                      child: DropdownButtonFormField<String>(
-                        value: _selectedDokterId,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedDokterId = value;
-                          });
-                        },
-                        items: dokterList.map((dokter) {
-                          return DropdownMenuItem<String>(
-                            value: dokter['id'].toString(),
-                            child: Text(dokter['nama']),
-                          );
-                        }).toList(),
-                        decoration: const InputDecoration(
-                            hintText: "Nama Dokter",
-                            border: InputBorder.none),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Dokter tidak boleh kosong';
-                          }
-                          return null;
-                        },
+                      child: Center(
+                        child: TextFormField(
+                          controller: _dokterNameController,
+                          readOnly: true,
+                          decoration: const InputDecoration(
+                              border: InputBorder.none),
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -223,13 +207,13 @@ class _EditJadwalState extends State<EditJadwal> {
                     ),
                     const Text(
                       "Hari Tugas",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 17),
                     ),
                     Container(
                       height: 50,
                       padding:
-                          const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                         color: Color(0xFFEFF0F3),
@@ -256,8 +240,8 @@ class _EditJadwalState extends State<EditJadwal> {
                     ),
                     const Text(
                       "Jam Tugas",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 17),
                     ),
                     Row(
                       children: [
@@ -274,8 +258,8 @@ class _EditJadwalState extends State<EditJadwal> {
                             child: TextFormField(
                               controller: _jamMulaiController,
                               readOnly: true,
-                              onTap: () => _selectTime(
-                                  context, _jamMulaiController, true),
+                              onTap: () =>
+                                  _selectTime(context, _jamMulaiController, true),
                               decoration: const InputDecoration(
                                   hintText: "Jam Mulai",
                                   border: InputBorder.none),
@@ -306,8 +290,8 @@ class _EditJadwalState extends State<EditJadwal> {
                             child: TextFormField(
                               controller: _jamSelesaiController,
                               readOnly: true,
-                              onTap: () => _selectTime(
-                                  context, _jamSelesaiController, false),
+                              onTap: () =>
+                                  _selectTime(context, _jamSelesaiController, false),
                               decoration: const InputDecoration(
                                   hintText: "Jam Selesai",
                                   border: InputBorder.none),

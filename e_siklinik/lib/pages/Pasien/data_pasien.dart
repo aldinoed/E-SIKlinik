@@ -60,24 +60,49 @@ class _DataPasienState extends State<DataPasien> {
     });
   }
 
-  void _deleteItem(int id) async {
+  // void _deleteItem(int id) async {
+  //   Uri url = Uri.parse('http://10.0.2.2:8000/api/pasien/delete/$id');
+  //   final response = await http.delete(url);
+  //   print('ini id ${response.body}');
+  //   if (response.statusCode == 200) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text('Berhasil hapus data pasien!'),
+  //       ),
+  //     );
+  //     Navigator.pop(context);
+  //     _refreshData();
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text('Gagal hapus data pasien!'),
+  //       ),
+  //     );
+  //   }
+  // }
 
-    Uri url = Uri.parse('http://10.0.2.2:8000/api/pasien/delete/$id');
-    final response = await http.delete(url);
-    print('ini id ${response.body}');
-    if(response.statusCode == 200){
+  Future<void> _disablePasien(int pasienId) async {
+    try {
+      final response = await http
+          .put(Uri.parse("http://10.0.2.2:8000/api/pasien/disabled/$pasienId"));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        print('Success: ${data['message']}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Success: ${data['message']}')),
+        );
+        _refreshData();
+      } else {
+        final errorData = json.decode(response.body);
+        print('Failed: ${errorData['message']}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed: ${errorData['message']}')),
+        );
+      }
+    } catch (error) {
+      print('Error: $error');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Berhasil hapus data pasien!'),
-        ),
-      );
-      Navigator.pop(context);
-      _refreshData();
-    }else{
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Gagal hapus data pasien!'),
-        ),
+        SnackBar(content: Text('Error: $error')),
       );
     }
   }
@@ -210,7 +235,7 @@ class _DataPasienState extends State<DataPasien> {
                                   },
                                   onTapDelete: () {
                                     showDeleteConfirmationDialog(
-                                        context, ()=>{_deleteItem(pasien['id'])});
+                                        context, () => _disablePasien(pasienId));
                                   },
                                 ),
                               );
