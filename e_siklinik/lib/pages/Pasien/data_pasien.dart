@@ -16,7 +16,7 @@ class DataPasien extends StatefulWidget {
 }
 
 class _DataPasienState extends State<DataPasien> {
-  final String apiGetAllPasien = "http://192.168.43.246:8080/api/pasien";
+  final String apiGetAllPasien = "http://192.168.100.66:8080/api/pasien";
   List<dynamic> pasienList = [];
   List<dynamic> filteredPasienList = [];
 
@@ -62,7 +62,7 @@ class _DataPasienState extends State<DataPasien> {
 
   void _deleteItem(int id) async {
 
-    Uri url = Uri.parse('http://192.168.43.246:8080/api/pasien/delete/$id');
+    Uri url = Uri.parse('http://192.168.100.66:8080/api/pasien/delete/$id');
     final response = await http.delete(url);
     print('ini id ${response.body}');
     if(response.statusCode == 200){
@@ -185,7 +185,7 @@ class _DataPasienState extends State<DataPasien> {
                                         fontWeight: FontWeight.w300),
                                   )
                                 : const Text("G ada prodi"),
-                            icon: 'http://192.168.43.246:8080/storage/' +
+                            icon: 'http://192.168.100.66:8080/storage/' +
                                 pasien['image'],
                             onTapPop: () {
                               showModalBottomSheet(

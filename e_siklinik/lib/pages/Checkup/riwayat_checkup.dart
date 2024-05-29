@@ -24,7 +24,7 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
     try {
       final response = await http.get(
         Uri.parse(
-            "http://192.168.43.246:8080/api/checkup-result/show/${widget.checkupId}"),
+            "http://192.168.100.66:8080/api/checkup-result/show/${widget.checkupId}"),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);

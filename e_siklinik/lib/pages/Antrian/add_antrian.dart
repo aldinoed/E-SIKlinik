@@ -14,8 +14,8 @@ class _AddAntrianState extends State<AddAntrian> {
   final TextEditingController noAntrianController = TextEditingController();
   final TextEditingController searchController = TextEditingController();
 
-  final String apiPostAntrian = "http://192.168.43.246:8080/api/antrian/create";
-  final String apiGetAllPasien = "http://192.168.43.246:8080/api/pasien";
+  final String apiPostAntrian = "http://192.168.100.66:8080/api/antrian/create";
+  final String apiGetAllPasien = "http://192.168.100.66:8080/api/pasien";
 
   List<dynamic> pasienList = [];
   List<dynamic> filteredPasienList = [];
@@ -66,11 +66,15 @@ class _AddAntrianState extends State<AddAntrian> {
     }
   }
 
-  Future<void> addAntrian(BuildContext context) async {
+  Future<void> AddAntrian(BuildContext context) async {
     try {
       var request = http.MultipartRequest('POST', Uri.parse(apiPostAntrian));
       request.fields['pasien_id'] = selectedPasien?['id'].toString() ?? '';
       request.fields['no_antrian'] = noAntrianController.text;
+      
+      // Menambahkan tanggal saat ini ke request
+      String currentDate = DateTime.now().toIso8601String();
+      request.fields['tanggal'] = currentDate;
 
       var response = await request.send();
 
@@ -81,12 +85,12 @@ class _AddAntrianState extends State<AddAntrian> {
           const SnackBar(content: Text('Antrian berhasil ditambahkan')),
         );
 
-        // Clear input fields
         pasienIdController.clear();
         noAntrianController.clear();
         setState(() {
           selectedPasien = null;
         });
+        Navigator.pop(context,true);
       } else {
         final errorData = json.decode(await response.stream.bytesToString());
         print('Gagal menambahkan antrian: ${errorData['message']}');
@@ -155,6 +159,22 @@ class _AddAntrianState extends State<AddAntrian> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  height: 50,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 2),
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            color: Color(0xFFEFF0F3)),
+                  child: TextFormField(
+                  controller: noAntrianController,
+                  decoration: const InputDecoration(
+                    hintText: "No Antrian",
+                    border: InputBorder.none
+                  ),
+                                ),
+                ),
                 if (selectedPasien == null) ...[
                   Container(
                     margin: const EdgeInsets.only(top: 16, right: 16, left: 16),
@@ -288,13 +308,13 @@ class _AddAntrianState extends State<AddAntrian> {
                         const SizedBox(height: 15),
                         Container(
                           height: 180,
-                          width: 115,
+                          width: 180,
                           decoration: BoxDecoration(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(15)),
                               image: DecorationImage(
                                   image: NetworkImage(
-                                      'http://192.168.43.246:8080/storage/' +
+                                      'http://192.168.100.66:8080/storage/' +
                                           selectedPasien!['image']),
                                   fit: BoxFit.fill)),
                         ),
@@ -339,7 +359,7 @@ class _AddAntrianState extends State<AddAntrian> {
                       ),
                       const SizedBox(width: 10),
                       ElevatedButton(
-                        onPressed: () => addAntrian(context),
+                        onPressed: () => AddAntrian(context),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF234DF0),
                           shape: RoundedRectangleBorder(

@@ -13,7 +13,7 @@ class AssesmentPage extends StatefulWidget {
 
 class _AssesmentPageState extends State<AssesmentPage> {
   final String apiGetAllAssesment =
-      "http://192.168.43.246:8080/api/checkup-assesmen";
+      "http://192.168.100.66:8080/api/checkup-assesmen";
   List<dynamic> assesmentList = [];
 
   @override
@@ -88,7 +88,7 @@ class _AssesmentPageState extends State<AssesmentPage> {
                         );
                       },
                       child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
                         padding: const EdgeInsets.all(15),
                         width: double.infinity,
                         height: 100,
@@ -119,12 +119,12 @@ class _AssesmentPageState extends State<AssesmentPage> {
                               ),
                             ),
                             Text(
-                              "${assesment['nama_pasien'] ?? ''}",
+                              "Pasien : ${assesment['nama_pasien'] ?? ''}",
                               style: const TextStyle(
                                   fontSize: 17, fontWeight: FontWeight.w500),
                             ),
                             Text(
-                              "${assesment['nama_dokter'] ?? ''}",
+                              "Dokter : ${assesment['nama_dokter'] ?? ''}",
                               style: const TextStyle(
                                   fontSize: 17, fontWeight: FontWeight.w500),
                             )

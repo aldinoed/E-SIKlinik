@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:e_siklinik/pages/Antrian/new_add_antrian.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:table_calendar/table_calendar.dart';
@@ -23,7 +22,7 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
   int counter = 0;
 
-  final String apiGetAntrian = "http://192.168.43.246:8080/api/antrian";
+  final String apiGetAntrian = "http://192.168.100.66:8080/api/antrian";
 
   @override
   void initState() {
@@ -36,7 +35,7 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
   }
 
   Future<void> _getFinishedAssesmen()async{
-    Uri finishedUrl = Uri.parse('http://192.168.43.246:8080/api/antrian/finished-assesmen');
+    Uri finishedUrl = Uri.parse('http://192.168.100.66:8080/api/antrian/finished-assesmen');
     try{
       final response = await http.get(finishedUrl);
       if(response.statusCode ==200){
@@ -88,16 +87,23 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
     });
   }
 
+  Future<void> _refreshData() async {
+    await _getAllAntrian();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
+        onPressed: () async {
+          final result = await Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => CreateNewAntrian(),
+              builder: (context) => AddAntrian(),
             ),
           );
+          if (result == true){
+            _refreshData();
+          }
         },
         child: Icon(Icons.add, size: 30, color: Colors.white),
         backgroundColor: Color(0xFF234DF0),

@@ -13,7 +13,7 @@ class EditJadwal extends StatefulWidget {
 }
 
 class _EditJadwalState extends State<EditJadwal> {
-  final String apiGetAllDokter = "http://192.168.43.246:8080/api/dokter";
+  final String apiGetAllDokter = "http://192.168.100.66:8080/api/dokter";
   List<dynamic> dokterList = [];
   final _formKey = GlobalKey<FormState>();
   String? _selectedDokterId;
@@ -53,18 +53,17 @@ class _EditJadwalState extends State<EditJadwal> {
     }
 
     final id = widget.jadwal['id'];
-    final url = Uri.parse('http://192.168.43.246:8080/api/jadwal_dokter/update/$id');
+    final url = Uri.parse('http://192.168.100.66:8080/api/jadwal_dokter/update/$id');
     final request = http.MultipartRequest('POST', url);
 
+    request.fields['dokter_id'] = _selectedDokterId!;
     request.fields['hari'] = _hariController;
     request.fields['jadwal_mulai_tugas'] = _jamMulaiController.text;
     request.fields['jadwal_selesai_tugas'] = _jamSelesaiController.text;
 
     final response = await request.send();
-    print(response.statusCode);
 
     if (response.statusCode == 200) {
-      // Berhasil memperbarui data
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Data jadwal dokter berhasil diperbarui'),
@@ -72,7 +71,6 @@ class _EditJadwalState extends State<EditJadwal> {
       );
       Navigator.pop(context, true);
     } else {
-      // Gagal memperbarui data
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Gagal memperbarui data jadwal dokter'),
@@ -100,19 +98,20 @@ class _EditJadwalState extends State<EditJadwal> {
       print('Error: $error');
     }
   }
+
   TimeOfDay parseTimeOfDay(String timeString) {
     final parts = timeString.split(':');
     final hour = int.parse(parts[0]);
     final minute = int.parse(parts[1]);
     return TimeOfDay(hour: hour, minute: minute);
   }
-  Future<void> _selectTime(
 
+  Future<void> _selectTime(
       BuildContext context, TextEditingController controller, bool isStartTime) async {
-    dynamic time =  parseTimeOfDay(controller.text);
+    dynamic time = parseTimeOfDay(controller.text);
     final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialTime: time
+      initialTime: time,
     );
     if (picked != null) {
       final now = DateTime.now();
@@ -166,181 +165,182 @@ class _EditJadwalState extends State<EditJadwal> {
                 ],
               ),
               child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Informasi Dokter",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 17),
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Informasi Dokter",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 17),
+                    ),
+                    Container(
+                      height: 50,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 2),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        color: Color(0xFFEFF0F3),
                       ),
-                      Container(
-                        height: 50,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 2),
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          color: Color(0xFFEFF0F3),
+                      child: DropdownButtonFormField<String>(
+                        value: _selectedDokterId,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedDokterId = value;
+                          });
+                        },
+                        items: dokterList.map((dokter) {
+                          return DropdownMenuItem<String>(
+                            value: dokter['id'].toString(),
+                            child: Text(dokter['nama']),
+                          );
+                        }).toList(),
+                        decoration: const InputDecoration(
+                            hintText: "Nama Dokter",
+                            border: InputBorder.none),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Dokter tidak boleh kosong';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      "Hari Tugas",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 17),
+                    ),
+                    Container(
+                      height: 50,
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        color: Color(0xFFEFF0F3),
+                      ),
+                      child: DropdownButtonFormField(
+                        value: _hariController,
+                        onChanged: (value) {
+                          setState(() {
+                            _hariController = value!;
+                          });
+                        },
+                        items: days.map<DropdownMenuItem<String>>((day) {
+                          return DropdownMenuItem<String>(
+                            value: day,
+                            child: Text(day),
+                          );
+                        }).toList(),
+                        decoration: const InputDecoration(
+                            hintText: "Hari Tugas", border: InputBorder.none),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      "Jam Tugas",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 17),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            height: 50,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 2),
+                            decoration: const BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                                color: Color(0xFFEFF0F3)),
+                            child: TextFormField(
+                              controller: _jamMulaiController,
+                              readOnly: true,
+                              onTap: () =>
+                                  _selectTime(context, _jamMulaiController, true),
+                              decoration: const InputDecoration(
+                                  hintText: "Jam Mulai",
+                                  border: InputBorder.none),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Jam mulai tidak boleh kosong';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
                         ),
-                        child: DropdownButtonFormField<String>(
-                          value: _selectedDokterId,
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedDokterId = value;
-                            });
-                          },
-                          items: dokterList.map((dokter) {
-                            return DropdownMenuItem<String>(
-                              value: dokter['id'].toString(),
-                              child: Text(dokter['nama']),
-                            );
-                          }).toList(),
-                          decoration: const InputDecoration(
-                              hintText: "Nama Dokter",
-                              border: InputBorder.none),
-                          validator: (value) {
-                            if (value == null) {
-                              return 'Dokter tidak boleh kosong';
+                        const Text(
+                          " - ",
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.w500),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            height: 50,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 2),
+                            decoration: const BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                                color: Color(0xFFEFF0F3)),
+                            child: TextFormField(
+                              controller: _jamSelesaiController,
+                              readOnly: true,
+                              onTap: () =>
+                                  _selectTime(context, _jamSelesaiController, false),
+                              decoration: const InputDecoration(
+                                  hintText: "Jam Selesai",
+                                  border: InputBorder.none),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Jam selesai tidak boleh kosong';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              _updateJadwalDokter();
                             }
-                            return null;
                           },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF234DF0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 12.0),
+                            child: Text(
+                              'Submit',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFFFCFCFD)),
+                            ),
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        "Hari Tugas",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 17),
-                      ),
-                      Container(
-                        height: 50,
-                        padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          color: Color(0xFFEFF0F3),
-                        ),
-                        child: DropdownButtonFormField(
-                          value: _hariController,
-                          onChanged: (value) {
-                            setState(() {
-                              _hariController = value;
-                            });
-                          },
-                          items: days.map<DropdownMenuItem>((day) {
-                            return DropdownMenuItem(
-                              value: day,
-                              child: Text(day),
-                            );
-                          }).toList(),
-                          decoration: const InputDecoration(
-                              hintText: "Hari Tugas", border: InputBorder.none),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        "Jam Tugas",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 17),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              height: 50,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 2),
-                              decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15)),
-                                  color: Color(0xFFEFF0F3)),
-                              child: TextFormField(
-                                controller: _jamMulaiController,
-                                readOnly: true,
-                                onTap: () =>
-                                    _selectTime(context, _jamMulaiController, true),
-                                decoration: const InputDecoration(
-                                    hintText: "Jam Mulai",
-                                    border: InputBorder.none),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Jam mulai tidak boleh kosong';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                          ),
-                          const Text(
-                            " - ",
-                            style: TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.w500),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              height: 50,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 2),
-                              decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15)),
-                                  color: Color(0xFFEFF0F3)),
-                              child: TextFormField(
-                                controller: _jamSelesaiController,
-                                readOnly: true,
-                                onTap: () =>
-                                    _selectTime(context, _jamSelesaiController, false),
-                                decoration: const InputDecoration(
-                                    hintText: "Jam Selesai",
-                                    border: InputBorder.none),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Jam selesai tidak boleh kosong';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                _updateJadwalDokter();
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF234DF0),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 12.0),
-                              child: Text(
-                                'Submit',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFFFCFCFD)),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  )),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
