@@ -62,7 +62,7 @@ class _DataPasienState extends State<DataPasien> {
 
   void _deleteItem(int id) async {
 
-    Uri url = Uri.parse('http://192.168.100.66:8080/api/pasien/delete/$id');
+    Uri url = Uri.parse('http://10.0.2.2:8000/api/pasien/delete/$id');
     final response = await http.delete(url);
     print('ini id ${response.body}');
     if(response.statusCode == 200){
@@ -75,7 +75,9 @@ class _DataPasienState extends State<DataPasien> {
       _refreshData();
     }else{
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $error')),
+        const SnackBar(
+          content: Text('Gagal hapus data pasien!'),
+        ),
       );
     }
   }
@@ -208,7 +210,7 @@ class _DataPasienState extends State<DataPasien> {
                                   },
                                   onTapDelete: () {
                                     showDeleteConfirmationDialog(
-                                        context, () => _disablePasien(pasienId));
+                                        context, ()=>{_deleteItem(pasien['id'])});
                                   },
                                 ),
                               );

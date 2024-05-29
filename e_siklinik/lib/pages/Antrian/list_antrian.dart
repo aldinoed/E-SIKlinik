@@ -31,24 +31,19 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
     _selectedDay = selectedDate;
     _getFinishedAssesmen();
     _getAllAntrian();
+
   }
 
-<<<<<<< HEAD
-  Future<void> _getFinishedAssesmen() async {
-    Uri finishedUrl =
-        Uri.parse('http://10.0.2.2:8000/api/antrian/finished-assesmen');
-    try {
-=======
   Future<void> _getFinishedAssesmen()async{
     Uri finishedUrl = Uri.parse('http://10.0.2.2:8000/api/antrian/finished-assesmen');
     try{
->>>>>>> 34d564f982f5bb711bd67bfa2b2d4ef8fd70f3c4
       final response = await http.get(finishedUrl);
-      if (response.statusCode == 200) {
+      if(response.statusCode ==200){
         final data = json.decode(response.body);
         finishedAssesmen = data['results'];
       }
-    } catch (error) {
+
+    }catch(error){
       print('Error: $error');
     }
   }
@@ -106,7 +101,7 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
               builder: (context) => AddAntrian(),
             ),
           );
-          if (result == true) {
+          if (result == true){
             _refreshData();
           }
         },
@@ -138,65 +133,62 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
                         final antrian = filteredAntrianList[index];
                         final antrianId = antrian['id'];
                         bool antrianState = false;
-                        antrianState = antrian['status'] != 'Belum';
+                        antrianState = antrian['status'] != 'Belum' ;
                         return Card(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
+                          margin:
+                              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
                           ),
                           elevation: 4,
                           child: ListTile(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 12),
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.blue,
-                                child: Text(
-                                  antrian['no_antrian'].toString(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 12),
+                            leading: CircleAvatar(
+
+                              backgroundColor: Colors.blue,
+                              child: Text(
+                                antrian['no_antrian'].toString(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                antrianStateWidget(antrian['status']),
+                                Text(
+                                  antrian['antrian_to_pasien']['nama'],
+                                  style: TextStyle(
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
+                              ],
+                            ),
+                            subtitle: Text(
+                              'Antrian Nomor: ${antrian['no_antrian']}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[600],
                               ),
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  antrianStateWidget(antrian['status']),
-                                  Text(
-                                    antrian['antrian_to_pasien']['nama'],
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
+                            ),
+                            trailing: antrianState ?  SizedBox(width: 1, height: 1,): IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AddAssessment(
+                                      antrianId: antrianId,
                                     ),
                                   ),
-                                ],
-                              ),
-                              subtitle: Text(
-                                'Antrian Nomor: ${antrian['no_antrian']}',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                              trailing: antrianState
-                                  ? SizedBox(
-                                      width: 1,
-                                      height: 1,
-                                    )
-                                  : IconButton(
-                                      icon: Icon(Icons.add),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => AddAssessment(
-                                              antrianId: antrianId,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    )),
+                                );
+                              },
+                            )
+                          ),
                         );
                       },
                     )),
@@ -310,17 +302,16 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
   }
 }
 
-Widget antrianStateWidget(String state) {
-  Color stateColor = Colors.red;
+Widget antrianStateWidget(String state){
+  Color stateColor =  Colors.red;
   String stateText = 'Dalam Antrian';
 
-  switch (state) {
-    case 'Sedang':
-      stateColor = Colors.yellow;
-      stateText = 'Dalam Pemeriksaan';
-      break;
+  switch(state){
+    case 'Sedang' : stateColor = Colors.yellow;
+    stateText = 'Dalam Pemeriksaan';
+    break;
     case 'Selesai':
-      stateColor = Colors.green;
+      stateColor= Colors.green;
       stateText = 'Sudah Ditangani';
       break;
     default:
@@ -329,12 +320,7 @@ Widget antrianStateWidget(String state) {
 
   return Row(
     children: [
-      Container(
-        width: 10,
-        height: 10,
-        decoration: BoxDecoration(
-            color: stateColor, borderRadius: BorderRadius.circular(50)),
-      ),
+      Container(width: 10, height: 10,decoration: BoxDecoration(color: stateColor,borderRadius: BorderRadius.circular(50)),),
       Container(
         margin: EdgeInsets.only(left: 7),
         child: Text(

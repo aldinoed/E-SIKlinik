@@ -55,12 +55,8 @@ class _AddAssessmentState extends State<AddAssessment> {
   Future<void> _getAntrianDetail() async {
     try {
       final response = await http.get(
-<<<<<<< HEAD
-        Uri.parse("http://10.0.2.2:8000/api/antrian/show/${widget.antrianId}"),
-=======
         Uri.parse(
             "http://10.0.2.2:8000/api/antrian/show/${widget.antrianId}"),
->>>>>>> 34d564f982f5bb711bd67bfa2b2d4ef8fd70f3c4
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -104,8 +100,10 @@ class _AddAssessmentState extends State<AddAssessment> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Assesment berhasil ditambahkan')),
         );
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const AssesmentPage()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const AssesmentPage()));
 
         // Clear input fields
         // dokterIdController.clear();

@@ -56,8 +56,7 @@ class _AddAntrianNewState extends State<AddAntrianNew> {
           final namaLower = pasien['nama'].toString().toLowerCase();
           final nrpLower = pasien['nrp'].toString().toLowerCase();
           final searchLower = query.toLowerCase();
-          return namaLower.contains(searchLower) ||
-              nrpLower.contains(searchLower);
+          return namaLower.contains(searchLower) || nrpLower.contains(searchLower);
         }).toList();
       });
     } else {
@@ -72,7 +71,7 @@ class _AddAntrianNewState extends State<AddAntrianNew> {
       var request = http.MultipartRequest('POST', Uri.parse(apiPostAntrian));
       request.fields['pasien_id'] = selectedPasien?['id'].toString() ?? '';
       request.fields['no_antrian'] = noAntrianController.text;
-
+      
       // Menambahkan tanggal saat ini ke request
       String currentDate = DateTime.now().toIso8601String();
       request.fields['tanggal'] = currentDate;
@@ -183,8 +182,7 @@ class _AddAntrianNewState extends State<AddAntrianNew> {
                                 height: 100,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(15)),
+                                  borderRadius: const BorderRadius.all(Radius.circular(15)),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.grey.withOpacity(0.5),
@@ -208,10 +206,8 @@ class _AddAntrianNewState extends State<AddAntrianNew> {
                                     ),
                                     const SizedBox(width: 15),
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           pasien['nama'],
@@ -260,24 +256,17 @@ class _AddAntrianNewState extends State<AddAntrianNew> {
                       children: [
                         const Text(
                           "Informasi Pasien",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600, fontSize: 18),
+                          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
                         ),
                         const SizedBox(height: 15),
                         Container(
                           height: 180,
                           width: 115,
                           decoration: BoxDecoration(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(15)),
+                              borderRadius: const BorderRadius.all(Radius.circular(15)),
                               image: DecorationImage(
                                   image: NetworkImage(
-<<<<<<< HEAD
-                                      'http://10.0.2.2:8000/storage/' +
-                                          selectedPasien!['image']),
-=======
                                       'http://10.0.2.2:8000/storage/' + selectedPasien!['image']),
->>>>>>> 34d564f982f5bb711bd67bfa2b2d4ef8fd70f3c4
                                   fit: BoxFit.fill)),
                         ),
                         const SizedBox(height: 15),
@@ -289,13 +278,11 @@ class _AddAntrianNewState extends State<AddAntrianNew> {
                         setInfoPasien("Tanggal Lahir",
                             "${selectedPasien!['tanggal_lahir']}"),
                         setInfoPasien("Alamat", "${selectedPasien!['alamat']}"),
-                        setInfoPasien(
-                            "No Hp", "${selectedPasien!['nomor_hp']}"),
-                        setInfoPasien(
-                            "No Wali", "${selectedPasien!['nomor_wali']}"),
+                        setInfoPasien("No Hp", "${selectedPasien!['nomor_hp']}"),
+                        setInfoPasien("No Wali", "${selectedPasien!['nomor_wali']}"),
                         // Menambahkan informasi tanggal antrian
                         setInfoPasien(
-                          "Tanggal Antrian",
+                          "Tanggal Antrian", 
                           DateFormat.yMMMd().format(DateTime.now()),
                         ),
                       ],
