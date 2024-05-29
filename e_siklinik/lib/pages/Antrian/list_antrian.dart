@@ -33,10 +33,16 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
     _getAllAntrian();
   }
 
+<<<<<<< HEAD
   Future<void> _getFinishedAssesmen() async {
     Uri finishedUrl =
         Uri.parse('http://10.0.2.2:8000/api/antrian/finished-assesmen');
     try {
+=======
+  Future<void> _getFinishedAssesmen()async{
+    Uri finishedUrl = Uri.parse('http://10.0.2.2:8000/api/antrian/finished-assesmen');
+    try{
+>>>>>>> 34d564f982f5bb711bd67bfa2b2d4ef8fd70f3c4
       final response = await http.get(finishedUrl);
       if (response.statusCode == 200) {
         final data = json.decode(response.body);

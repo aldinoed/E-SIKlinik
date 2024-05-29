@@ -197,7 +197,7 @@ class _AddCheckupState extends State<AddCheckup> {
                           assesmentDetail!.isNotEmpty)
                         Container(
                           height: 180,
-                          width: 115,
+                          width: 180,
                           decoration: BoxDecoration(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(15)),

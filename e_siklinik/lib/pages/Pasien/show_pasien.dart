@@ -1,3 +1,5 @@
+import 'package:e_siklinik/components/box.dart';
+import 'package:e_siklinik/pages/Checkup/riwayat_checkup.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -239,33 +241,49 @@ class _ShowPasienState extends State<ShowPasien> {
                                                     ['assesmen_to_antrian']
                                                 ?['no_antrian'] ??
                                             '';
+                                                                                final checkupId = checkup['id'];
+
                                     final namaDokter =
                                         checkup['check_up_resul_to_assesmen']
                                                     ['assesmen_to_dokter']
                                                 ?['nama'] ??
                                             '';
-                                    return Card(
-                                      child: ListTile(
-                                        title: Text(
-                                          'Hasil Diagnosa: ${checkup['hasil_diagnosa']}',
-                                        ),
-                                        subtitle: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'No Antrian: $nomorAntrian',
-                                            ),
-                                            Text(
-                                              'Nama Dokter: $namaDokter',
-                                            ),
-                                            Text(
-                                              'Tanggal: ${extractDate(checkup?['created_at'] ?? "N/A")}',
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                    return BoxRiwayat(
+                                      onTapBox: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    RiwayatCheckup(
+                                                        checkupId: checkupId)));
+                                      },
+                                      tanggal:
+                                          checkup['created_at'] != null ? extractDate(checkup['created_at']) : 'N/A',
+                                      nama:
+                                          'Nama Dokter: $namaDokter', no: '$nomorAntrian',
                                     );
+                                    // Card(
+                                    //   child: ListTile(
+                                    //     title: Text(
+                                    //       'Hasil Diagnosa: ${checkup['hasil_diagnosa']}',
+                                    //     ),
+                                    //     subtitle: Column(
+                                    //       crossAxisAlignment:
+                                    //           CrossAxisAlignment.start,
+                                    //       children: [
+                                    //         Text(
+                                    //           'No Antrian: $nomorAntrian',
+                                    //         ),
+                                    //         Text(
+                                    //           'Nama Dokter: $namaDokter',
+                                    //         ),
+                                    //         Text(
+                                    //           'Tanggal: ${extractDate(checkup?['created_at'] ?? "N/A")}',
+                                    //         ),
+                                    //       ],
+                                    //     ),
+                                    //   ),
+                                    // );
                                   },
                                 ),
                               ],

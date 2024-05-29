@@ -24,7 +24,12 @@ class _ShowDokterPageState extends State<ShowDokterPage> {
   Future<void> _getDokterDetail() async {
     try {
       final response = await http.get(
+<<<<<<< HEAD
         Uri.parse("http://10.0.2.2:8000/api/dokter/show/${widget.dokterId}"),
+=======
+        Uri.parse(
+            "http://10.0.2.2:8000/api/dokter/show/${widget.dokterId}"),
+>>>>>>> 34d564f982f5bb711bd67bfa2b2d4ef8fd70f3c4
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);

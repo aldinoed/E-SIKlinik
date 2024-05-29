@@ -17,7 +17,10 @@ class DataDokter extends StatefulWidget {
 
 class _DataDokterState extends State<DataDokter> {
   final String apiGetAllDokter = "http://10.0.2.2:8000/api/dokter";
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34d564f982f5bb711bd67bfa2b2d4ef8fd70f3c4
   List<dynamic> dokterList = [];
   List<dynamic> filteredDokterList = [];
 

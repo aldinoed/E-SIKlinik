@@ -22,16 +22,16 @@ class _EditJadwalState extends State<EditJadwal> {
   late String _hariController;
   late TextEditingController _jamMulaiController;
   late TextEditingController _jamSelesaiController;
+  late TextEditingController _dokterNameController;
 
   @override
   void initState() {
     super.initState();
     _selectedDokterId = widget.jadwal['dokter_id'].toString();
     _hariController = widget.jadwal['hari'];
-    _jamMulaiController =
-        TextEditingController(text: widget.jadwal['jadwal_mulai_tugas']);
-    _jamSelesaiController =
-        TextEditingController(text: widget.jadwal['jadwal_selesai_tugas']);
+    _jamMulaiController = TextEditingController(text: _formatTime(widget.jadwal['jadwal_mulai_tugas']));
+    _jamSelesaiController = TextEditingController(text: _formatTime(widget.jadwal['jadwal_selesai_tugas']));
+    _dokterNameController = TextEditingController(text: widget.jadwal['jadwal_to_dokter']['nama']);
     _getAllDokter();
   }
 
@@ -39,7 +39,15 @@ class _EditJadwalState extends State<EditJadwal> {
   void dispose() {
     _jamMulaiController.dispose();
     _jamSelesaiController.dispose();
+    _dokterNameController.dispose();
     super.dispose();
+  }
+
+  String _formatTime(String timeString) {
+    final parts = timeString.split(':');
+    final hour = parts[0].padLeft(2, '0');
+    final minute = parts[1].padLeft(2, '0');
+    return '$hour:$minute';
   }
 
   Future<void> _updateJadwalDokter() async {
@@ -56,12 +64,13 @@ class _EditJadwalState extends State<EditJadwal> {
     final url = Uri.parse('http://10.0.2.2:8000/api/jadwal_dokter/update/$id');
     final request = http.MultipartRequest('POST', url);
 
-    request.fields['dokter_id'] = _selectedDokterId!;
     request.fields['hari'] = _hariController;
     request.fields['jadwal_mulai_tugas'] = _jamMulaiController.text;
     request.fields['jadwal_selesai_tugas'] = _jamSelesaiController.text;
+    request.fields['dokter_id'] = _selectedDokterId!;
 
     final response = await request.send();
+    print(response.statusCode);
 
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -87,6 +96,9 @@ class _EditJadwalState extends State<EditJadwal> {
         if (data != null && data['dokter'] != null) {
           setState(() {
             dokterList = data['dokter'];
+            final selectedDokter = dokterList.firstWhere(
+                (dokter) => dokter['id'].toString() == _selectedDokterId);
+            _dokterNameController.text = selectedDokter['nama'];
           });
         } else {
           print("No data received from API");
@@ -106,8 +118,8 @@ class _EditJadwalState extends State<EditJadwal> {
     return TimeOfDay(hour: hour, minute: minute);
   }
 
-  Future<void> _selectTime(BuildContext context,
-      TextEditingController controller, bool isStartTime) async {
+  Future<void> _selectTime(
+      BuildContext context, TextEditingController controller, bool isStartTime) async {
     dynamic time = parseTimeOfDay(controller.text);
     final TimeOfDay? picked = await showTimePicker(
       context: context,
@@ -177,7 +189,7 @@ class _EditJadwalState extends State<EditJadwal> {
                     Container(
                       height: 50,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 2),
+                          horizontal: 16, vertical: 1),
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                         color: Color(0xFFEFF0F3),
@@ -196,7 +208,8 @@ class _EditJadwalState extends State<EditJadwal> {
                           );
                         }).toList(),
                         decoration: const InputDecoration(
-                            hintText: "Nama Dokter", border: InputBorder.none),
+                            hintText: "Nama Dokter",
+                            border: InputBorder.none),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Dokter tidak boleh kosong';
@@ -215,8 +228,8 @@ class _EditJadwalState extends State<EditJadwal> {
                     ),
                     Container(
                       height: 50,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 2),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                         color: Color(0xFFEFF0F3),
@@ -225,11 +238,11 @@ class _EditJadwalState extends State<EditJadwal> {
                         value: _hariController,
                         onChanged: (value) {
                           setState(() {
-                            _hariController = value!;
+                            _hariController = value;
                           });
                         },
-                        items: days.map<DropdownMenuItem<String>>((day) {
-                          return DropdownMenuItem<String>(
+                        items: days.map<DropdownMenuItem>((day) {
+                          return DropdownMenuItem(
                             value: day,
                             child: Text(day),
                           );

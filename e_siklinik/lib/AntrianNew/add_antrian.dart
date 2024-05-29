@@ -272,8 +272,12 @@ class _AddAntrianNewState extends State<AddAntrianNew> {
                                   const BorderRadius.all(Radius.circular(15)),
                               image: DecorationImage(
                                   image: NetworkImage(
+<<<<<<< HEAD
                                       'http://10.0.2.2:8000/storage/' +
                                           selectedPasien!['image']),
+=======
+                                      'http://10.0.2.2:8000/storage/' + selectedPasien!['image']),
+>>>>>>> 34d564f982f5bb711bd67bfa2b2d4ef8fd70f3c4
                                   fit: BoxFit.fill)),
                         ),
                         const SizedBox(height: 15),
