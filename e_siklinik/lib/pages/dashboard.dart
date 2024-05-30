@@ -157,12 +157,12 @@ class _DashboardState extends State<Dashboard> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Andru Falah Arifin",
+                                "John Doe",
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                "3122500038",
+                                "9732344524",
                                 style: TextStyle(fontWeight: FontWeight.w600),
                               ),
                             ],

@@ -17,8 +17,8 @@ class DataObat extends StatefulWidget {
 class _DataObatState extends State<DataObat> {
   final String apiGetAllObat = "http://10.0.2.2:8000/api/obat";
   List<dynamic> obatList = [];
+  List<dynamic> searchObat = [];
 
-  String query = '';
   TextEditingController _searchController = TextEditingController();
 
   Future<void> _getAllObat() async {
@@ -41,35 +41,30 @@ class _DataObatState extends State<DataObat> {
     }
   }
 
-  List<String> data = [
-    'Apple',
-    'Banana',
-    'Cherry',
-    'Date',
-    'Elderberry',
-    'Fig',
-    'Grapes',
-    'Honeydew',
-    'Kiwi',
-    'Lemon',
-  ];
-
-  List<String> filteredData = [];
-
   @override
   void initState() {
     super.initState();
     _getAllObat();
-    filteredData = data;
+    _searchController.addListener(() {
+      _searchObat(_searchController.text);
+    });
   }
 
-  void onQueryChanged(String newQuery) {
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _searchObat(String query) {
+    final searchResults = obatList.where((obat) {
+      final namaObat = obat['nama_obat'].toLowerCase();
+      final input = query.toLowerCase();
+      return namaObat.contains(input);
+    }).toList();
+
     setState(() {
-      query = newQuery;
-      filteredData = data
-          .where(
-              (element) => element.toLowerCase().contains(query.toLowerCase()))
-          .toList();
+      searchObat = searchResults;
     });
   }
 
@@ -121,7 +116,6 @@ class _DataObatState extends State<DataObat> {
               padding: EdgeInsets.all(16),
               child: TextField(
                 controller: _searchController,
-                onChanged: onQueryChanged,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromARGB(200, 235, 242, 255),
@@ -145,9 +139,9 @@ class _DataObatState extends State<DataObat> {
                 childAspectRatio: MediaQuery.of(context).size.width /
                     (MediaQuery.of(context).size.height / 2.5),
               ),
-              itemCount: obatList.length,
+              itemCount: searchObat.length,
               itemBuilder: (BuildContext context, int index) {
-                final obat = obatList[index];
+                final obat = searchObat[index];
                 return IntrinsicHeight(
                   child: Card(
                     elevation: 3,
