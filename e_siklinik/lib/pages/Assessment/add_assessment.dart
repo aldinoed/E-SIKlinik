@@ -24,6 +24,7 @@ class _AddAssessmentState extends State<AddAssessment> {
   final String apiGetAllDokter = "http://10.0.2.2:8000/api/dokter";
   List<dynamic> dokterList = [];
   File? _imageFile;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -33,6 +34,9 @@ class _AddAssessmentState extends State<AddAssessment> {
   }
 
   Future<void> _getAllDokter() async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       final response = await http.get(Uri.parse(apiGetAllDokter));
       if (response.statusCode == 200) {
@@ -100,7 +104,8 @@ class _AddAssessmentState extends State<AddAssessment> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Assesment berhasil ditambahkan')),
         );
-        Navigator.push(
+        Navigator.pop(context);
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (context) => const AssesmentPage()));
@@ -119,6 +124,10 @@ class _AddAssessmentState extends State<AddAssessment> {
       }
     } catch (error) {
       print('Error: $error');
+    } finally{
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -141,144 +150,155 @@ class _AddAssessmentState extends State<AddAssessment> {
           style: TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: SingleChildScrollView(
-            child: Form(
-              child: Column(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.all(8),
-                    padding: const EdgeInsets.all(16),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.all(Radius.circular(15)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          offset: const Offset(-1, 2),
-                          blurRadius: 3,
-                          spreadRadius: 0,
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Informasi Pasien",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600, fontSize: 18),
-                        ),
-                        const SizedBox(height: 15),
-                        if (antrianDetail != null && antrianDetail!.isNotEmpty)
-                          Container(
-                            height: 180,
-                            width: 180,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(15)),
-                                image: DecorationImage(
-                                    image: NetworkImage(
-                                        'http://10.0.2.2:8000/storage/' +
-                                            antrianDetail?[0]['image']),
-                                    fit: BoxFit.fill)),
-                          )
-                        else
-                          const SizedBox(),
-                        const SizedBox(height: 15),
-                        setInfoPasien("NRP", "${antrianDetail?[0]['nrp']}"),
-                        setInfoPasien("Nama", "${antrianDetail?[0]['nama']}"),
-                        setInfoPasien("Program Studi",
-                            "${antrianDetail?[0]['pasien_to_prodi']?['nama']}"),
-                        setInfoPasien(
-                            "Gender", "${antrianDetail?[0]['gender']}"),
-                        setInfoPasien("Tanggal Lahir",
-                            "${antrianDetail?[0]['tanggal_lahir']}"),
-                        setInfoPasien(
-                            "Alamat", "${antrianDetail?[0]['alamat']}"),
-                        setInfoPasien(
-                            "No Hp", "${antrianDetail?[0]['nomor_hp']}"),
-                        setInfoPasien(
-                            "No Wali", "${antrianDetail?[0]['nomor_wali']}"),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.all(8),
-                    padding: const EdgeInsets.all(16),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.all(Radius.circular(15)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          offset: const Offset(-1, 2),
-                          blurRadius: 3,
-                          spreadRadius: 0,
-                        ),
-                      ],
-                    ),
-                    child: Container(
-                      height: 50,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 2),
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        color: Color(0xFFEFF0F3),
-                      ),
-                      child: DropdownButtonFormField(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(15)),
-                        value: null,
-                        onChanged: (value) {
-                          setState(() {
-                            dokterIdController.text = value.toString();
-                          });
-                        },
-                        items: dokterList.map<DropdownMenuItem>((dokter) {
-                          return DropdownMenuItem(
-                            value: dokter['id'],
-                            child: Text(dokter['nama']),
-                          );
-                        }).toList(),
-                        decoration: const InputDecoration(
-                            hintText: "Nama Dokter", border: InputBorder.none),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: SingleChildScrollView(
+                child: Form(
+                  child: Column(
                     children: [
-                      ElevatedButton(
-                        onPressed: () => addAssesment(context),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF234DF0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
+                      Container(
+                        margin: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(16),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.all(Radius.circular(15)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              offset: const Offset(-1, 2),
+                              blurRadius: 3,
+                              spreadRadius: 0,
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Informasi Pasien",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 18),
+                            ),
+                            const SizedBox(height: 15),
+                            if (antrianDetail != null && antrianDetail!.isNotEmpty)
+                              Container(
+                                height: 180,
+                                width: 180,
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        const BorderRadius.all(Radius.circular(15)),
+                                    image: DecorationImage(
+                                        image: NetworkImage(
+                                            'http://10.0.2.2:8000/storage/' +
+                                                antrianDetail?[0]['image']),
+                                        fit: BoxFit.fill)),
+                              )
+                            else
+                              const SizedBox(),
+                            const SizedBox(height: 15),
+                            setInfoPasien("NRP", "${antrianDetail?[0]['nrp']}"),
+                            setInfoPasien("Nama", "${antrianDetail?[0]['nama']}"),
+                            setInfoPasien("Program Studi",
+                                "${antrianDetail?[0]['pasien_to_prodi']?['nama']}"),
+                            setInfoPasien(
+                                "Gender", "${antrianDetail?[0]['gender']}"),
+                            setInfoPasien("Tanggal Lahir",
+                                "${antrianDetail?[0]['tanggal_lahir']}"),
+                            setInfoPasien(
+                                "Alamat", "${antrianDetail?[0]['alamat']}"),
+                            setInfoPasien(
+                                "No Hp", "${antrianDetail?[0]['nomor_hp']}"),
+                            setInfoPasien(
+                                "No Wali", "${antrianDetail?[0]['nomor_wali']}"),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(16),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.all(Radius.circular(15)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              offset: const Offset(-1, 2),
+                              blurRadius: 3,
+                              spreadRadius: 0,
+                            ),
+                          ],
+                        ),
+                        child: Container(
+                          height: 50,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 2),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                            color: Color(0xFFEFF0F3),
+                          ),
+                          child: DropdownButtonFormField(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(15)),
+                            value: null,
+                            onChanged: (value) {
+                              setState(() {
+                                dokterIdController.text = value.toString();
+                              });
+                            },
+                            items: dokterList.map<DropdownMenuItem>((dokter) {
+                              return DropdownMenuItem(
+                                value: dokter['id'],
+                                child: Text(dokter['nama']),
+                              );
+                            }).toList(),
+                            decoration: const InputDecoration(
+                                hintText: "Nama Dokter", border: InputBorder.none),
                           ),
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 12.0),
-                          child: Text(
-                            'Submit',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFFFCFCFD)),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                            onPressed: isLoading ? null : () => addAssesment(context),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF234DF0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 12.0),
+                              child: Text(
+                                'Submit',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFFFCFCFD)),
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
+           if (isLoading)
+          Container(
+            color: Colors.black.withOpacity(0.5),
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        ],
       ),
     );
   }

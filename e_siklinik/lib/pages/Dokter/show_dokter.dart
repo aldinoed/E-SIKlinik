@@ -277,7 +277,7 @@ class _ShowDokterState extends State<ShowDokter> {
                                                   Icons.person_outline,
                                                   const Color(0xFF234DF0)),
                                               tanggal: Text(
-                                                  "Tanggal : ${riwayat['created_at'] != null ? extractDate(riwayat['created_at']) : 'N/A'}"), no: '$nomorAntrian',);
+                                                  "Tanggal : ${riwayat['created_at'] != null ? extractDate(riwayat['created_at']) : 'N/A'}", style: TextStyle(fontSize: 13),), no: '$nomorAntrian',);
           // Card(
           //   child: ListTile(
           //     title: Text('Hasil Diagnosa: ${riwayat['hasil_diagnosa']}'),

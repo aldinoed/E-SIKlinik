@@ -19,12 +19,12 @@ class _DataDokterState extends State<DataDokter> {
   final String apiGetAllDokter = "http://10.0.2.2:8000/api/dokter";
   List<dynamic> dokterList = [];
   List<dynamic> filteredDokterList = [];
+  bool isLoading = true; // flag to track loading state
 
   @override
   void initState() {
     super.initState();
     _getAllDokter();
-    _refreshData();
   }
 
   Future<void> _getAllDokter() async {
@@ -36,20 +36,33 @@ class _DataDokterState extends State<DataDokter> {
           setState(() {
             dokterList = data['dokter'];
             filteredDokterList = List.from(dokterList);
+            isLoading = false; // set loading to false when data is fetched
           });
           print(dokterList);
         } else {
+          setState(() {
+            isLoading = false;
+          });
           print("No data received from API");
         }
       } else {
+        setState(() {
+          isLoading = false;
+        });
         print("Failed to load Data");
       }
     } catch (error) {
+      setState(() {
+        isLoading = false;
+      });
       print('Error : $error');
     }
   }
 
   Future<void> _refreshData() async {
+    setState(() {
+      isLoading = true;
+    });
     await _getAllDokter();
   }
 
@@ -104,96 +117,100 @@ class _DataDokterState extends State<DataDokter> {
           style: TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
-      body: RefreshIndicator(
-        onRefresh: _refreshData,
-        child: dokterList.isEmpty
-            ? const Center(
-                child: Text(
-                  'Tidak ada data Dokter',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              )
-            : SafeArea(
-                child: Column(
-                  children: [
-                    Container(
-                      margin:
-                          const EdgeInsets.only(top: 16, right: 16, left: 16),
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      width: double.infinity,
-                      height: 50,
-                      decoration: const BoxDecoration(
-                          color: Color(0xFFEFF0F3),
-                          borderRadius: BorderRadius.all(Radius.circular(30))),
-                      child: Row(
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : RefreshIndicator(
+              onRefresh: _refreshData,
+              child: dokterList.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'Tidak ada data Dokter',
+                        style: TextStyle(fontSize: 18.0),
+                      ),
+                    )
+                  : SafeArea(
+                      child: Column(
                         children: [
-                          Flexible(
-                            child: TextFormField(
-                              onChanged: _filterDokterList,
-                              maxLines: null,
-                              decoration: const InputDecoration(
-                                hintText: 'Search Here',
-                                border: InputBorder.none,
-                              ),
+                          Container(
+                            margin:
+                                const EdgeInsets.only(top: 16, right: 16, left: 16),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            width: double.infinity,
+                            height: 50,
+                            decoration: const BoxDecoration(
+                                color: Color(0xFFEFF0F3),
+                                borderRadius: BorderRadius.all(Radius.circular(30))),
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  child: TextFormField(
+                                    onChanged: _filterDokterList,
+                                    maxLines: null,
+                                    decoration: const InputDecoration(
+                                      hintText: 'Search Here',
+                                      border: InputBorder.none,
+                                    ),
+                                  ),
+                                ),
+                                const Icon(Icons.search),
+                              ],
                             ),
                           ),
-                          const Icon(Icons.search),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Flexible(
+                            child: ListView.builder(
+                              itemCount: filteredDokterList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final dokter = filteredDokterList[index];
+                                final dokterId =
+                                    dokter['id']; // Dapatkan id dokter di sini
+                                return BoxDokter(
+                                  onTapBox: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ShowDokter(dokterId: dokterId)));
+                                  },
+                                  icon: 'http://10.0.2.2:8000/storage/' +
+                                      dokter['image'],
+                                  nama: dokter['nama'] ?? '',
+                                  onTapPop: () {
+                                    showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        context: context,
+                                        builder: (context) => BuildSheet(
+                                              onTapEdit: () async {
+                                                final result = await Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            EditDokter(
+                                                                dokter: dokter)));
+                                                if (result == true) {
+                                                  Navigator.pop(
+                                                      context); // Menutup showModalBottomSheet
+                                                  _refreshData(); // Memuat ulang data jika perlu
+                                                }
+                                              },
+                                              onTapDelete: () {
+                                                showDeleteConfirmationDialog(
+                                                    context, _deleteItem);
+                                              },
+                                            ));
+                                  },
+                                );
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Flexible(
-                      child: ListView.builder(
-                        itemCount: filteredDokterList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final dokter = filteredDokterList[index];
-                          final dokterId =
-                              dokter['id']; // Dapatkan id dokter di sini
-                          return BoxDokter(
-                            onTapBox: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          ShowDokter(dokterId: dokterId)));
-                            },
-                            icon: 'http://10.0.2.2:8000/storage/' +
-                                dokter['image'],
-                            nama: dokter['nama'] ?? '',
-                            onTapPop: () {
-                              showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  context: context,
-                                  builder: (context) => BuildSheet(
-                                        onTapEdit: () async {
-                                          final result = await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      EditDokter(
-                                                          dokter: dokter)));
-                                          if (result == true) {
-                                            Navigator.pop(
-                                                context); // Menutup showModalBottomSheet
-                                            _refreshData(); // Memuat ulang data jika perlu
-                                          }
-                                        },
-                                        onTapDelete: () {
-                                          showDeleteConfirmationDialog(
-                                              context, _deleteItem);
-                                        },
-                                      ));
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-      ),
+            ),
     );
   }
 }

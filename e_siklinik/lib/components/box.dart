@@ -387,17 +387,17 @@ class BoxRiwayat extends StatelessWidget {
                   children: [
                     Text(
                       'No. Antrian: $no',
-                      style: TextStyle(fontSize: 13),
+                      style: TextStyle(fontSize: 11, fontWeight:FontWeight.w300),
                     ),
                     Text(
                       nama,
                       style: const TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 15),
+                          fontWeight: FontWeight.w600, fontSize: 17),
                     ),
                     Text(
                       "Tanggal : $tanggal",
                       style: const TextStyle(
-                          fontWeight: FontWeight.w400, fontSize: 13),
+                            fontSize: 13),
                     )
                   ],
                 ),
@@ -611,17 +611,17 @@ class BoxRiwayatDokter extends StatelessWidget {
                     children: [
                       Text(
                         'No. Antrian: $no',
-                        style: TextStyle(fontSize: 13),
+                        style: TextStyle(fontSize: 11, fontWeight: FontWeight.w300),
                       ),
                       Text(
                         nama,
                         style: const TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w600),
+                            fontSize: 17, fontWeight: FontWeight.w600),
                       ),
                       Text(
                         nrp,
                         style: const TextStyle(
-                            fontWeight: FontWeight.w300, fontSize: 12),
+                            fontSize: 13),
                       ),
                       tanggal
                     ],
