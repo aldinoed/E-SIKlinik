@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class RiwayatCheckup extends StatefulWidget {
   final int checkupId;
@@ -14,6 +12,7 @@ class RiwayatCheckup extends StatefulWidget {
 
 class _RiwayatCheckupState extends State<RiwayatCheckup> {
   Map<String, dynamic>? checkupDetail;
+
   @override
   void initState() {
     super.initState();
@@ -47,294 +46,210 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFFF9F9FB),
-        appBar: AppBar(
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop((context));
-              },
-              icon: const Icon(Icons.arrow_back_ios)),
-          backgroundColor: Colors.white,
-          elevation: 2,
-          shadowColor: Colors.black,
-          centerTitle: true,
-          title: const Text(
-            "Riwayat Check Up",
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
+      backgroundColor: const Color(0xFFF9F9FB),
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios),
         ),
-        body: checkupDetail != null
-            ? SingleChildScrollView(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                child: Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(15),
-                      width: double.infinity,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(15)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            offset: const Offset(-1, 2),
-                            blurRadius: 3,
-                            spreadRadius: 0,
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Tanggal Check Up",
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text("${checkupDetail!['created_at']}",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xFF62636C),
-                              ))
-                        ],
+        backgroundColor: Colors.white,
+        elevation: 2,
+        shadowColor: Colors.black,
+        centerTitle: true,
+        title: const Text(
+          "Riwayat Check Up",
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
+      ),
+      body: checkupDetail != null
+          ? SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              child: Column(
+                children: [
+                  buildContainer(
+                    title: "Tanggal Check Up",
+                    content: Text(
+                      "${checkupDetail!['created_at']}",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF62636C),
                       ),
                     ),
-                    const SizedBox(
-                      height: 15,
+                  ),
+                  const SizedBox(height: 15),
+                  buildContainer(
+                    title: "Informasi Pasien",
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        setInfoPasien("NRP", "${checkupDetail!['pasien_nrp']}"),
+                        setInfoPasien("Nama", "${checkupDetail!['nama_pasien']}"),
+                        setInfoPasien("Program Studi", "${checkupDetail!['nama']}"),
+                        setInfoPasien("Gender", "${checkupDetail!['pasien_gender']}"),
+                        setInfoPasien("Tanggal Lahir", "${checkupDetail!['tanggal_lahir_pasien']}"),
+                        setInfoPasien("Alamat", "${checkupDetail!['pasien_address']}"),
+                        setInfoPasien("No Hp", "${checkupDetail!['pasien_phone_no']}"),
+                        setInfoPasien("No Wali", "${checkupDetail!['pasien_wali_no']}"),
+                      ],
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(15),
-                      width: double.infinity,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(15)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            offset: const Offset(-1, 2),
-                            blurRadius: 3,
-                            spreadRadius: 0,
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Informasi Pasien",
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          setInfoPasien("NRP",
-                              "${checkupDetail!['pasien_nrp, pasien.nrp']}"),
-                          setInfoPasien("Nama",
-                              "${checkupDetail!['nama_pasien, pasien.id']}"),
-                          setInfoPasien(
-                              "Program Studi", "${checkupDetail!['nama']}"),
-                          setInfoPasien(
-                              "Gender", "${checkupDetail!['gender']}"),
-                          setInfoPasien("Tanggal Lahir",
-                              "${checkupDetail!['tanggal_lahir']}"),
-                          setInfoPasien(
-                              "Alamat", "${checkupDetail!['alamat']}"),
-                          setInfoPasien(
-                              "No Hp", "${checkupDetail!['nomor_hp']}"),
-                          setInfoPasien(
-                              "No Wali", "${checkupDetail!['nomor_wali']}"),
-                        ],
+                  ),
+                  const SizedBox(height: 15),
+                  buildContainer(
+                    title: "Informasi Dokter",
+                    content: Text(
+                      "${checkupDetail!["nama_dokter, dokter.id"]}",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF62636C),
                       ),
                     ),
-                    const SizedBox(
-                      height: 15,
+                  ),
+                  const SizedBox(height: 15),
+                  buildContainer(
+                    title: "Hasil Check Up",
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${checkupDetail!['hasil_diagnosa']}",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF62636C),
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Container(
+                          width: double.infinity,
+                          height: 125,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(15),
-                      width: double.infinity,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(15)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            offset: const Offset(-1, 2),
-                            blurRadius: 3,
-                            spreadRadius: 0,
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Informasi Dokter",
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text("${checkupDetail!['nama_dokter, dokter.id']}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xFF62636C),
-                              ))
-                        ],
-                      ),
+                  ),
+                  const SizedBox(height: 15),
+                  buildContainer(
+                    title: "Resep Obat",
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: buildResepObatList(),
                     ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(15),
-                      width: double.infinity,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(15)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            offset: const Offset(-1, 2),
-                            blurRadius: 3,
-                            spreadRadius: 0,
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Hasil Check Up",
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text("${checkupDetail!['hasil_diagnosa']}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xFF62636C),
-                              )),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            width: double.infinity,
-                            height: 125,
-                            decoration: const BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15)),
-                                color: Colors.grey),
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(15),
-                      width: double.infinity,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(15)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            offset: const Offset(-1, 2),
-                            blurRadius: 3,
-                            spreadRadius: 0,
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Resep  Obat",
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          setResepObat("1.", "Paracetamol", "3x3 Hari"),
-                          setResepObat("2.", "Amoxicillin", "3x5 Hari"),
-                          setResepObat("3.", "Antimo", "1x3 Hari"),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              )
-            : const Center(child: CircularProgressIndicator()));
+                  ),
+                ],
+              ),
+            )
+          : const Center(child: CircularProgressIndicator()),
+    );
   }
-}
 
-Widget setInfoPasien(String label, String value) {
-  return Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      SizedBox(
-        width: 120,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(label,
+  Widget buildContainer({required String title, required Widget content}) {
+    return Container(
+      padding: const EdgeInsets.all(15),
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.all(Radius.circular(15)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            offset: const Offset(-1, 2),
+            blurRadius: 3,
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(height: 10),
+          content,
+        ],
+      ),
+    );
+  }
+
+  Widget setInfoPasien(String label, String value) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 120,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                label,
                 style: const TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Color(0xFF62636C),
-                )),
-            const Text(":",
+                ),
+              ),
+              const Text(
+                ":",
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Color(0xFF62636C),
-                ))
-          ],
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-      const SizedBox(
-        width: 5,
-      ),
-      Expanded(
-        child: Text(value,
+        const SizedBox(width: 5),
+        Expanded(
+          child: Text(
+            value,
             style: const TextStyle(
               fontWeight: FontWeight.w500,
               color: Color(0xFF62636C),
-            )),
-      )
-    ],
-  );
-}
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
-Widget setResepObat(String id, String nama, String ket) {
-  return Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(id),
-      const SizedBox(
-        width: 2,
-      ),
-      Text(nama),
-      const SizedBox(
-        width: 5,
-      ),
-      Text(ket,
+  Widget setResepObat(String id, String nama, String ket) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(id),
+        const SizedBox(width: 2),
+        Text(nama),
+        const SizedBox(width: 5),
+        Text(
+          ket,
           style: const TextStyle(
             fontWeight: FontWeight.w500,
-          ))
-    ],
-  );
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<Widget> buildResepObatList() {
+    List<Widget> resepObatWidgets = [];
+    if (checkupDetail != null && checkupDetail!['detail_resep_obats'] != null) {
+      int index = 1;
+      for (var detail in checkupDetail!['detail_resep_obats']) {
+        resepObatWidgets.add(
+          setResepObat(
+            "$index.",
+            detail['nama_obat'],
+            "${detail['detail_jumlah_pemakaian']}x${detail['detail_waktu_pemakaian']} Hari",
+          ),
+        );
+        index++;
+      }
+    }
+    return resepObatWidgets;
+  }
 }

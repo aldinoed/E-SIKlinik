@@ -8,10 +8,10 @@ void showDeleteConfirmationDialog(BuildContext context, VoidCallback onDelete) {
       return AlertDialog(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(15)),
-                      side: BorderSide(color: Color(0xFFE74F4F)), // Border color
-                    ),
-                    elevation: 8.0,
-                    backgroundColor: Colors.white, // Background color
+          side: BorderSide(color: Color(0xFFE74F4F)), // Border color
+        ),
+        elevation: 8.0,
+        backgroundColor: Colors.white, // Background color
         title: const Center(
             child: Text(
           'Warning!',
@@ -69,3 +69,4 @@ void showDeleteConfirmationDialog(BuildContext context, VoidCallback onDelete) {
     },
   );
 }
+

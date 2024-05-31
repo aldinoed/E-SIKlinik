@@ -203,32 +203,60 @@ class CheckUpController extends Controller
        * Display the specified resource.
        */
       public function show(string $id)
-      {
-            $results = DB::table('check_up_results')
-                  ->select('check_up_results.*')
-                  ->join('checkup_assesmens', 'check_up_results.assesmen_id', '=', 'checkup_assesmens.id')
-                  ->addSelect('checkup_assesmens.*')
-                  ->join('dokter', 'checkup_assesmens.dokter_id', '=', 'dokter.id')
-                  ->addSelect('dokter.nama as nama_dokter, dokter.id as dokter_id, dokter.tanggal_lahir as tanggal_lahir_dokter, dokter.alamat as dokter_address, dokter.gender as dokter_gender, dokter.nomor_hp as dokter_phone_no, dokter.image as dokter_image, dokter.is_disabled as dokter_is_disabled ')
-                  ->join('antrian', 'checkup_assesmens.antrian_id', '=', 'antrian.id')
-                  ->addSelect('antrian.*')
-                  ->join('pasien', 'antrian.pasien_id', '=', 'pasien.id')
-                  ->addSelect('pasien.nama as nama_pasien, pasien.id as pasien_id,pasien.gender as pasien_gender, pasien.nrp as pasien_nrp, pasien.tanggal_lahir as tanggal_lahir_pasien, pasien.alamat as pasien_address, pasien.nomor_hp as pasien_phone_no, pasien.nomor_wali as pasien_wali_no, pasien.image as pasien_image, pasien.is_disabled as pasien_is_disabled ')
-                  ->join('prodi', 'pasien.prodi_id', '=', 'prodi.id')
-                  ->addSelect('prodi.*')
-                  ->join('detail_resep_obats', 'check_up_results.id', '=', 'detail_resep_obats.checkup_id',)
-                  ->addSelect('detail_resep_obats.id as detail_resep_obats_id, detail_resep_obats.obat_id as detail_resep_obat_id, detail_resep_obats.checkup_id as detail_resep_obats_checkup_id, detail_resep_obats.jumlah_pemakaian as detail_jumlah_pemakaian, detail_resep_obats.waktu_pemakaian as detail_waktu_pemakaian ')
-                  ->join('obats', 'detail_resep_obats.obat_id', '=', 'obats.id')
-                  ->addSelect('obats.*')
-                  ->join('kategori_obats', 'obats.kategori_id', '=', 'kategori_obats.id')
-                  ->addSelect('kategori_obats.*')
-                  ->where('check_up_results.id', '=', $id)
-                  ->first();
-            if ($results) {
-                  return response()->json(['status' => 200, 'results' => $results]);
-            }
-            return response()->json(['status' => 400, 'results' => 'Belum ada data']);
-      }
+{
+    $results = DB::table('check_up_results')
+        ->select('check_up_results.*')
+        ->join('checkup_assesmens', 'check_up_results.assesmen_id', '=', 'checkup_assesmens.id')
+        ->addSelect('checkup_assesmens.*')
+        ->join('dokter', 'checkup_assesmens.dokter_id', '=', 'dokter.id')
+        ->addSelect('dokter.nama as nama_dokter, dokter.id as dokter_id, dokter.tanggal_lahir as tanggal_lahir_dokter, dokter.alamat as dokter_address, dokter.gender as dokter_gender, dokter.nomor_hp as dokter_phone_no, dokter.image as dokter_image, dokter.is_disabled as dokter_is_disabled ')
+        ->join('antrian', 'checkup_assesmens.antrian_id', '=', 'antrian.id')
+        ->addSelect('antrian.*')
+        ->join('pasien', 'antrian.pasien_id', '=', 'pasien.id')
+        ->addSelect(
+            'pasien.nama as nama_pasien',
+            'pasien.id as pasien_id',
+            'pasien.gender as pasien_gender',
+            'pasien.nrp as pasien_nrp',
+            'pasien.tanggal_lahir as tanggal_lahir_pasien',
+            'pasien.alamat as pasien_address',
+            'pasien.nomor_hp as pasien_phone_no',
+            'pasien.nomor_wali as pasien_wali_no',
+            'pasien.prodi_id as pasien_prodi_id',
+            'pasien.image as pasien_image',
+            'pasien.is_disabled as pasien_is_disabled'
+        )
+        ->join('prodi', 'pasien.prodi_id', '=', 'prodi.id')
+        ->addSelect('prodi.*')
+        ->where('check_up_results.id', '=', $id)
+        ->first();
+
+    if ($results) {
+        // Fetch detail_resep_obats related to this check_up_result
+        $detailResepObats = DB::table('detail_resep_obats')
+            ->join('obats', 'detail_resep_obats.obat_id', '=', 'obats.id')
+            ->where('detail_resep_obats.checkup_id', '=', $id)
+            ->select(
+                'detail_resep_obats.id as detail_resep_obats_id',
+                'detail_resep_obats.obat_id as detail_resep_obat_id',
+                'detail_resep_obats.checkup_id as detail_resep_obats_checkup_id',
+                'detail_resep_obats.jumlah_pemakaian as detail_jumlah_pemakaian',
+                'detail_resep_obats.waktu_pemakaian as detail_waktu_pemakaian',
+                'obats.nama_obat as nama_obat',
+                'obats.tanggal_kadaluarsa as tanggal_kadaluarsa',
+                'obats.stock as stock',
+                'obats.harga as harga',
+                'obats.image as obat_image'
+            )
+            ->get();
+
+        $results->detail_resep_obats = $detailResepObats;
+
+        return response()->json(['status' => 200, 'results' => $results]);
+    }
+    return response()->json(['status' => 400, 'results' => 'Belum ada data']);
+}
+
       /**
        * Display the specified assesmen.
        */

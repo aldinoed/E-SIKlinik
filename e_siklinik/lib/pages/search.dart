@@ -34,9 +34,10 @@ class _SearchState extends State<Search> {
           setState(() {
             checkupList = data['checkup'];
             // Sort checkupList by created_at in descending order
-            checkupList.sort((a, b) =>
-                DateTime.parse(b['created_at']).compareTo(DateTime.parse(a['created_at'])));
-            filteredCheckupList = checkupList; // Inisialisasi daftar hasil pencarian
+            checkupList.sort((a, b) => DateTime.parse(b['created_at'])
+                .compareTo(DateTime.parse(a['created_at'])));
+            filteredCheckupList =
+                checkupList; // Inisialisasi daftar hasil pencarian
           });
         } else {
           print("No data received from API");
@@ -58,7 +59,8 @@ class _SearchState extends State<Search> {
       setState(() {
         filteredCheckupList = checkupList.where((checkup) {
           final patientName = checkup['check_up_resul_to_assesmen']
-              ['assesmen_to_antrian']['antrian_to_pasien']['nama'].toLowerCase();
+                  ['assesmen_to_antrian']['antrian_to_pasien']['nama']
+              .toLowerCase();
           return patientName.contains(query.toLowerCase());
         }).toList();
       });

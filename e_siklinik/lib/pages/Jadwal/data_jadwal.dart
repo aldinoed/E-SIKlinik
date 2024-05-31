@@ -72,9 +72,7 @@ class _DataJadwalState extends State<DataJadwal> {
               jadwal['jadwal_to_dokter']['nama']
                   .toLowerCase()
                   .contains(searchText.toLowerCase()) ||
-              jadwal['hari']
-                  .toLowerCase()
-                  .contains(searchText.toLowerCase()) ||
+              jadwal['hari'].toLowerCase().contains(searchText.toLowerCase()) ||
               jadwal['jadwal_mulai_tugas']
                   .toLowerCase()
                   .contains(searchText.toLowerCase()) ||

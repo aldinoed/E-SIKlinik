@@ -179,29 +179,29 @@ class _EditDokterState extends State<EditDokter> {
                                           BorderRadius.all(Radius.circular(15)),
                                       color: Color(0xFFEFF0F3)),
                                   child: DropdownButtonFormField<String>(
-              value: selectedGender,
-              decoration: const InputDecoration(
-                hintText: "Gender",
-                border: InputBorder.none,
-              ),
-              items: genders.map((String gender) {
-                return DropdownMenuItem<String>(
-                  value: gender,
-                  child: Text(gender),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedGender = newValue;
-                });
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Jenis kelamin tidak boleh kosong';
-                }
-                return null;
-              },
-            ),
+                                    value: selectedGender,
+                                    decoration: const InputDecoration(
+                                      hintText: "Gender",
+                                      border: InputBorder.none,
+                                    ),
+                                    items: genders.map((String gender) {
+                                      return DropdownMenuItem<String>(
+                                        value: gender,
+                                        child: Text(gender),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        selectedGender = newValue;
+                                      });
+                                    },
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Jenis kelamin tidak boleh kosong';
+                                      }
+                                      return null;
+                                    },
+                                  ),
                                 ),
                               ],
                             )),

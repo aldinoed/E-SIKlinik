@@ -83,12 +83,12 @@ class _AssesmentPageState extends State<AssesmentPage> {
                 child: CircularProgressIndicator(),
               )
             : assesmentList.isEmpty
-                ? const Center(
-                    child: Text(
-                      'Tidak ada data pasien',
-                      style: TextStyle(fontSize: 18.0),
-                    ),
-                  )
+                ? Center(
+                child: Image.asset(
+                  'assets/images/kosong.png',
+                  fit: BoxFit.cover,
+                ),
+              )
                 : SafeArea(
                     child: Padding(
                     padding: const EdgeInsets.all(16),
