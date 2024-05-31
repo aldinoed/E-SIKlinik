@@ -63,10 +63,10 @@ class _AssesmentPageState extends State<AssesmentPage> {
           ),
         ),
         body: assesmentList.isEmpty
-            ? const Center(
-                child: Text(
-                  'Tidak ada data pasien',
-                  style: TextStyle(fontSize: 18.0),
+            ? Center(
+                child: Image.asset(
+                  'assets/images/kosong.png',
+                  fit: BoxFit.cover,
                 ),
               )
             : SafeArea(
