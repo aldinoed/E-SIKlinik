@@ -22,8 +22,8 @@ class _AddCheckupState extends State<AddCheckup> {
   final TextEditingController imageController = TextEditingController();
 
   final String apiPostCheckupResult =
-      "http://10.00.2.2:8000/api/checkup-obat/insert";
-  final String apiGetAllObat = "http://10.00.2.2:8000/api/obat";
+      "http://192.168.100.66:8080/api/checkup-obat/insert";
+  final String apiGetAllObat = "http://192.168.100.66:8080/api/obat";
 
   List<Map<String, dynamic>> obatList = [];
   Map<String, dynamic>? assesmentDetail;
@@ -40,9 +40,6 @@ class _AddCheckupState extends State<AddCheckup> {
   }
 
   Future<void> _getAllObat() async {
-    setState(() {
-      isLoading = true;
-    });
     try {
       final response = await http.get(Uri.parse(apiGetAllObat));
       if (response.statusCode == 200) {
@@ -66,7 +63,7 @@ class _AddCheckupState extends State<AddCheckup> {
     try {
       final response = await http.get(
         Uri.parse(
-            "http://10.00.2.2:8000/api/checkup-assesmen/show/${widget.assesmentId}"),
+            "http://192.168.100.66:8080/api/checkup-assesmen/show/${widget.assesmentId}"),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -82,14 +79,13 @@ class _AddCheckupState extends State<AddCheckup> {
       }
     } catch (error) {
       print('Error: $error');
-    } finally{
-      setState(() {
-        isLoading = false;
-      });
     }
   }
 
   Future<void> addCheckupWithResepObat(BuildContext context) async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       var request =
           http.MultipartRequest('POST', Uri.parse(apiPostCheckupResult));
@@ -121,6 +117,10 @@ class _AddCheckupState extends State<AddCheckup> {
       }
     } catch (error) {
       print('Error: $error');
+    } finally{
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -213,7 +213,7 @@ class _AddCheckupState extends State<AddCheckup> {
                                       const BorderRadius.all(Radius.circular(15)),
                                   image: DecorationImage(
                                       image: NetworkImage(
-                                          'http://10.00.2.2:8000/storage/' +
+                                          'http://192.168.100.66:8080/storage/' +
                                               assesmentDetail?['image']),
                                       fit: BoxFit.fill)),
                             )
@@ -503,7 +503,7 @@ class _AddCheckupState extends State<AddCheckup> {
                               return ListTile(
                                 title: Text(obat['nama_obat']),
                                 subtitle: Text(
-                                    'Jumlah Pemakaian: ${resepObat['jumlah_pemakaian']}, Waktu Pemakaian: ${resepObat['waktu_pemakaian']}'),
+                                    '${resepObat['jumlah_pemakaian']} X ${resepObat['waktu_pemakaian']} Hari'),
                               );
                             },
                           ),

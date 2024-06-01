@@ -90,13 +90,13 @@ class BoxSearchPage extends StatelessWidget {
   final Widget prodi;
 
   const BoxSearchPage({
-    super.key,
+    Key? key,
     required this.onTapBox,
     required this.nama,
     required this.nrp,
     required this.icon,
     required this.prodi,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +108,6 @@ class BoxSearchPage extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 8),
             padding: const EdgeInsets.all(15),
             width: double.infinity,
-            height: 100,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: const BorderRadius.all(Radius.circular(15)),
@@ -130,21 +129,22 @@ class BoxSearchPage extends StatelessWidget {
                 const SizedBox(
                   width: 15,
                 ),
-                SizedBox(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         nama,
                         style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w600),
+                          fontSize: 20, fontWeight: FontWeight.w600),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       Text(
                         nrp,
                         style: const TextStyle(fontWeight: FontWeight.w300),
                       ),
-                      prodi
+                      prodi,
                     ],
                   ),
                 ),
@@ -154,7 +154,7 @@ class BoxSearchPage extends StatelessWidget {
         ),
         const SizedBox(
           height: 15,
-        )
+        ),
       ],
     );
   }
@@ -188,7 +188,6 @@ class BoxPasien extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 16),
             padding: const EdgeInsets.all(15),
             width: double.infinity,
-            height: 100,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: const BorderRadius.all(Radius.circular(15)),
@@ -202,55 +201,52 @@ class BoxPasien extends StatelessWidget {
               ],
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 35,
-                      height: 35,
-                      decoration: ShapeDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(icon), fit: BoxFit.fill),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)),
-                          color: const Color(0xFFDDEAFF)),
+                Container(
+                  width: 35,
+                  height: 35,
+                  decoration: ShapeDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(icon), 
+                      fit: BoxFit.fill,
                     ),
-                    const SizedBox(
-                      width: 15,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
                     ),
-                    SizedBox(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            nama,
-                            style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w600),
-                          ),
-                          Text(
-                            nrp,
-                            style: const TextStyle(fontWeight: FontWeight.w300),
-                          ),
-                          prodi
-                        ],
-                      ),
-                    ),
-                  ],
+                    color: const Color(0xFFDDEAFF),
+                  ),
                 ),
-                Center(
-                  child: IconButton(
-                      onPressed: onTapPop, icon: const Icon(Icons.more_vert)),
-                )
+                const SizedBox(width: 15),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        nama,
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w600),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        nrp,
+                        style: const TextStyle(fontWeight: FontWeight.w300),
+                      ),
+                      prodi,
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: onTapPop, 
+                  icon: const Icon(Icons.more_vert),
+                ),
               ],
             ),
           ),
         ),
-        const SizedBox(
-          height: 15,
-        )
+        const SizedBox(height: 15),
       ],
     );
   }
@@ -261,12 +257,14 @@ class BoxDokter extends StatelessWidget {
   final VoidCallback onTapPop;
   final String icon;
   final String nama;
-  const BoxDokter(
-      {super.key,
-      required this.onTapBox,
-      required this.icon,
-      required this.nama,
-      required this.onTapPop});
+
+  const BoxDokter({
+    Key? key,
+    required this.onTapBox,
+    required this.icon,
+    required this.nama,
+    required this.onTapPop,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -277,8 +275,6 @@ class BoxDokter extends StatelessWidget {
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 16),
             padding: const EdgeInsets.all(15),
-            width: double.infinity,
-            height: 100,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: const BorderRadius.all(Radius.circular(15)),
@@ -292,56 +288,62 @@ class BoxDokter extends StatelessWidget {
               ],
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(15)),
-                          image: DecorationImage(
-                              image: NetworkImage(icon), fit: BoxFit.fill),
-                          color: const Color(0xFFDDEAFF)),
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    image: DecorationImage(
+                      image: NetworkImage(icon),
+                      fit: BoxFit.fill,
                     ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    Text(
-                      nama,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 20),
-                    )
-                  ],
+                  ),
+                ),
+                const SizedBox(width: 15),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        nama,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 IconButton(
-                    onPressed: onTapPop, icon: const Icon(Icons.more_vert)),
+                  onPressed: onTapPop,
+                  icon: const Icon(Icons.more_vert),
+                ),
               ],
             ),
           ),
         ),
-        const SizedBox(
-          height: 15,
-        )
+        const SizedBox(height: 15),
       ],
     );
   }
 }
+
 
 class BoxRiwayat extends StatelessWidget {
   final VoidCallback onTapBox;
   final String tanggal;
   final String nama;
   final String no;
-  const BoxRiwayat(
-      {super.key,
-      required this.onTapBox,
-      required this.tanggal,
-      required this.nama,
-      required this.no});
+
+  const BoxRiwayat({
+    Key? key,
+    required this.onTapBox,
+    required this.tanggal,
+    required this.nama,
+    required this.no,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -353,7 +355,6 @@ class BoxRiwayat extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 8),
             padding: const EdgeInsets.all(15),
             width: double.infinity,
-            height: 100,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: const BorderRadius.all(Radius.circular(15)),
@@ -378,36 +379,35 @@ class BoxRiwayat extends StatelessWidget {
                     size: 40,
                   ),
                 ),
-                const SizedBox(
-                  width: 15,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'No. Antrian: $no',
-                      style: TextStyle(fontSize: 11, fontWeight:FontWeight.w300),
-                    ),
-                    Text(
-                      nama,
-                      style: const TextStyle(
+                const SizedBox(width: 15),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'No. Antrian: $no',
+                        style: TextStyle(fontSize: 11, fontWeight: FontWeight.w300),
+                      ),
+                      Text(
+                        nama,
+                        style: const TextStyle(
                           fontWeight: FontWeight.w600, fontSize: 17),
-                    ),
-                    Text(
-                      "Tanggal : $tanggal",
-                      style: const TextStyle(
-                            fontSize: 13),
-                    )
-                  ],
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        'Tanggal: $tanggal',
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
         ),
-        const SizedBox(
-          height: 15,
-        )
+        const SizedBox(height: 15),
       ],
     );
   }
@@ -499,12 +499,14 @@ class BoxAssesment extends StatelessWidget {
   final String pasien;
   final String dokter;
   final VoidCallback onTapBox;
-  const BoxAssesment(
-      {super.key,
-      required this.no,
-      required this.pasien,
-      required this.dokter,
-      required this.onTapBox});
+
+  const BoxAssesment({
+    Key? key,
+    required this.no,
+    required this.pasien,
+    required this.dokter,
+    required this.onTapBox,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -513,10 +515,9 @@ class BoxAssesment extends StatelessWidget {
         GestureDetector(
           onTap: onTapBox,
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 4),
+            margin: const EdgeInsets.symmetric(horizontal: 4),
             padding: const EdgeInsets.all(15),
             width: double.infinity,
-            height: 100,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: const BorderRadius.all(Radius.circular(15)),
@@ -530,25 +531,25 @@ class BoxAssesment extends StatelessWidget {
               ],
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "Nomor Antrean : $no",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                 ),
                 Text(
-                  "$pasien",
-                  style: TextStyle(fontWeight: FontWeight.w500),
+                  pasien,
+                  style: const TextStyle(fontWeight: FontWeight.w500),
                 ),
                 Text(
-                  "$dokter",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                )
+                  dokter,
+                  style: const TextStyle(fontWeight: FontWeight.w500),
+                ),
               ],
             ),
           ),
-        )
+        ),
+        const SizedBox(height: 15),
       ],
     );
   }
@@ -563,14 +564,14 @@ class BoxRiwayatDokter extends StatelessWidget {
   final Widget tanggal;
 
   const BoxRiwayatDokter({
-    super.key,
+    Key? key,
     required this.onTapBox,
     required this.nama,
     required this.nrp,
     required this.icon,
     required this.tanggal,
     required this.no,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -582,7 +583,6 @@ class BoxRiwayatDokter extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 8),
             padding: const EdgeInsets.all(15),
             width: double.infinity,
-            height: 110,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: const BorderRadius.all(Radius.circular(15)),
@@ -598,32 +598,35 @@ class BoxRiwayatDokter extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  child: icon,
-                ),
-                const SizedBox(
-                  width: 15,
-                ),
-                SizedBox(
+                icon,
+                const SizedBox(width: 15),
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         'No. Antrian: $no',
-                        style: TextStyle(fontSize: 11, fontWeight: FontWeight.w300),
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w300,
+                        ),
                       ),
                       Text(
                         nama,
                         style: const TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.w600),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        maxLines: null,  // Allow unlimited lines
+                        overflow: TextOverflow.visible,  // Show all text
                       ),
                       Text(
                         nrp,
                         style: const TextStyle(
-                            fontSize: 13),
+                          fontSize: 13,
+                        ),
                       ),
-                      tanggal
+                      tanggal,
                     ],
                   ),
                 ),
@@ -631,9 +634,7 @@ class BoxRiwayatDokter extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(
-          height: 15,
-        )
+        const SizedBox(height: 15),
       ],
     );
   }

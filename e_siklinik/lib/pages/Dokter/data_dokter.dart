@@ -75,9 +75,30 @@ class _DataDokterState extends State<DataDokter> {
     });
   }
 
-  void _deleteItem() {
-    print('Item deleted');
-  }
+Future<void> _disableDokter(int dokterId) async {
+    try {
+      final response = await http.put(
+          Uri.parse("http://192.168.100.66:8080/api/dokter/disabled/$dokterId"));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        print('Success: ${data['message']}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Success: ${data['message']}')),
+        );
+        _refreshData();
+      } else {
+        final errorData = json.decode(response.body);
+        print('Failed: ${errorData['message']}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed: ${errorData['message']}')),
+        );
+      }
+    } catch (error) {
+      print('Error: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $error')),
+      );
+    }}
 
   @override
   Widget build(BuildContext context) {
@@ -198,8 +219,8 @@ class _DataDokterState extends State<DataDokter> {
                                                 }
                                               },
                                               onTapDelete: () {
-                                                showDeleteConfirmationDialog(
-                                                    context, _deleteItem);
+                                                showDeleteConfirmationDialog(context,
+                                              () => _disableDokter(dokterId));
                                               },
                                             ));
                                   },

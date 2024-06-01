@@ -34,9 +34,6 @@ class _AddAssessmentState extends State<AddAssessment> {
   }
 
   Future<void> _getAllDokter() async {
-    setState(() {
-      isLoading = true;
-    });
     try {
       final response = await http.get(Uri.parse(apiGetAllDokter));
       if (response.statusCode == 200) {
@@ -81,6 +78,9 @@ class _AddAssessmentState extends State<AddAssessment> {
   }
 
   Future<void> addAssesment(BuildContext context) async {
+        setState(() {
+      isLoading = true;
+    });
     try {
       var request = http.MultipartRequest('POST', Uri.parse(apiPostAssesment));
       request.fields['dokter_id'] = dokterIdController.text;
