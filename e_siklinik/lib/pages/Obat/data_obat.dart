@@ -132,7 +132,14 @@ class _DataObatState extends State<DataObat> {
             ),
           ),
           Expanded(
-            child: GridView.builder(
+            child:
+            searchObat.isEmpty ? Center(
+              child: Image.asset(
+                'assets/images/obat_kosong.png',
+                fit: BoxFit.cover,
+              ),
+            )
+            : GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 mainAxisSpacing: 8.0,
