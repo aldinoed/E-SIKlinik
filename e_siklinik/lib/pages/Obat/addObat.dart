@@ -23,9 +23,10 @@ class _AddObatNewState extends State<AddObatNew> {
   final TextEditingController hargaController = TextEditingController();
   final TextEditingController imageController = TextEditingController();
 
-  final String apiPostObat = "http://192.168.100.66:8080/api/obat/insert";
+  final String apiPostObat = "http://192.168.18.40:8080/api/obat/insert";
 
-  final String apiGetAllKategori = "http://192.168.100.66:8080/api/kategori-obat";
+  final String apiGetAllKategori =
+      "http://192.168.18.40:8080/api/kategori-obat";
 
   List<dynamic> kategoriList = [];
   String? _selectedKategori;
@@ -394,7 +395,8 @@ class _AddObatNewState extends State<AddObatNew> {
                                                             context: context,
                                                             initialDate: DateTime
                                                                 .now(), //get today's date
-                                                            firstDate: DateTime.now(),
+                                                            firstDate:
+                                                                DateTime.now(),
                                                             lastDate:
                                                                 DateTime(2101),
                                                           );

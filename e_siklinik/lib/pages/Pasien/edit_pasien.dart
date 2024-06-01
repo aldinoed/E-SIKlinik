@@ -15,12 +15,11 @@ class EditPasien extends StatefulWidget {
 }
 
 class _EditPasienState extends State<EditPasien> {
-  final String apiGetAllProdi = "http://192.168.100.66:8080/api/prodi";
+  final String apiGetAllProdi = "http://192.168.18.40:8080/api/prodi";
   List<dynamic> prodiList = [];
   String? selectedGender;
   final List<String> genders = ["Laki-laki", "Perempuan"];
   bool isLoading = false;
-
 
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _namaController;
@@ -70,7 +69,7 @@ class _EditPasienState extends State<EditPasien> {
       isLoading = true;
     });
     final id = widget.pasien['id'];
-    final url = Uri.parse('http://192.168.100.66:8080/api/pasien/update/$id');
+    final url = Uri.parse('http://192.168.18.40:8080/api/pasien/update/$id');
     final request = http.MultipartRequest('POST', url);
 
     // Menambahkan data yang akan diperbarui
@@ -130,7 +129,7 @@ class _EditPasienState extends State<EditPasien> {
       }
     } catch (error) {
       print('Error: $error');
-    }finally {
+    } finally {
       setState(() {
         isLoading = false;
       });
@@ -185,15 +184,16 @@ class _EditPasienState extends State<EditPasien> {
                       children: [
                         const Text(
                           "Nama",
-                          style:
-                              TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 17),
                         ),
                         Container(
                           height: 50,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 2),
                           decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
                               color: Color(0xFFEFF0F3)),
                           child: TextFormField(
                             controller: _namaController,
@@ -214,15 +214,16 @@ class _EditPasienState extends State<EditPasien> {
                         ),
                         const Text(
                           "Program Studi",
-                          style:
-                              TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 17),
                         ),
                         Container(
                           height: 50,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 2),
                           decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
                               color: Color(0xFFEFF0F3)),
                           child: AutocompleteTextField(
                             validator: (value) {
@@ -239,10 +240,11 @@ class _EditPasienState extends State<EditPasien> {
                                 .map((prodi) => prodi['nama'] as String)
                                 .toList(),
                             onItemSelect: (value) {
-                              final selectedProdi = prodiList
-                                  .firstWhere((prodi) => prodi['nama'] == value);
+                              final selectedProdi = prodiList.firstWhere(
+                                  (prodi) => prodi['nama'] == value);
                               setState(() {
-                                _selectedProdiId = selectedProdi['id'].toString();
+                                _selectedProdiId =
+                                    selectedProdi['id'].toString();
                               });
                             },
                           ),
@@ -275,15 +277,16 @@ class _EditPasienState extends State<EditPasien> {
                         ),
                         const Text(
                           "NRP",
-                          style:
-                              TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 17),
                         ),
                         Container(
                           height: 50,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 2),
                           decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
                               color: Color(0xFFEFF0F3)),
                           child: TextFormField(
                             controller: _nrpController,
@@ -319,8 +322,8 @@ class _EditPasienState extends State<EditPasien> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 16, vertical: 2),
                                       decoration: const BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.all(Radius.circular(15)),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15)),
                                           color: Color(0xFFEFF0F3)),
                                       child: DropdownButtonFormField<String>(
                                         value: selectedGender,
@@ -368,8 +371,8 @@ class _EditPasienState extends State<EditPasien> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 16, vertical: 2),
                                       decoration: const BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.all(Radius.circular(15)),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15)),
                                           color: Color(0xFFEFF0F3)),
                                       child: TextFormField(
                                         controller: _tanggalLahirController,
@@ -412,15 +415,16 @@ class _EditPasienState extends State<EditPasien> {
                         ),
                         const Text(
                           "Alamat",
-                          style:
-                              TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 17),
                         ),
                         Container(
                           height: 100,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 2),
                           decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
                               color: Color(0xFFEFF0F3)),
                           child: TextFormField(
                             maxLines: null,
@@ -440,15 +444,16 @@ class _EditPasienState extends State<EditPasien> {
                         ),
                         const Text(
                           "Nomor Handphone",
-                          style:
-                              TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 17),
                         ),
                         Container(
                           height: 50,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 2),
                           decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
                               color: Color(0xFFEFF0F3)),
                           child: TextFormField(
                             controller: _nomorHpController,
@@ -468,21 +473,23 @@ class _EditPasienState extends State<EditPasien> {
                         ),
                         const Text(
                           "Nomor Handphone Wali",
-                          style:
-                              TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 17),
                         ),
                         Container(
                           height: 50,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 2),
                           decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
                               color: Color(0xFFEFF0F3)),
                           child: TextFormField(
                             controller: _nomorWaliController,
                             keyboardType: TextInputType.phone,
                             decoration: const InputDecoration(
-                                hintText: "Nomor Wali", border: InputBorder.none),
+                                hintText: "Nomor Wali",
+                                border: InputBorder.none),
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Nomor Wali tidak boleh kosong';
@@ -496,15 +503,16 @@ class _EditPasienState extends State<EditPasien> {
                         ),
                         const Text(
                           "Foto Pasien",
-                          style:
-                              TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 17),
                         ),
                         Container(
                           height: 50,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 2),
                           decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
                               color: Color(0xFFEFF0F3)),
                           child: TextFormField(
                             controller: imageController,
@@ -516,7 +524,7 @@ class _EditPasienState extends State<EditPasien> {
                               final pickedFile = await picker.pickImage(
                                 source: ImageSource.gallery,
                               );
-        
+
                               if (pickedFile != null) {
                                 setState(() {
                                   _imageFile = File(pickedFile.path);
@@ -534,11 +542,13 @@ class _EditPasienState extends State<EditPasien> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             ElevatedButton(
-                              onPressed: isLoading ? null : () {
-                                if (_formKey.currentState!.validate()) {
-                                  _updatePasien();
-                                }
-                              },
+                              onPressed: isLoading
+                                  ? null
+                                  : () {
+                                      if (_formKey.currentState!.validate()) {
+                                        _updatePasien();
+                                      }
+                                    },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF234DF0),
                                 shape: RoundedRectangleBorder(
