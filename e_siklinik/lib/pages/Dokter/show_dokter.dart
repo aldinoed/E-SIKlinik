@@ -29,7 +29,8 @@ class _ShowDokterState extends State<ShowDokter> {
   Future<void> _getDokterDetail() async {
     try {
       final response = await http.get(
-        Uri.parse("http://192.168.100.66:8080/api/dokter/show/${widget.dokterId}"),
+        Uri.parse(
+            "http://192.168.18.40:8080/api/dokter/show/${widget.dokterId}"),
         headers: {'Content-Type': 'application/json'},
       ).timeout(const Duration(seconds: 30)); // Increased timeout duration
 
@@ -65,7 +66,7 @@ class _ShowDokterState extends State<ShowDokter> {
   Future<void> _getRiwayatDokter() async {
     try {
       final response = await http.get(Uri.parse(
-          "http://192.168.100.66:8080/api/riwayat-dokter/${widget.dokterId}"));
+          "http://192.168.18.40:8080/api/riwayat-dokter/${widget.dokterId}"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data != null && data['checkup'] != null) {
@@ -142,7 +143,7 @@ class _ShowDokterState extends State<ShowDokter> {
                           background: dokterDetail != null &&
                                   dokterDetail!['image'] != null
                               ? Image.network(
-                                  'http://192.168.100.66:8080/storage/' +
+                                  'http://192.168.18.40:8080/storage/' +
                                       dokterDetail!['image'],
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {
@@ -250,59 +251,75 @@ class _ShowDokterState extends State<ShowDokter> {
                                   height: 16,
                                 ),
                                 filteredRiwayatDokter != null
-    ? ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: filteredRiwayatDokter!.length,
-        itemBuilder: (context, index) {
-          final riwayat = filteredRiwayatDokter![index];
-          final checkupId = riwayat['id'];
-          final namaPasien = riwayat['check_up_resul_to_assesmen']['assesmen_to_antrian']['antrian_to_pasien']['nama'] ?? 'Tidak ada nama';
-          final nomorAntrian = riwayat['check_up_resul_to_assesmen']['assesmen_to_antrian']['no_antrian'] ?? '';
-          return BoxRiwayatDokter(
-                                              onTapBox: () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            RiwayatCheckup(
-                                                                checkupId:
-                                                                    checkupId)));
-                                              },
-                                              nama:
-                                                  "Nama Pasien : $namaPasien",
-                                              nrp:
-                                                  "NRP : ${riwayat['check_up_resul_to_assesmen']['assesmen_to_antrian']['antrian_to_pasien']['nrp'] ?? ''}",
-                                              icon: setIcon(
-                                                  Icons.person_outline,
-                                                  const Color(0xFF234DF0)),
-                                              tanggal: Text(
-                                                  "Tanggal : ${riwayat['created_at'] != null ? extractDate(riwayat['created_at']) : 'N/A'}", style: TextStyle(fontSize: 13),), no: '$nomorAntrian',);
-          // Card(
-          //   child: ListTile(
-          //     title: Text('Hasil Diagnosa: ${riwayat['hasil_diagnosa']}'),
-          //     subtitle: Column(
-          //       crossAxisAlignment: CrossAxisAlignment.start,
-          //       children: [
-          //         Text('No Antrian: $nomorAntrian'),
-          //         Text('Nama Pasien: $namaPasien'),
-          //         Text('Tanggal: ${extractDate(riwayat['created_at'])}'),
-          //       ],
-          //     ),
-          //     onTap: () {
-          //       // Navigator.push(
-          //       //   context,
-          //       //   MaterialPageRoute(
-          //       //     builder: (context) => RiwayatCheckup(checkupId: checkupId),
-          //       //   ),
-          //       // );
-          //     },
-          //   ),
-          // );
-        },
-      )
-    : const Center(child: CircularProgressIndicator()),
-
+                                    ? ListView.builder(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount:
+                                            filteredRiwayatDokter!.length,
+                                        itemBuilder: (context, index) {
+                                          final riwayat =
+                                              filteredRiwayatDokter![index];
+                                          final checkupId = riwayat['id'];
+                                          final namaPasien =
+                                              riwayat['check_up_resul_to_assesmen']
+                                                              [
+                                                              'assesmen_to_antrian']
+                                                          ['antrian_to_pasien']
+                                                      ['nama'] ??
+                                                  'Tidak ada nama';
+                                          final nomorAntrian =
+                                              riwayat['check_up_resul_to_assesmen']
+                                                          [
+                                                          'assesmen_to_antrian']
+                                                      ['no_antrian'] ??
+                                                  '';
+                                          return BoxRiwayatDokter(
+                                            onTapBox: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          RiwayatCheckup(
+                                                              checkupId:
+                                                                  checkupId)));
+                                            },
+                                            nama: "Nama Pasien : $namaPasien",
+                                            nrp:
+                                                "NRP : ${riwayat['check_up_resul_to_assesmen']['assesmen_to_antrian']['antrian_to_pasien']['nrp'] ?? ''}",
+                                            icon: setIcon(Icons.person_outline,
+                                                const Color(0xFF234DF0)),
+                                            tanggal: Text(
+                                              "Tanggal : ${riwayat['created_at'] != null ? extractDate(riwayat['created_at']) : 'N/A'}",
+                                              style: TextStyle(fontSize: 13),
+                                            ),
+                                            no: '$nomorAntrian',
+                                          );
+                                          // Card(
+                                          //   child: ListTile(
+                                          //     title: Text('Hasil Diagnosa: ${riwayat['hasil_diagnosa']}'),
+                                          //     subtitle: Column(
+                                          //       crossAxisAlignment: CrossAxisAlignment.start,
+                                          //       children: [
+                                          //         Text('No Antrian: $nomorAntrian'),
+                                          //         Text('Nama Pasien: $namaPasien'),
+                                          //         Text('Tanggal: ${extractDate(riwayat['created_at'])}'),
+                                          //       ],
+                                          //     ),
+                                          //     onTap: () {
+                                          //       // Navigator.push(
+                                          //       //   context,
+                                          //       //   MaterialPageRoute(
+                                          //       //     builder: (context) => RiwayatCheckup(checkupId: checkupId),
+                                          //       //   ),
+                                          //       // );
+                                          //     },
+                                          //   ),
+                                          // );
+                                        },
+                                      )
+                                    : const Center(
+                                        child: CircularProgressIndicator()),
                               ],
                             ),
                           ),

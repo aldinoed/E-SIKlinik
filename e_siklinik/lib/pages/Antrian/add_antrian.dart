@@ -15,8 +15,8 @@ class _AddAntrianState extends State<AddAntrian> {
   final TextEditingController searchController = TextEditingController();
   final FocusNode searchFocusNode = FocusNode();
 
-  final String apiPostAntrian = "http://192.168.100.66:8080/api/antrian/create";
-  final String apiGetAllPasien = "http://192.168.100.66:8080/api/pasien";
+  final String apiPostAntrian = "http://192.168.18.40:8080/api/antrian/create";
+  final String apiGetAllPasien = "http://192.168.18.40:8080/api/pasien";
 
   List<dynamic> pasienList = [];
   List<dynamic> filteredPasienList = [];
@@ -162,13 +162,15 @@ class _AddAntrianState extends State<AddAntrian> {
                           color: Color(0xFFEFF0F3)),
                       child: TextFormField(
                         controller: noAntrianController,
+                        keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
                             hintText: "No Antrian", border: InputBorder.none),
                       ),
                     ),
                     if (selectedPasien == null) ...[
                       Container(
-                        margin: const EdgeInsets.only(top: 16, right: 16, left: 16),
+                        margin:
+                            const EdgeInsets.only(top: 16, right: 16, left: 16),
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         width: double.infinity,
                         height: 50,
@@ -194,7 +196,8 @@ class _AddAntrianState extends State<AddAntrian> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      if (searchController.text.isNotEmpty || searchFocusNode.hasFocus)
+                      if (searchController.text.isNotEmpty ||
+                          searchFocusNode.hasFocus)
                         ListView.builder(
                           itemCount: filteredPasienList.length,
                           shrinkWrap: true,
@@ -213,7 +216,8 @@ class _AddAntrianState extends State<AddAntrian> {
                                     searchFocusNode.unfocus();
                                   },
                                   child: Container(
-                                    margin: EdgeInsets.symmetric(horizontal: 24),
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 24),
                                     padding: const EdgeInsets.all(15),
                                     width: double.infinity,
                                     height: 80,
@@ -231,7 +235,8 @@ class _AddAntrianState extends State<AddAntrian> {
                                       ],
                                     ),
                                     child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         const CircleAvatar(
                                           backgroundColor: Color(0xFFB7D1FF),
@@ -276,12 +281,14 @@ class _AddAntrianState extends State<AddAntrian> {
                         ),
                     ] else ...[
                       Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 8),
                         padding: const EdgeInsets.all(16),
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: const BorderRadius.all(Radius.circular(15)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15)),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.5),
@@ -304,11 +311,11 @@ class _AddAntrianState extends State<AddAntrian> {
                               height: 180,
                               width: 180,
                               decoration: BoxDecoration(
-                                  borderRadius:
-                                      const BorderRadius.all(Radius.circular(15)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(15)),
                                   image: DecorationImage(
                                       image: NetworkImage(
-                                          'http://192.168.100.66:8080/storage/' +
+                                          'http://192.168.18.40:8080/storage/' +
                                               selectedPasien!['image']),
                                       fit: BoxFit.fill)),
                             ),
@@ -319,7 +326,8 @@ class _AddAntrianState extends State<AddAntrian> {
                             setInfoPasien("Gender", "${selectedPasien!['gender']}"),
                             setInfoPasien("Tanggal Lahir",
                                 "${selectedPasien!['tanggal_lahir']}"),
-                            setInfoPasien("Alamat", "${selectedPasien!['alamat']}"),
+                            setInfoPasien(
+                                "Alamat", "${selectedPasien!['alamat']}"),
                             setInfoPasien(
                                 "No Hp", "${selectedPasien!['nomor_hp']}"),
                             setInfoPasien(
@@ -352,7 +360,8 @@ class _AddAntrianState extends State<AddAntrian> {
                           ),
                           const SizedBox(width: 10),
                           ElevatedButton(
-                            onPressed: isLoading ? null : () => addAntrian(context),
+                            onPressed:
+                                isLoading ? null : () => addAntrian(context),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF234DF0),
                               shape: RoundedRectangleBorder(
@@ -378,12 +387,12 @@ class _AddAntrianState extends State<AddAntrian> {
             ),
           ),
           if (isLoading)
-          Container(
-            color: Colors.black.withOpacity(0.5),
-            child: const Center(
-              child: CircularProgressIndicator(),
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
-          ),
         ],
       ),
     );

@@ -16,7 +16,7 @@ class DataDokter extends StatefulWidget {
 }
 
 class _DataDokterState extends State<DataDokter> {
-  final String apiGetAllDokter = "http://192.168.100.66:8080/api/dokter";
+  final String apiGetAllDokter = "http://192.168.18.40:8080/api/dokter";
   List<dynamic> dokterList = [];
   List<dynamic> filteredDokterList = [];
   bool isLoading = true; // flag to track loading state
@@ -155,14 +155,15 @@ Future<void> _disableDokter(int dokterId) async {
                       child: Column(
                         children: [
                           Container(
-                            margin:
-                                const EdgeInsets.only(top: 16, right: 16, left: 16),
+                            margin: const EdgeInsets.only(
+                                top: 16, right: 16, left: 16),
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             width: double.infinity,
                             height: 50,
                             decoration: const BoxDecoration(
                                 color: Color(0xFFEFF0F3),
-                                borderRadius: BorderRadius.all(Radius.circular(30))),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30))),
                             child: Row(
                               children: [
                                 Flexible(
@@ -194,10 +195,10 @@ Future<void> _disableDokter(int dokterId) async {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                ShowDokter(dokterId: dokterId)));
+                                            builder: (context) => ShowDokter(
+                                                dokterId: dokterId)));
                                   },
-                                  icon: 'http://192.168.100.66:8080/storage/' +
+                                  icon: 'http://192.168.18.40:8080/storage/' +
                                       dokter['image'],
                                   nama: dokter['nama'] ?? '',
                                   onTapPop: () {
@@ -206,12 +207,14 @@ Future<void> _disableDokter(int dokterId) async {
                                         context: context,
                                         builder: (context) => BuildSheet(
                                               onTapEdit: () async {
-                                                final result = await Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            EditDokter(
-                                                                dokter: dokter)));
+                                                final result =
+                                                    await Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                EditDokter(
+                                                                    dokter:
+                                                                        dokter)));
                                                 if (result == true) {
                                                   Navigator.pop(
                                                       context); // Menutup showModalBottomSheet
