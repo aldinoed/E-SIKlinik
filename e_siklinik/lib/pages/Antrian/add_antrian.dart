@@ -15,8 +15,8 @@ class _AddAntrianState extends State<AddAntrian> {
   final TextEditingController searchController = TextEditingController();
   final FocusNode searchFocusNode = FocusNode();
 
-  final String apiPostAntrian = "http://192.168.100.66:8080/api/antrian/create";
-  final String apiGetAllPasien = "http://192.168.100.66:8080/api/pasien";
+  final String apiPostAntrian = "http://10.0.2.2:8000/api/antrian/create";
+  final String apiGetAllPasien = "http://10.0.2.2:8000/api/pasien";
 
   List<dynamic> pasienList = [];
   List<dynamic> filteredPasienList = [];
@@ -153,24 +153,27 @@ class _AddAntrianState extends State<AddAntrian> {
                 child: Column(
                   children: [
                     Container(
-                      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      decoration: BoxDecoration(
-        border: Border.all(color: Color(0xFF234DF0), width: 2),
-        borderRadius: const BorderRadius.all(Radius.circular(15)),
-        image: const DecorationImage(
-            image: AssetImage('assets/images/addantrian.png'), fit: BoxFit.fill),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            offset: const Offset(-1, 2),
-            blurRadius: 3,
-            spreadRadius: 0,
-          ),
-        ],
-      ),
-      width: double.infinity,
-      height: 180,
-    ),
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Color(0xFF234DF0), width: 2),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
+                        image: const DecorationImage(
+                            image: AssetImage('assets/images/addantrian.png'),
+                            fit: BoxFit.fill),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            offset: const Offset(-1, 2),
+                            blurRadius: 3,
+                            spreadRadius: 0,
+                          ),
+                        ],
+                      ),
+                      width: double.infinity,
+                      height: 180,
+                    ),
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 16),
                       height: 50,
@@ -338,7 +341,7 @@ class _AddAntrianState extends State<AddAntrian> {
                                       Radius.circular(15)),
                                   image: DecorationImage(
                                       image: NetworkImage(
-                                          'http://192.168.100.66:8080/storage/' +
+                                          'http://10.0.2.2:8000/storage/' +
                                               selectedPasien!['image']),
                                       fit: BoxFit.fill)),
                             ),

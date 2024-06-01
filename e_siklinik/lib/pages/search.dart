@@ -15,7 +15,7 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   List<dynamic> checkupList = [];
   List<dynamic> filteredCheckupList = [];
-  final String apiGetCheckup = "http://192.168.100.66:8080/api/checkup-result";
+  final String apiGetCheckup = "http://10.0.2.2:8000/api/checkup-result";
   TextEditingController searchController = TextEditingController();
   bool isLoading = true;
 
@@ -174,43 +174,45 @@ class _SearchState extends State<Search> {
     List<dynamic> limitedCheckupList = filteredCheckupList.take(5).toList();
 
     return isLoading
-    ? const Center(
-      heightFactor: 10,
-              child: CircularProgressIndicator(),
-            )
-    : limitedCheckupList.isEmpty
         ? const Center(
-            child: Text(
-              'Checkup Kosong',
-              style: TextStyle(fontSize: 18.0),
-            ),
+            heightFactor: 10,
+            child: CircularProgressIndicator(),
           )
-        : ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: limitedCheckupList.length,
-            itemBuilder: (BuildContext context, int index) {
-              final checkup = limitedCheckupList[index];
-              final checkupId = checkup['id'];
-              return BoxSearchPage(
-                onTapBox: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              RiwayatCheckup(checkupId: checkupId)));
-                },
-                nama: checkup['check_up_resul_to_assesmen']
-                    ['assesmen_to_antrian']['antrian_to_pasien']['nama'],
-                nrp: checkup['check_up_resul_to_assesmen']
-                    ['assesmen_to_antrian']['antrian_to_pasien']['nrp'],
-                icon: setIcon(Icons.person_outline, const Color(0xFF234DF0)),
-                prodi: Text(
-                  checkup['check_up_resul_to_assesmen']['assesmen_to_antrian']
-                      ['antrian_to_pasien']['pasien_to_prodi']['nama'],
+        : limitedCheckupList.isEmpty
+            ? const Center(
+                child: Text(
+                  'Checkup Kosong',
+                  style: TextStyle(fontSize: 18.0),
                 ),
+              )
+            : ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: limitedCheckupList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final checkup = limitedCheckupList[index];
+                  final checkupId = checkup['id'];
+                  return BoxSearchPage(
+                    onTapBox: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  RiwayatCheckup(checkupId: checkupId)));
+                    },
+                    nama: checkup['check_up_resul_to_assesmen']
+                        ['assesmen_to_antrian']['antrian_to_pasien']['nama'],
+                    nrp: checkup['check_up_resul_to_assesmen']
+                        ['assesmen_to_antrian']['antrian_to_pasien']['nrp'],
+                    icon:
+                        setIcon(Icons.person_outline, const Color(0xFF234DF0)),
+                    prodi: Text(
+                      checkup['check_up_resul_to_assesmen']
+                              ['assesmen_to_antrian']['antrian_to_pasien']
+                          ['pasien_to_prodi']['nama'],
+                    ),
+                  );
+                },
               );
-            },
-          );
   }
 }

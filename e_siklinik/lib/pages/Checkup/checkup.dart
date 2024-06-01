@@ -22,8 +22,8 @@ class _AddCheckupState extends State<AddCheckup> {
   final TextEditingController imageController = TextEditingController();
 
   final String apiPostCheckupResult =
-      "http://192.168.100.66:8080/api/checkup-obat/insert";
-  final String apiGetAllObat = "http://192.168.100.66:8080/api/obat";
+      "http://10.0.2.2:8000/api/checkup-obat/insert";
+  final String apiGetAllObat = "http://10.0.2.2:8000/api/obat";
 
   List<Map<String, dynamic>> obatList = [];
   Map<String, dynamic>? assesmentDetail;
@@ -63,7 +63,7 @@ class _AddCheckupState extends State<AddCheckup> {
     try {
       final response = await http.get(
         Uri.parse(
-            "http://192.168.100.66:8080/api/checkup-assesmen/show/${widget.assesmentId}"),
+            "http://10.0.2.2:8000/api/checkup-assesmen/show/${widget.assesmentId}"),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -117,7 +117,7 @@ class _AddCheckupState extends State<AddCheckup> {
       }
     } catch (error) {
       print('Error: $error');
-    } finally{
+    } finally {
       setState(() {
         isLoading = false;
       });
@@ -178,7 +178,8 @@ class _AddCheckupState extends State<AddCheckup> {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: const BorderRadius.all(Radius.circular(15)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.5),
@@ -199,7 +200,8 @@ class _AddCheckupState extends State<AddCheckup> {
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600, fontSize: 18),
                               ),
-                              Text("No Antrian: ${assesmentDetail?['no_antrian']}")
+                              Text(
+                                  "No Antrian: ${assesmentDetail?['no_antrian']}")
                             ],
                           ),
                           const SizedBox(height: 15),
@@ -209,11 +211,11 @@ class _AddCheckupState extends State<AddCheckup> {
                               height: 180,
                               width: 180,
                               decoration: BoxDecoration(
-                                  borderRadius:
-                                      const BorderRadius.all(Radius.circular(15)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(15)),
                                   image: DecorationImage(
                                       image: NetworkImage(
-                                          'http://192.168.100.66:8080/storage/' +
+                                          'http://10.0.2.2:8000/storage/' +
                                               assesmentDetail?['image']),
                                       fit: BoxFit.fill)),
                             )
@@ -223,13 +225,16 @@ class _AddCheckupState extends State<AddCheckup> {
                           setInfoPasien("NRP", "${assesmentDetail?['nrp']}"),
                           setInfoPasien(
                               "Nama", "${assesmentDetail?['nama_pasien']}"),
+                          setInfoPasien("Program Studi",
+                              "${assesmentDetail?['nama_prodi']}"),
                           setInfoPasien(
-                              "Program Studi", "${assesmentDetail?['nama_prodi']}"),
-                          setInfoPasien("Gender", "${assesmentDetail?['gender']}"),
+                              "Gender", "${assesmentDetail?['gender']}"),
                           setInfoPasien("Tanggal Lahir",
                               "${assesmentDetail?['tanggal_lahir']}"),
-                          setInfoPasien("Alamat", "${assesmentDetail?['alamat']}"),
-                          setInfoPasien("No Hp", "${assesmentDetail?['nomor_hp']}"),
+                          setInfoPasien(
+                              "Alamat", "${assesmentDetail?['alamat']}"),
+                          setInfoPasien(
+                              "No Hp", "${assesmentDetail?['nomor_hp']}"),
                           setInfoPasien(
                               "No Wali", "${assesmentDetail?['nomor_wali']}"),
                         ],
@@ -244,7 +249,8 @@ class _AddCheckupState extends State<AddCheckup> {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: const BorderRadius.all(Radius.circular(15)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.5),
@@ -283,7 +289,8 @@ class _AddCheckupState extends State<AddCheckup> {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: const BorderRadius.all(Radius.circular(15)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.5),
@@ -308,13 +315,15 @@ class _AddCheckupState extends State<AddCheckup> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 2),
                             decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(15)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
                                 color: Color(0xFFEFF0F3)),
                             child: TextFormField(
                               maxLines: null,
                               controller: hasilDiagnosaController,
                               decoration: const InputDecoration(
-                                  hintText: "Deskripsi", border: InputBorder.none),
+                                  hintText: "Deskripsi",
+                                  border: InputBorder.none),
                             ),
                           ),
                           const SizedBox(height: 16),
@@ -348,8 +357,8 @@ class _AddCheckupState extends State<AddCheckup> {
                           const SizedBox(height: 8),
                           ElevatedButton.icon(
                             style: const ButtonStyle(
-                                backgroundColor:
-                                    MaterialStatePropertyAll(Color(0xFFEFF0F3))),
+                                backgroundColor: MaterialStatePropertyAll(
+                                    Color(0xFFEFF0F3))),
                             onPressed: _pickImage,
                             icon: const Icon(
                               Icons.upload,
@@ -392,8 +401,8 @@ class _AddCheckupState extends State<AddCheckup> {
                               Expanded(
                                 child: Container(
                                   height: 50,
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 16),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
                                   decoration: const BoxDecoration(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(15)),
@@ -461,8 +470,8 @@ class _AddCheckupState extends State<AddCheckup> {
                                 child: Container(
                                   height: 50,
                                   margin: const EdgeInsets.only(top: 5),
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 16),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
                                   decoration: const BoxDecoration(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(15)),
@@ -515,7 +524,9 @@ class _AddCheckupState extends State<AddCheckup> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         ElevatedButton(
-                          onPressed: isLoading ? null : () => addCheckupWithResepObat(context),
+                          onPressed: isLoading
+                              ? null
+                              : () => addCheckupWithResepObat(context),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF234DF0),
                             shape: RoundedRectangleBorder(

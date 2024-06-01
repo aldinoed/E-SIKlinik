@@ -16,7 +16,7 @@ class DataObat extends StatefulWidget {
 }
 
 class _DataObatState extends State<DataObat> {
-  final String apiGetAllObat = "http://192.168.100.66:8080/api/obat";
+  final String apiGetAllObat = "http://10.0.2.2:8000/api/obat";
   List<dynamic> obatList = [];
   List<dynamic> searchObat = [];
 
@@ -149,85 +149,87 @@ class _DataObatState extends State<DataObat> {
                     itemCount: searchObat.length,
                     itemBuilder: (BuildContext context, int index) {
                       final obat = searchObat[index];
-                      return 
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailObat(id: index,),
-                            ),
-                          );
-                        },
-                      child: Dismissible(
-                        key: Key(obat['id'].toString()),
-                        direction: DismissDirection.endToStart,
-                        onDismissed: (direction) {
-                          setState(() {
-                            obatList.removeWhere(
-                                (item) => item['id'] == obat['id']);
-                            searchObat.removeAt(index);
-                          });
-                        },
-                        background: Container(
-                          color: Colors.red,
-                          alignment: Alignment.centerRight,
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: Icon(Icons.delete, color: Colors.white),
-                        ),
-                        child: IntrinsicHeight(
-                          child: Card(
-                            elevation: 3,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: Colors.white,
+                      return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailObat(
+                                  id: index,
+                                ),
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ListTile(
-                                    leading: CircleAvatar(
-                                      radius: 10,
-                                      backgroundColor: Colors.transparent,
-                                      child: Image.asset(
-                                        _getImage(obat['kategori_id']),
-                                        width: 40,
-                                        height: 40,
-                                        fit: BoxFit.fill,
+                            );
+                          },
+                          child: Dismissible(
+                            key: Key(obat['id'].toString()),
+                            direction: DismissDirection.endToStart,
+                            onDismissed: (direction) {
+                              setState(() {
+                                obatList.removeWhere(
+                                    (item) => item['id'] == obat['id']);
+                                searchObat.removeAt(index);
+                              });
+                            },
+                            background: Container(
+                              color: Colors.red,
+                              alignment: Alignment.centerRight,
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: Icon(Icons.delete, color: Colors.white),
+                            ),
+                            child: IntrinsicHeight(
+                              child: Card(
+                                elevation: 3,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Colors.white,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ListTile(
+                                        leading: CircleAvatar(
+                                          radius: 10,
+                                          backgroundColor: Colors.transparent,
+                                          child: Image.asset(
+                                            _getImage(obat['kategori_id']),
+                                            width: 40,
+                                            height: 40,
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ),
+                                        trailing: IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(Icons.more_vert),
+                                        ),
                                       ),
-                                    ),
-                                    trailing: IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(Icons.more_vert),
-                                    ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(obat['nama_obat'],
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20)),
+                                            Text(
+                                                'EXP: ${obat['tanggal_kadaluarsa'] ?? '-'}'),
+                                            Text(
+                                                'Stok: ${obat['stock'] ?? '-'}')
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(obat['nama_obat'],
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20)),
-                                        Text(
-                                            'EXP: ${obat['tanggal_kadaluarsa'] ?? '-'}'),
-                                        Text('Stok: ${obat['stock'] ?? '-'}')
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      )
-                      );
+                          ));
                     },
                   ),
           ),

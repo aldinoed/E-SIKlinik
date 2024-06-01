@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: 
-        CategoryChartPage());
+        ControlPage());
         // haveCookie ? const ControlPage() : const LoginPage());
   }
 }
