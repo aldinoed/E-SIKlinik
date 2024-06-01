@@ -394,8 +394,7 @@ class _AddObatNewState extends State<AddObatNew> {
                                                             context: context,
                                                             initialDate: DateTime
                                                                 .now(), //get today's date
-                                                            firstDate: DateTime(
-                                                                2000), //DateTime.now() - not to allow to choose before today.
+                                                            firstDate: DateTime.now(),
                                                             lastDate:
                                                                 DateTime(2101),
                                                           );
@@ -459,6 +458,7 @@ class _AddObatNewState extends State<AddObatNew> {
                                       top: 9, bottom: 9, left: 20),
                                   child: TextField(
                                     controller: stockController,
+                                    keyboardType: TextInputType.number,
                                     decoration: InputDecoration.collapsed(
                                       filled: true,
                                       fillColor: const Color.fromARGB(

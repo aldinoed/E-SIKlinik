@@ -113,18 +113,30 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
         ),
       ),
       appBar: AppBar(
-        title: Text('Daftar Antrian'),
-      ),
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back_ios)),
+          backgroundColor: Colors.white,
+          elevation: 2,
+          shadowColor: Colors.black,
+          centerTitle: true,
+          title: const Text(
+            "Antrian",
+            style: TextStyle(fontWeight: FontWeight.w600),
+          ),
+        ),
       body: Column(
         children: [
           _buildCalendarHeader(),
           _buildCalendar(),
           Expanded(
               child: filteredAntrianList.isEmpty
-                  ? const Center(
-                      child: Text(
-                        'Antrian Kosong',
-                        style: TextStyle(fontSize: 18.0),
+                  ? Center(
+                      child: Image.asset(
+                        'assets/images/antrian_kosong.png',
+                        fit: BoxFit.cover,
                       ),
                     )
                   : ListView.builder(
