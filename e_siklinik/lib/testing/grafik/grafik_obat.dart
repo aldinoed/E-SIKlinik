@@ -19,7 +19,8 @@ class _CategoryChartPageState extends State<CategoryChartPage> {
   }
 
   Future<void> _fetchAntrianData() async {
-    final response = await http.get(Uri.parse('http://192.168.0.5:8080/api/antrianCount'));
+    final response = await http
+        .get(Uri.parse('http://192.168.217.136:8000/api/antrianCount'));
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body)['antrian'];
       setState(() {

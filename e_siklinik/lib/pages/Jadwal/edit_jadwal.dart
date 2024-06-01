@@ -13,7 +13,7 @@ class EditJadwal extends StatefulWidget {
 }
 
 class _EditJadwalState extends State<EditJadwal> {
-  final String apiGetAllDokter = "http://192.168.0.5:8080/api/dokter";
+  final String apiGetAllDokter = "http://192.168.217.136:8000/api/dokter";
   List<dynamic> dokterList = [];
   final _formKey = GlobalKey<FormState>();
   String? _selectedDokterId;
@@ -68,7 +68,8 @@ class _EditJadwalState extends State<EditJadwal> {
     }
 
     final id = widget.jadwal['id'];
-    final url = Uri.parse('http://192.168.0.5:8080/api/jadwal_dokter/update/$id');
+    final url =
+        Uri.parse('http://192.168.217.136:8000/api/jadwal_dokter/update/$id');
     final request = http.MultipartRequest('POST', url);
 
     request.fields['hari'] = _hariController;

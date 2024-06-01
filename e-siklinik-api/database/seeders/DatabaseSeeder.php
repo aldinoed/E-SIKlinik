@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\PasienTable;
+use App\Models\ProdiTable;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,8 +16,11 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            ProdiTableSeeder::class,
             KategoriObatSeeder::class,
+            DokterTableSeeder::class,
+            ProdiTableSeeder::class,
+            PasienTableSeeder::class,
+            ObatTableSeeder::class,
         ]);
     }
 }

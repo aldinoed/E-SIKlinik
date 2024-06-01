@@ -18,10 +18,10 @@ class _AddAssessmentState extends State<AddAssessment> {
   final TextEditingController antrianController = TextEditingController();
 
   final String apiPostAssesment =
-      "http://192.168.0.5:8080/api/checkup-assesmen/insert";
+      "http://192.168.217.136:8000/api/checkup-assesmen/insert";
   List<dynamic>? antrianDetail;
 
-  final String apiGetAllDokter = "http://192.168.0.5:8080/api/dokter";
+  final String apiGetAllDokter = "http://192.168.217.136:8000/api/dokter";
   List<dynamic> dokterList = [];
   File? _imageFile;
   bool isLoading = false;
@@ -56,7 +56,8 @@ class _AddAssessmentState extends State<AddAssessment> {
   Future<void> _getAntrianDetail() async {
     try {
       final response = await http.get(
-        Uri.parse("http://192.168.0.5:8080/api/antrian/show/${widget.antrianId}"),
+        Uri.parse(
+            "http://192.168.217.136:8000/api/antrian/show/${widget.antrianId}"),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -192,7 +193,7 @@ class _AddAssessmentState extends State<AddAssessment> {
                                         Radius.circular(15)),
                                     image: DecorationImage(
                                         image: NetworkImage(
-                                            'http://192.168.0.5:8080/storage/' +
+                                            'http://192.168.217.136:8000/storage/' +
                                                 antrianDetail?[0]['image']),
                                         fit: BoxFit.fill)),
                               )

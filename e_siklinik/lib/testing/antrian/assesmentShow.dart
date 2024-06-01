@@ -22,7 +22,7 @@ class _AssesmentDetailState extends State<AssesmentDetail> {
   Future<void> _getAssesment() async {
     try {
       final response = await http.get(Uri.parse(
-          "http://192.168.0.5:8080/api/checkup-assesmen/show/${widget.assesmentId}"));
+          "http://192.168.217.136:8000/api/checkup-assesmen/show/${widget.assesmentId}"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data != null && data['results'] != null) {
