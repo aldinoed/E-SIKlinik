@@ -1,6 +1,7 @@
 import 'package:e_siklinik/pages/Obat/addObat.dart';
 import 'package:e_siklinik/pages/Obat/add_obat.dart';
 import 'package:e_siklinik/testing/obat/addObat.dart';
+import 'package:e_siklinik/pages/Obat/detail_obat.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -15,7 +16,7 @@ class DataObat extends StatefulWidget {
 }
 
 class _DataObatState extends State<DataObat> {
-  final String apiGetAllObat = "http://10.0.2.2:8000/api/obat";
+  final String apiGetAllObat = "http://192.168.100.66:8080/api/obat";
   List<dynamic> obatList = [];
   List<dynamic> searchObat = [];
 
@@ -29,6 +30,7 @@ class _DataObatState extends State<DataObat> {
         if (data != null && data['obats'] != null) {
           setState(() {
             obatList = data['obats'];
+            searchObat = obatList;
           });
         } else {
           print("No data received from API");
@@ -92,20 +94,18 @@ class _DataObatState extends State<DataObat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        surfaceTintColor: Colors.transparent,
-        title: Text(
-          "Database Obat",
-          style: TextStyle(
-              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.arrow_left,
-              size: 50, color: Color.fromARGB(255, 0, 0, 0)),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
+        backgroundColor: Colors.white,
+        elevation: 2,
+        shadowColor: Colors.black,
+        centerTitle: true,
+        title: const Text(
+          "Database Obat",
+          style: TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
       body: Column(
@@ -131,69 +131,105 @@ class _DataObatState extends State<DataObat> {
             ),
           ),
           Expanded(
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 8.0,
-                crossAxisSpacing: 8.0,
-                childAspectRatio: MediaQuery.of(context).size.width /
-                    (MediaQuery.of(context).size.height / 2.5),
-              ),
-              itemCount: searchObat.length,
-              itemBuilder: (BuildContext context, int index) {
-                final obat = searchObat[index];
-                return IntrinsicHeight(
-                  child: Card(
-                    elevation: 3,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: Colors.white,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ListTile(
-                            leading: CircleAvatar(
-                              radius: 10,
-                              backgroundColor: Colors.transparent,
-                              child: Image.asset(
-                                _getImage(obat['kategori_id']),
-                                width: 40,
-                                height: 40,
-                                fit: BoxFit.fill,
-                              ),
+            child: searchObat.isEmpty
+                ? Center(
+                    child: Image.asset(
+                      'assets/images/obat_kosong.png',
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                : GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 8.0,
+                      crossAxisSpacing: 8.0,
+                      childAspectRatio: MediaQuery.of(context).size.width /
+                          (MediaQuery.of(context).size.height / 2.5),
+                    ),
+                    itemCount: searchObat.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final obat = searchObat[index];
+                      return 
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailObat(id: index,),
                             ),
-                            trailing: Container(
-                              child: IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.more_vert),
+                          );
+                        },
+                      child: Dismissible(
+                        key: Key(obat['id'].toString()),
+                        direction: DismissDirection.endToStart,
+                        onDismissed: (direction) {
+                          setState(() {
+                            obatList.removeWhere(
+                                (item) => item['id'] == obat['id']);
+                            searchObat.removeAt(index);
+                          });
+                        },
+                        background: Container(
+                          color: Colors.red,
+                          alignment: Alignment.centerRight,
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Icon(Icons.delete, color: Colors.white),
+                        ),
+                        child: IntrinsicHeight(
+                          child: Card(
+                            elevation: 3,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: Colors.white,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ListTile(
+                                    leading: CircleAvatar(
+                                      radius: 10,
+                                      backgroundColor: Colors.transparent,
+                                      child: Image.asset(
+                                        _getImage(obat['kategori_id']),
+                                        width: 40,
+                                        height: 40,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                    trailing: IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(Icons.more_vert),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(obat['nama_obat'],
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20)),
+                                        Text(
+                                            'EXP: ${obat['tanggal_kadaluarsa'] ?? '-'}'),
+                                        Text('Stok: ${obat['stock'] ?? '-'}')
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(obat['nama_obat'],
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20)),
-                                Text(
-                                    'EXP: ${obat['tanggal_kadaluarsa'] ?? '-'}'),
-                                Text('Stok: ${obat['stock'] ?? '-'}')
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                        ),
+                      )
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           ),
         ],
       ),

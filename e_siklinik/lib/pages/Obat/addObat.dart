@@ -23,9 +23,10 @@ class _AddObatNewState extends State<AddObatNew> {
   final TextEditingController hargaController = TextEditingController();
   final TextEditingController imageController = TextEditingController();
 
-  final String apiPostObat = "http://10.0.2.2:8000/api/obat/insert";
+  final String apiPostObat = "http://192.168.100.66:8080/api/obat/insert";
 
-  final String apiGetAllKategori = "http://10.0.2.2:8000/api/kategori-obat";
+  final String apiGetAllKategori =
+      "http://192.168.100.66:8080/api/kategori-obat";
 
   List<dynamic> kategoriList = [];
   String? _selectedKategori;
@@ -394,8 +395,8 @@ class _AddObatNewState extends State<AddObatNew> {
                                                             context: context,
                                                             initialDate: DateTime
                                                                 .now(), //get today's date
-                                                            firstDate: DateTime(
-                                                                2000), //DateTime.now() - not to allow to choose before today.
+                                                            firstDate:
+                                                                DateTime.now(),
                                                             lastDate:
                                                                 DateTime(2101),
                                                           );
@@ -459,6 +460,7 @@ class _AddObatNewState extends State<AddObatNew> {
                                       top: 9, bottom: 9, left: 20),
                                   child: TextField(
                                     controller: stockController,
+                                    keyboardType: TextInputType.number,
                                     decoration: InputDecoration.collapsed(
                                       filled: true,
                                       fillColor: const Color.fromARGB(

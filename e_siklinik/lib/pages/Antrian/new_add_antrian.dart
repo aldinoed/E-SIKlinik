@@ -13,8 +13,8 @@ class _CreateNewAntrianState extends State<CreateNewAntrian> {
   final TextEditingController pasienIdController = TextEditingController();
   final TextEditingController noAntrianController = TextEditingController();
 
-  final String apiPostAntrian = "http://10.0.2.2:8000/api/antrian/create";
-  final String apiGetAllPasien = "http://10.0.2.2:8000/api/pasien";
+  final String apiPostAntrian = "http://192.168.100.66:8080/api/antrian/create";
+  final String apiGetAllPasien = "http://192.168.100.66:8080/api/pasien";
 
   List<dynamic> pasienList = [];
 
@@ -100,6 +100,7 @@ class _CreateNewAntrianState extends State<CreateNewAntrian> {
                 decoration: const InputDecoration(
                   labelText: "No Antrian",
                 ),
+                keyboardType: TextInputType.number,
               ),
               DropdownButtonFormField(
                 value: null,
@@ -120,6 +121,12 @@ class _CreateNewAntrianState extends State<CreateNewAntrian> {
               ),
               ElevatedButton(
                 onPressed: () => addAntrian(context),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.indigo,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
                   child: Text(
@@ -129,12 +136,6 @@ class _CreateNewAntrianState extends State<CreateNewAntrian> {
                       fontWeight: FontWeight.bold,
                       color: Colors.blue.shade600,
                     ),
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.indigo,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
               ),

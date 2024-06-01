@@ -67,7 +67,7 @@ class _DataState extends State<Data> {
                       Box(
                         title: "Pasien",
                         desc: "Add, Edit, Delete Data\nPasien",
-                        bgimage: '',
+                        bgimage: 'assets/images/bgpolos.png',
                         icon: setIcon(
                             Icons.person_outline, const Color(0xFF234DF0)),
                         onTapBox: () {
@@ -80,7 +80,7 @@ class _DataState extends State<Data> {
                       Box(
                         title: "Dokter",
                         desc: "Add, Edit, Delete Data\nDokter",
-                        bgimage: '',
+                        bgimage: 'assets/images/bgpolos.png',
                         icon: setIcon(
                             FontAwesome.stethoscope, const Color(0xFF234DF0)),
                         onTapBox: () {
@@ -93,7 +93,7 @@ class _DataState extends State<Data> {
                       Box(
                         title: "Obat",
                         desc: "Add, Edit, Delete Data\nObat",
-                        bgimage: '',
+                        bgimage: 'assets/images/bgpolos.png',
                         icon: setIcon(RpgAwesome.pill, const Color(0xFF234DF0)),
                         onTapBox: () {
                           Navigator.push(
@@ -105,7 +105,7 @@ class _DataState extends State<Data> {
                       Box(
                           title: "Jadwal Dokter",
                           desc: "Add, Edit, Delete Data\nJadwal Dokter",
-                          bgimage: '',
+                          bgimage: 'assets/images/bgpolos.png',
                           icon: setIcon(
                               Entypo.back_in_time, const Color(0xFF234DF0)),
                           onTapBox: () {

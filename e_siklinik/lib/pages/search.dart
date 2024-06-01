@@ -15,8 +15,9 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   List<dynamic> checkupList = [];
   List<dynamic> filteredCheckupList = [];
-  final String apiGetCheckup = "http://10.0.2.2:8000/api/checkup-result";
+  final String apiGetCheckup = "http://192.168.100.66:8080/api/checkup-result";
   TextEditingController searchController = TextEditingController();
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -38,8 +39,12 @@ class _SearchState extends State<Search> {
                 .compareTo(DateTime.parse(a['created_at'])));
             filteredCheckupList =
                 checkupList; // Inisialisasi daftar hasil pencarian
+            isLoading = false; // set loading to false when data is fetched
           });
         } else {
+          setState(() {
+            isLoading = false;
+          });
           print("No data received from API");
         }
       } else {
@@ -168,7 +173,12 @@ class _SearchState extends State<Search> {
     // Limit the list to 5 items
     List<dynamic> limitedCheckupList = filteredCheckupList.take(5).toList();
 
-    return limitedCheckupList.isEmpty
+    return isLoading
+    ? const Center(
+      heightFactor: 10,
+              child: CircularProgressIndicator(),
+            )
+    : limitedCheckupList.isEmpty
         ? const Center(
             child: Text(
               'Checkup Kosong',
