@@ -459,6 +459,7 @@ class _AddObatNewState extends State<AddObatNew> {
                                       top: 9, bottom: 9, left: 20),
                                   child: TextField(
                                     controller: stockController,
+                                    keyboardType: TextInputType.number,
                                     decoration: InputDecoration.collapsed(
                                       filled: true,
                                       fillColor: const Color.fromARGB(
