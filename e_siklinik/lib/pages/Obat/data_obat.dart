@@ -1,6 +1,7 @@
 import 'package:e_siklinik/pages/Obat/addObat.dart';
 import 'package:e_siklinik/pages/Obat/add_obat.dart';
 import 'package:e_siklinik/testing/obat/addObat.dart';
+import 'package:e_siklinik/pages/Obat/detail_obat.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -93,20 +94,18 @@ class _DataObatState extends State<DataObat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        surfaceTintColor: Colors.transparent,
-        title: Text(
-          "Database Obat",
-          style: TextStyle(
-              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.arrow_left,
-              size: 50, color: Color.fromARGB(255, 0, 0, 0)),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
+        backgroundColor: Colors.white,
+        elevation: 2,
+        shadowColor: Colors.black,
+        centerTitle: true,
+        title: const Text(
+          "Database Obat",
+          style: TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
       body: Column(
@@ -150,7 +149,17 @@ class _DataObatState extends State<DataObat> {
                     itemCount: searchObat.length,
                     itemBuilder: (BuildContext context, int index) {
                       final obat = searchObat[index];
-                      return Dismissible(
+                      return 
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailObat(id: index,),
+                            ),
+                          );
+                        },
+                      child: Dismissible(
                         key: Key(obat['id'].toString()),
                         direction: DismissDirection.endToStart,
                         onDismissed: (direction) {
@@ -217,6 +226,7 @@ class _DataObatState extends State<DataObat> {
                             ),
                           ),
                         ),
+                      )
                       );
                     },
                   ),
