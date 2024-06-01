@@ -13,7 +13,7 @@ class EditJadwal extends StatefulWidget {
 }
 
 class _EditJadwalState extends State<EditJadwal> {
-  final String apiGetAllDokter = "http://192.168.100.66:8080/api/dokter";
+  final String apiGetAllDokter = "http://192.168.18.40:8080/api/dokter";
   List<dynamic> dokterList = [];
   final _formKey = GlobalKey<FormState>();
   String? _selectedDokterId;
@@ -30,9 +30,12 @@ class _EditJadwalState extends State<EditJadwal> {
     super.initState();
     _selectedDokterId = widget.jadwal['dokter_id'].toString();
     _hariController = widget.jadwal['hari'];
-    _jamMulaiController = TextEditingController(text: _formatTime(widget.jadwal['jadwal_mulai_tugas']));
-    _jamSelesaiController = TextEditingController(text: _formatTime(widget.jadwal['jadwal_selesai_tugas']));
-    _dokterNameController = TextEditingController(text: widget.jadwal['jadwal_to_dokter']['nama']);
+    _jamMulaiController = TextEditingController(
+        text: _formatTime(widget.jadwal['jadwal_mulai_tugas']));
+    _jamSelesaiController = TextEditingController(
+        text: _formatTime(widget.jadwal['jadwal_selesai_tugas']));
+    _dokterNameController =
+        TextEditingController(text: widget.jadwal['jadwal_to_dokter']['nama']);
     _getAllDokter();
   }
 
@@ -65,7 +68,8 @@ class _EditJadwalState extends State<EditJadwal> {
     }
 
     final id = widget.jadwal['id'];
-    final url = Uri.parse('http://192.168.100.66:8080/api/jadwal_dokter/update/$id');
+    final url =
+        Uri.parse('http://192.168.18.40:8080/api/jadwal_dokter/update/$id');
     final request = http.MultipartRequest('POST', url);
 
     request.fields['hari'] = _hariController;
@@ -126,7 +130,8 @@ class _EditJadwalState extends State<EditJadwal> {
     return TimeOfDay(hour: hour, minute: minute);
   }
 
-  Future<void> _selectTime(BuildContext context, TextEditingController controller, bool isStartTime) async {
+  Future<void> _selectTime(BuildContext context,
+      TextEditingController controller, bool isStartTime) async {
     dynamic time = parseTimeOfDay(controller.text);
     final TimeOfDay? picked = await showTimePicker(
       context: context,
@@ -222,8 +227,8 @@ class _EditJadwalState extends State<EditJadwal> {
                         ),
                         Container(
                           height: 50,
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 2),
                           decoration: const BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(15)),
                             color: Color(0xFFEFF0F3),
@@ -242,7 +247,8 @@ class _EditJadwalState extends State<EditJadwal> {
                               );
                             }).toList(),
                             decoration: const InputDecoration(
-                                hintText: "Hari Tugas", border: InputBorder.none),
+                                hintText: "Hari Tugas",
+                                border: InputBorder.none),
                           ),
                         ),
                         const SizedBox(
@@ -268,8 +274,8 @@ class _EditJadwalState extends State<EditJadwal> {
                                 child: TextFormField(
                                   controller: _jamMulaiController,
                                   readOnly: true,
-                                  onTap: () =>
-                                      _selectTime(context, _jamMulaiController, true),
+                                  onTap: () => _selectTime(
+                                      context, _jamMulaiController, true),
                                   decoration: const InputDecoration(
                                       hintText: "Jam Mulai",
                                       border: InputBorder.none),
@@ -300,8 +306,8 @@ class _EditJadwalState extends State<EditJadwal> {
                                 child: TextFormField(
                                   controller: _jamSelesaiController,
                                   readOnly: true,
-                                  onTap: () =>
-                                      _selectTime(context, _jamSelesaiController, false),
+                                  onTap: () => _selectTime(
+                                      context, _jamSelesaiController, false),
                                   decoration: const InputDecoration(
                                       hintText: "Jam Selesai",
                                       border: InputBorder.none),
@@ -321,11 +327,13 @@ class _EditJadwalState extends State<EditJadwal> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             ElevatedButton(
-                              onPressed: isLoading ? null : () {
-                                if (_formKey.currentState!.validate()) {
-                                  _updateJadwalDokter();
-                                }
-                              },
+                              onPressed: isLoading
+                                  ? null
+                                  : () {
+                                      if (_formKey.currentState!.validate()) {
+                                        _updateJadwalDokter();
+                                      }
+                                    },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF234DF0),
                                 shape: RoundedRectangleBorder(
@@ -352,12 +360,12 @@ class _EditJadwalState extends State<EditJadwal> {
             ),
           ),
           if (isLoading)
-          Container(
-            color: Colors.black.withOpacity(0.5),
-            child: const Center(
-              child: CircularProgressIndicator(),
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
-          ),
         ],
       ),
     );

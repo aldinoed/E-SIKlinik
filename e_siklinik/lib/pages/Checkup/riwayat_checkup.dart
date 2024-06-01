@@ -23,7 +23,7 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
     try {
       final response = await http.get(
         Uri.parse(
-            "http://192.168.100.66:8080/api/checkup-result/show/${widget.checkupId}"),
+            "http://192.168.18.40:8080/api/checkup-result/show/${widget.checkupId}"),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -85,13 +85,20 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         setInfoPasien("NRP", "${checkupDetail!['pasien_nrp']}"),
-                        setInfoPasien("Nama", "${checkupDetail!['nama_pasien']}"),
-                        setInfoPasien("Program Studi", "${checkupDetail!['nama']}"),
-                        setInfoPasien("Gender", "${checkupDetail!['pasien_gender']}"),
-                        setInfoPasien("Tanggal Lahir", "${checkupDetail!['tanggal_lahir_pasien']}"),
-                        setInfoPasien("Alamat", "${checkupDetail!['pasien_address']}"),
-                        setInfoPasien("No Hp", "${checkupDetail!['pasien_phone_no']}"),
-                        setInfoPasien("No Wali", "${checkupDetail!['pasien_wali_no']}"),
+                        setInfoPasien(
+                            "Nama", "${checkupDetail!['nama_pasien']}"),
+                        setInfoPasien(
+                            "Program Studi", "${checkupDetail!['nama']}"),
+                        setInfoPasien(
+                            "Gender", "${checkupDetail!['pasien_gender']}"),
+                        setInfoPasien("Tanggal Lahir",
+                            "${checkupDetail!['tanggal_lahir_pasien']}"),
+                        setInfoPasien(
+                            "Alamat", "${checkupDetail!['pasien_address']}"),
+                        setInfoPasien(
+                            "No Hp", "${checkupDetail!['pasien_phone_no']}"),
+                        setInfoPasien(
+                            "No Wali", "${checkupDetail!['pasien_wali_no']}"),
                       ],
                     ),
                   ),

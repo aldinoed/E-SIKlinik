@@ -18,10 +18,10 @@ class _AddAssessmentState extends State<AddAssessment> {
   final TextEditingController antrianController = TextEditingController();
 
   final String apiPostAssesment =
-      "http://192.168.100.66:8080/api/checkup-assesmen/insert";
+      "http://192.168.18.40:8080/api/checkup-assesmen/insert";
   List<dynamic>? antrianDetail;
 
-  final String apiGetAllDokter = "http://192.168.100.66:8080/api/dokter";
+  final String apiGetAllDokter = "http://192.168.18.40:8080/api/dokter";
   List<dynamic> dokterList = [];
   File? _imageFile;
   bool isLoading = false;
@@ -60,7 +60,7 @@ class _AddAssessmentState extends State<AddAssessment> {
     try {
       final response = await http.get(
         Uri.parse(
-            "http://192.168.100.66:8080/api/antrian/show/${widget.antrianId}"),
+            "http://192.168.18.40:8080/api/antrian/show/${widget.antrianId}"),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -105,10 +105,8 @@ class _AddAssessmentState extends State<AddAssessment> {
           const SnackBar(content: Text('Assesment berhasil ditambahkan')),
         );
         Navigator.pop(context);
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const AssesmentPage()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const AssesmentPage()));
 
         // Clear input fields
         // dokterIdController.clear();
@@ -124,7 +122,7 @@ class _AddAssessmentState extends State<AddAssessment> {
       }
     } catch (error) {
       print('Error: $error');
-    } finally{
+    } finally {
       setState(() {
         isLoading = false;
       });
@@ -165,7 +163,8 @@ class _AddAssessmentState extends State<AddAssessment> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: const BorderRadius.all(Radius.circular(15)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15)),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.5),
@@ -184,16 +183,17 @@ class _AddAssessmentState extends State<AddAssessment> {
                                   fontWeight: FontWeight.w600, fontSize: 18),
                             ),
                             const SizedBox(height: 15),
-                            if (antrianDetail != null && antrianDetail!.isNotEmpty)
+                            if (antrianDetail != null &&
+                                antrianDetail!.isNotEmpty)
                               Container(
                                 height: 180,
                                 width: 180,
                                 decoration: BoxDecoration(
-                                    borderRadius:
-                                        const BorderRadius.all(Radius.circular(15)),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(15)),
                                     image: DecorationImage(
                                         image: NetworkImage(
-                                            'http://192.168.100.66:8080/storage/' +
+                                            'http://192.168.18.40:8080/storage/' +
                                                 antrianDetail?[0]['image']),
                                         fit: BoxFit.fill)),
                               )
@@ -201,7 +201,8 @@ class _AddAssessmentState extends State<AddAssessment> {
                               const SizedBox(),
                             const SizedBox(height: 15),
                             setInfoPasien("NRP", "${antrianDetail?[0]['nrp']}"),
-                            setInfoPasien("Nama", "${antrianDetail?[0]['nama']}"),
+                            setInfoPasien(
+                                "Nama", "${antrianDetail?[0]['nama']}"),
                             setInfoPasien("Program Studi",
                                 "${antrianDetail?[0]['pasien_to_prodi']?['nama']}"),
                             setInfoPasien(
@@ -212,8 +213,8 @@ class _AddAssessmentState extends State<AddAssessment> {
                                 "Alamat", "${antrianDetail?[0]['alamat']}"),
                             setInfoPasien(
                                 "No Hp", "${antrianDetail?[0]['nomor_hp']}"),
-                            setInfoPasien(
-                                "No Wali", "${antrianDetail?[0]['nomor_wali']}"),
+                            setInfoPasien("No Wali",
+                                "${antrianDetail?[0]['nomor_wali']}"),
                           ],
                         ),
                       ),
@@ -223,7 +224,8 @@ class _AddAssessmentState extends State<AddAssessment> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: const BorderRadius.all(Radius.circular(15)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15)),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.5),
@@ -257,7 +259,8 @@ class _AddAssessmentState extends State<AddAssessment> {
                               );
                             }).toList(),
                             decoration: const InputDecoration(
-                                hintText: "Nama Dokter", border: InputBorder.none),
+                                hintText: "Nama Dokter",
+                                border: InputBorder.none),
                           ),
                         ),
                       ),
@@ -266,7 +269,8 @@ class _AddAssessmentState extends State<AddAssessment> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           ElevatedButton(
-                            onPressed: isLoading ? null : () => addAssesment(context),
+                            onPressed:
+                                isLoading ? null : () => addAssesment(context),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF234DF0),
                               shape: RoundedRectangleBorder(
@@ -291,13 +295,13 @@ class _AddAssessmentState extends State<AddAssessment> {
               ),
             ),
           ),
-           if (isLoading)
-          Container(
-            color: Colors.black.withOpacity(0.5),
-            child: const Center(
-              child: CircularProgressIndicator(),
+          if (isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
-          ),
         ],
       ),
     );

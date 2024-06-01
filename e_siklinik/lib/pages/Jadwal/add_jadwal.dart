@@ -19,8 +19,8 @@ class _AddJadwalState extends State<AddJadwal> {
   final List<String> gender = ['Laki-Laki', 'Perempuan'];
 
   final String apiPostJadwalDokter =
-      "http://192.168.100.66:8080/api/jadwal_dokter/create";
-  final String apiGetAllDokter = "http://192.168.100.66:8080/api/dokter";
+      "http://192.168.18.40:8080/api/jadwal_dokter/create";
+  final String apiGetAllDokter = "http://192.168.18.40:8080/api/dokter";
   List<dynamic> dokterList = [];
   bool isLoading = false;
 
@@ -150,12 +150,13 @@ class _AddJadwalState extends State<AddJadwal> {
                     children: [
                       const Text(
                         "Informasi Dokter",
-                        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 17),
                       ),
                       Container(
                         height: 50,
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 2),
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(15)),
                           color: Color(0xFFEFF0F3),
@@ -174,7 +175,8 @@ class _AddJadwalState extends State<AddJadwal> {
                             );
                           }).toList(),
                           decoration: const InputDecoration(
-                              hintText: "Nama Dokter", border: InputBorder.none),
+                              hintText: "Nama Dokter",
+                              border: InputBorder.none),
                         ),
                       ),
                       const SizedBox(
@@ -182,12 +184,13 @@ class _AddJadwalState extends State<AddJadwal> {
                       ),
                       const Text(
                         "Hari Tugas",
-                        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 17),
                       ),
                       Container(
                         height: 50,
-                        padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 2),
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(15)),
                           color: Color(0xFFEFF0F3),
@@ -195,7 +198,7 @@ class _AddJadwalState extends State<AddJadwal> {
                         child: DropdownButtonFormField(
                           onChanged: (value) {
                             setState(() {
-                             hariController = value;
+                              hariController = value;
                             });
                           },
                           items: days.map<DropdownMenuItem>((day) {
@@ -213,7 +216,8 @@ class _AddJadwalState extends State<AddJadwal> {
                       ),
                       const Text(
                         "Jam Tugas",
-                        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 17),
                       ),
                       Row(
                         children: [
@@ -271,7 +275,9 @@ class _AddJadwalState extends State<AddJadwal> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           ElevatedButton(
-                            onPressed: isLoading ? null : () => addJadwalDokter(context),
+                            onPressed: isLoading
+                                ? null
+                                : () => addJadwalDokter(context),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF234DF0),
                               shape: RoundedRectangleBorder(

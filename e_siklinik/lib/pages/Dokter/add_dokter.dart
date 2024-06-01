@@ -21,9 +21,9 @@ class _AddDokterState extends State<AddDokter> {
   final TextEditingController imageController = TextEditingController();
   final TextEditingController tanggalLahirController = TextEditingController();
 
-  final String apiPostDokter = "http://192.168.100.66:8080/api/dokter/create";
+  final String apiPostDokter = "http://192.168.18.40:8080/api/dokter/create";
   final String apiGetAllJadwalDokter =
-      "http://192.168.100.66:8080/api/jadwal_dokter";
+      "http://192.168.18.40:8080/api/jadwal_dokter";
 
   List<dynamic> dokterList = [];
   File? _imageFile;
@@ -74,13 +74,13 @@ class _AddDokterState extends State<AddDokter> {
         noHpController.clear();
         _imageFile = null;
 
-        Navigator.pop(context,true);
+        Navigator.pop(context, true);
       } else {
         print('Gagal menambahkan Dokter');
       }
     } catch (error) {
       print('Error: $error');
-    }finally {
+    } finally {
       setState(() {
         isLoading = false;
       });
@@ -113,12 +113,14 @@ class _AddDokterState extends State<AddDokter> {
                   padding: const EdgeInsets.all(8),
                   child: SingleChildScrollView(
                     child: Container(
-                      margin: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                      margin:
+                          const EdgeInsets.only(left: 8, right: 8, bottom: 8),
                       padding: const EdgeInsets.all(16),
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: const BorderRadius.all(Radius.circular(15)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.5),
@@ -141,7 +143,8 @@ class _AddDokterState extends State<AddDokter> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 2),
                             decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(15)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
                                 color: Color(0xFFEFF0F3)),
                             child: TextFormField(
                               controller: namaController,
@@ -157,7 +160,8 @@ class _AddDokterState extends State<AddDokter> {
                               Expanded(
                                   flex: 1,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       const Text(
                                         "Gender",
@@ -170,8 +174,8 @@ class _AddDokterState extends State<AddDokter> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 16, vertical: 2),
                                         decoration: const BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.all(Radius.circular(15)),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15)),
                                           color: Color(0xFFEFF0F3),
                                         ),
                                         child: DropdownButtonFormField(
@@ -180,8 +184,8 @@ class _AddDokterState extends State<AddDokter> {
                                               genderController = value;
                                             });
                                           },
-                                          items:
-                                              gender.map<DropdownMenuItem>((item) {
+                                          items: gender
+                                              .map<DropdownMenuItem>((item) {
                                             return DropdownMenuItem(
                                               value: item,
                                               child: Text(item),
@@ -200,7 +204,8 @@ class _AddDokterState extends State<AddDokter> {
                               Expanded(
                                   flex: 1,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       const Text(
                                         "Tanggal Lahir",
@@ -238,8 +243,8 @@ class _AddDokterState extends State<AddDokter> {
                                           decoration: const InputDecoration(
                                               hintText: "YYYY/MM/DD",
                                               border: InputBorder.none,
-                                              suffixIcon: Icon(
-                                                  Icons.calendar_month_outlined)),
+                                              suffixIcon: Icon(Icons
+                                                  .calendar_month_outlined)),
                                         ),
                                       ),
                                     ],
@@ -259,7 +264,8 @@ class _AddDokterState extends State<AddDokter> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 2),
                             decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(15)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
                                 color: Color(0xFFEFF0F3)),
                             child: TextFormField(
                               maxLines: null,
@@ -281,13 +287,15 @@ class _AddDokterState extends State<AddDokter> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 2),
                             decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(15)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
                                 color: Color(0xFFEFF0F3)),
                             child: TextFormField(
                               controller: noHpController,
                               keyboardType: TextInputType.phone,
                               decoration: const InputDecoration(
-                                  hintText: "Nomor HP", border: InputBorder.none),
+                                  hintText: "Nomor HP",
+                                  border: InputBorder.none),
                             ),
                           ),
                           const SizedBox(
@@ -303,7 +311,8 @@ class _AddDokterState extends State<AddDokter> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 2),
                             decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(15)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
                                 color: Color(0xFFEFF0F3)),
                             child: TextFormField(
                               controller: imageController,
@@ -315,7 +324,7 @@ class _AddDokterState extends State<AddDokter> {
                                 final pickedFile = await picker.pickImage(
                                   source: ImageSource.gallery,
                                 );
-        
+
                                 if (pickedFile != null) {
                                   setState(() {
                                     _imageFile = File(pickedFile.path);
@@ -333,7 +342,8 @@ class _AddDokterState extends State<AddDokter> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               ElevatedButton(
-                                onPressed: isLoading ? null : () => addDokter(context),
+                                onPressed:
+                                    isLoading ? null : () => addDokter(context),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFF234DF0),
                                   shape: RoundedRectangleBorder(
@@ -357,7 +367,7 @@ class _AddDokterState extends State<AddDokter> {
                     ),
                   )),
             )),
-            if (isLoading)
+        if (isLoading)
           Container(
             color: Colors.black.withOpacity(0.5),
             child: const Center(

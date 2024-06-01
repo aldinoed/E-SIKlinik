@@ -11,7 +11,8 @@ class AssesmentPage extends StatefulWidget {
 }
 
 class _AssesmentPageState extends State<AssesmentPage> {
-  final String apiGetAllAssesment = "http://192.168.100.66:8080/api/checkup-assesmen";
+  final String apiGetAllAssesment =
+      "http://192.168.18.40:8080/api/checkup-assesmen";
   List<dynamic> assesmentList = [];
   bool isLoading = true; // flag to track loading state
 
@@ -84,11 +85,11 @@ class _AssesmentPageState extends State<AssesmentPage> {
               )
             : assesmentList.isEmpty
                 ? Center(
-                child: Image.asset(
-                  'assets/images/kosong.png',
-                  fit: BoxFit.cover,
-                ),
-              )
+                    child: Image.asset(
+                      'assets/images/kosong.png',
+                      fit: BoxFit.cover,
+                    ),
+                  )
                 : SafeArea(
                     child: Padding(
                     padding: const EdgeInsets.all(16),
@@ -119,8 +120,8 @@ class _AssesmentPageState extends State<AssesmentPage> {
                             height: 100,
                             decoration: BoxDecoration(
                               image: const DecorationImage(
-                                  image:
-                                      AssetImage('assets/images/Utilities1.png'),
+                                  image: AssetImage(
+                                      'assets/images/Utilities1.png'),
                                   fit: BoxFit.fill),
                               color: Colors.white,
                               borderRadius:
@@ -147,12 +148,14 @@ class _AssesmentPageState extends State<AssesmentPage> {
                                 Text(
                                   "Pasien : ${assesment['nama_pasien'] ?? ''}",
                                   style: const TextStyle(
-                                      fontSize: 17, fontWeight: FontWeight.w500),
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w500),
                                 ),
                                 Text(
                                   "Dokter : ${assesment['nama_dokter'] ?? ''}",
                                   style: const TextStyle(
-                                      fontSize: 17, fontWeight: FontWeight.w500),
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w500),
                                 )
                               ],
                             ),
