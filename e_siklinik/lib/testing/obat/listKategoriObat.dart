@@ -9,7 +9,7 @@ class KategoriObatPage extends StatefulWidget {
 
 class _KategoriObatPageState extends State<KategoriObatPage> {
   List<dynamic> kategoriObatList = [];
-  final String apiGetAllKategoriObat = "http://10.0.2.2:8000/api/kategori-obat";
+  final String apiGetAllKategoriObat = "http://192.168.100.66:8080/api/kategori-obat";
 
   @override
   void initState() {

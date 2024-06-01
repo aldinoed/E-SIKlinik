@@ -15,8 +15,8 @@ class _AddAntrianState extends State<AddAntrian> {
   final TextEditingController searchController = TextEditingController();
   final FocusNode searchFocusNode = FocusNode();
 
-  final String apiPostAntrian = "http://10.0.2.2:8000/api/antrian/create";
-  final String apiGetAllPasien = "http://10.0.2.2:8000/api/pasien";
+  final String apiPostAntrian = "http://192.168.100.66:8080/api/antrian/create";
+  final String apiGetAllPasien = "http://192.168.100.66:8080/api/pasien";
 
   List<dynamic> pasienList = [];
   List<dynamic> filteredPasienList = [];
@@ -39,9 +39,6 @@ class _AddAntrianState extends State<AddAntrian> {
   }
 
   Future<void> _getAllPasien() async {
-    setState(() {
-      isLoading = true;
-    });
     try {
       final response = await http.get(Uri.parse(apiGetAllPasien));
       if (response.statusCode == 200) {
@@ -80,6 +77,9 @@ class _AddAntrianState extends State<AddAntrian> {
   }
 
   Future<void> addAntrian(BuildContext context) async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       var request = http.MultipartRequest('POST', Uri.parse(apiPostAntrian));
       request.fields['pasien_id'] = selectedPasien?['id'].toString() ?? '';
@@ -308,7 +308,7 @@ class _AddAntrianState extends State<AddAntrian> {
                                       const BorderRadius.all(Radius.circular(15)),
                                   image: DecorationImage(
                                       image: NetworkImage(
-                                          'http://10.0.2.2:8000/storage/' +
+                                          'http://192.168.100.66:8080/storage/' +
                                               selectedPasien!['image']),
                                       fit: BoxFit.fill)),
                             ),
