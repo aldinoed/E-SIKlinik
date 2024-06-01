@@ -15,8 +15,22 @@ class AntrianController extends Controller
       public function index()
       {
             $antrian = AntrianTable::with('antrianToPasien')->get();
+
             return response()->json(['message' => 'Succes tampil antrian', 'antrian' => $antrian]);
       }
+
+
+
+    public function antrianCount()
+    {
+    $antrian = AntrianTable::with('antrianToPasien')
+        ->select(DB::raw('DATE(created_at) as tanggal'), DB::raw('count(*) as jumlah_antrian'))
+        ->groupBy(DB::raw('DATE(created_at)'))
+        ->get();
+
+    return response()->json(['message' => 'Success tampil antrian', 'antrian' => $antrian]);
+    }
+
 
       /**
        * Show the form for creating a new resource.

@@ -1,5 +1,6 @@
 import 'package:e_siklinik/control.dart';
 import 'package:e_siklinik/pages/login.dart';
+import 'package:e_siklinik/testing/grafik/grafik_obat.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,7 +39,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: 
-        ControlPage());
+        CategoryChartPage());
         // haveCookie ? const ControlPage() : const LoginPage());
   }
 }
