@@ -1,112 +1,80 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class DetailObat extends StatefulWidget {
-  const DetailObat({super.key});
+  final int id;
+
+  DetailObat({required this.id});
 
   @override
-  State<DetailObat> createState() => _DetailObatState();
+  _DetailObatState createState() => _DetailObatState();
 }
 
 class _DetailObatState extends State<DetailObat> {
+  String? namaObat;
+  String? tanggalKadaluarsa;
+  String? stock;
+  String? harga;
+  String? gambar;
+
+  Future<void> _getObat() async {
+    final response = await http.get(Uri.parse('http://127.0.0.1:8000/api/obat/'));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      setState(() {
+        namaObat = data['nama_obat'];
+        tanggalKadaluarsa = data['tanggal_kadaluarsa'];
+        stock = data['stock'].toString();
+        harga = data['harga'].toString();
+        gambar = data['gambar'];
+      });
+    } else {
+      print('Failed to load obat data');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getObat();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        surfaceTintColor: Colors.transparent,
-        title: Text(
-          "Detail Obat",
-          style: TextStyle(
-              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.arrow_left,
-              size: 50, color: Color.fromARGB(255, 0, 0, 0)),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
+        backgroundColor: Colors.white,
+        elevation: 2,
+        shadowColor: Colors.black,
+        centerTitle: true,
+        title: const Text(
+          "Detail Obat",
+          style: TextStyle(fontWeight: FontWeight.w600),
         ),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.more_vert), onPressed: () {  },)
-        ],
       ),
       body: SingleChildScrollView(
-        child: Card(
-          // Set the shape of the card using a rounded rectangle border with a 8 pixel radius
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          // Set the clip behavior of the card
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          // Define the child widgets of the card
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // Display an image at the top of the card that fills the width of the card and has a height of 160 pixels
-              Image.asset(
-                ('assets/images/obat-detail.png'),
-                height: 160,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-              // Add a container with padding that contains the card's title, text, and buttons
-              Container(
-                padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          child: Image.asset(
-                            ('assets/images/JAMU.png'),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Obat Jamu',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
-                    // Display the card's title using a font size of 24 and a dark grey color
-                    Text(
-                      "Paracetamol 500 mg",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    // Add a space between the title and the text
-                    Container(height: 10),
-                    // Display the card's text using a font size of 15 and a light grey color
-                    Text(
-                      'Tanggal Kadaluarsa : DD/MM/YYYY',
-                      style: TextStyle(
-                        fontSize: 17,
-                      ),
-                    ),
-                    Text(
-                      'Stok : 999',
-                      style: TextStyle(
-                        fontSize: 17,
-                      ),
-                    ),
-                    // Add a row with two buttons spaced apart and aligned to the right side of the card
-                  ],
-                ),
-              ),
-              // Add a small space between the card and the next widget
-              Container(height: 5),
-            ],
-          ),
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              height: 200,
+              child: Image.network(gambar ?? ''),
+            ),
+            SizedBox(height: 16),
+            Text(namaObat ?? ''),
+            SizedBox(height: 8),
+            Text(tanggalKadaluarsa ?? ''),
+            SizedBox(height: 8),
+            Text('Stok: $stock'),
+            SizedBox(height: 8),
+            Text('Harga: $harga'),
+          ],
         ),
       ),
     );
