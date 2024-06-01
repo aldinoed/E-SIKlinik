@@ -15,7 +15,7 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   List<dynamic> checkupList = [];
   List<dynamic> filteredCheckupList = [];
-  final String apiGetCheckup = "http://10.0.2.2:8000/api/checkup-result";
+  final String apiGetCheckup = "http://192.168.0.5:8080/api/checkup-result";
   TextEditingController searchController = TextEditingController();
   bool isLoading = true;
 
@@ -179,10 +179,10 @@ class _SearchState extends State<Search> {
             child: CircularProgressIndicator(),
           )
         : limitedCheckupList.isEmpty
-            ? const Center(
-                child: Text(
-                  'Checkup Kosong',
-                  style: TextStyle(fontSize: 18.0),
+            ? Center(
+                child: Image.asset(
+                  'assets/images/error_checkup.png',
+                  fit: BoxFit.cover,
                 ),
               )
             : ListView.builder(

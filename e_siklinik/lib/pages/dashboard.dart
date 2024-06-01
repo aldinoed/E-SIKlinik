@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:e_siklinik/components/box.dart';
+import 'package:e_siklinik/components/grafik_obat.dart';
 import 'package:e_siklinik/pages/Antrian/list_antrian.dart';
 import 'package:e_siklinik/pages/Assessment/assessment.dart';
 import 'package:e_siklinik/pages/carousel_banner.dart';
@@ -53,7 +54,7 @@ class _DashboardState extends State<Dashboard> {
       }
 
       Uri url =
-          Uri.parse('http://10.0.2.2:8000/api/jadwal_dokter/today/$dayName');
+          Uri.parse('http://192.168.0.5:8080/api/jadwal_dokter/today/$dayName');
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);
@@ -109,6 +110,17 @@ class _DashboardState extends State<Dashboard> {
                   ),
                   Container(
                     child: const CarouselJadwal(),
+                  ),
+                  Padding(
+                     padding: const EdgeInsets.only(top: 10),
+                     child: const Text(
+                      "Data Pengunjung",
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                                       ),
+                   ),
+                  Container(              
+                  height: 300,
+                    child: CategoryChartPage(),
                   ),
                   // Container(
                   //   margin: const EdgeInsets.only(bottom: 20),
