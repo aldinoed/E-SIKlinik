@@ -23,7 +23,7 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
     try {
       final response = await http.get(
         Uri.parse(
-            "http://10.0.2.2:8000/api/checkup-result/show/${widget.checkupId}"),
+            "http://192.168.217.136:8000/api/checkup-result/show/${widget.checkupId}"),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -49,7 +49,7 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
       builder: (BuildContext context) {
         return Dialog(
             child: checkupDetail!['url_file'] != null
-                ? Image.network('http://10.0.2.2:8000/storage/' +
+                ? Image.network('http://192.168.217.136:8000/storage/' +
                     checkupDetail!['url_file'])
                 : Container(
                     width: double.infinity,
