@@ -15,8 +15,8 @@ class _AddAntrianNewState extends State<AddAntrianNew> {
   final TextEditingController noAntrianController = TextEditingController();
   final TextEditingController searchController = TextEditingController();
 
-  final String apiPostAntrian = "http://192.168.18.40:8080/api/antrian/create";
-  final String apiGetAllPasien = "http://192.168.18.40:8080/api/pasien";
+  final String apiPostAntrian = "http://192.168.100.66:8080/api/antrian/create";
+  final String apiGetAllPasien = "http://192.168.100.66:8080/api/pasien";
 
   List<dynamic> pasienList = [];
   List<dynamic> filteredPasienList = [];
@@ -272,7 +272,7 @@ class _AddAntrianNewState extends State<AddAntrianNew> {
                                   const BorderRadius.all(Radius.circular(15)),
                               image: DecorationImage(
                                   image: NetworkImage(
-                                      'http://192.168.18.40:8080/storage/' +
+                                      'http://192.168.100.66:8080/storage/' +
                                           selectedPasien!['image']),
                                   fit: BoxFit.fill)),
                         ),

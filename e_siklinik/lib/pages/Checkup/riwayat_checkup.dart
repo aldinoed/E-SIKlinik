@@ -23,7 +23,7 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
     try {
       final response = await http.get(
         Uri.parse(
-            "http://192.168.18.40:8080/api/checkup-result/show/${widget.checkupId}"),
+            "http://192.168.100.66:8080/api/checkup-result/show/${widget.checkupId}"),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -41,6 +41,28 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
     } catch (error) {
       print('Error: $error');
     }
+  }
+
+  void _showImage(String imageUrl) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+            child: checkupDetail!['url_file'] != null
+                ? Image.network('http://192.168.100.66:8080/storage/' +
+                    checkupDetail!['url_file'])
+                : Container(
+                    width: double.infinity,
+                    height: 200,
+                    color: Colors.grey[200],
+                    child: const Icon(
+                      Icons.image,
+                      size: 100,
+                      color: Colors.grey,
+                    ),
+                  ));
+      },
+    );
   }
 
   @override
@@ -127,12 +149,16 @@ class _RiwayatCheckupState extends State<RiwayatCheckup> {
                           ),
                         ),
                         const SizedBox(height: 5),
-                        Container(
-                          width: double.infinity,
-                          height: 125,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                            color: Colors.grey,
+                        ElevatedButton(
+                          style: const ButtonStyle(
+                              backgroundColor:
+                                  MaterialStatePropertyAll(Color(0xFFEFF0F3))),
+                          onPressed: () {
+                            _showImage(checkupDetail!['url_file']);
+                          },
+                          child: const Text(
+                            'Lihat Lampiran',
+                            style: TextStyle(color: Colors.black87),
                           ),
                         ),
                       ],

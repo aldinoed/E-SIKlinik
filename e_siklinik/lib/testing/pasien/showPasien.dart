@@ -24,7 +24,7 @@ class _ShowPasienDetailState extends State<ShowPasienDetail> {
   Future<void> _getPasienDetail() async {
     try {
       final response = await http.get(Uri.parse(
-          "http://192.168.18.40:8080/api/pasien/show/${widget.pasienId}"));
+          "http://192.168.100.66:8080/api/pasien/show/${widget.pasienId}"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data != null && data['pasien'] != null) {
@@ -43,7 +43,7 @@ class _ShowPasienDetailState extends State<ShowPasienDetail> {
   Future<void> _getRiwayatCheckup() async {
     try {
       final response = await http.get(Uri.parse(
-          "http://192.168.18.40:8080/api/riwayat-pasien/${widget.pasienId}"));
+          "http://192.168.100.66:8080/api/riwayat-pasien/${widget.pasienId}"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data != null && data['checkup'] != null) {
@@ -70,7 +70,7 @@ class _ShowPasienDetailState extends State<ShowPasienDetail> {
               children: [
                 CircleAvatar(
                   backgroundImage: NetworkImage(
-                      'http://192.168.18.40:8080/storage/' +
+                      'http://192.168.100.66:8080/storage/' +
                           pasienDetail!['image']),
                 ),
                 Text('Nama: ${pasienDetail!['nama']}'),

@@ -15,7 +15,7 @@ class DataObat extends StatefulWidget {
 }
 
 class _DataObatState extends State<DataObat> {
-  final String apiGetAllObat = "http://192.168.18.40:8080/api/obat";
+  final String apiGetAllObat = "http://192.168.100.66:8080/api/obat";
   List<dynamic> obatList = [];
   List<dynamic> searchObat = [];
 

@@ -23,7 +23,7 @@ class _EditObatPageState extends State<EditObatPage> {
   final TextEditingController imageController = TextEditingController();
 
   final String apiGetAllKategoriObat =
-      "http://192.168.18.40:8080/api/kategori-obat";
+      "http://192.168.100.66:8080/api/kategori-obat";
   List<dynamic> kategoriObatList = [];
   File? _imageFile;
 
@@ -53,7 +53,7 @@ class _EditObatPageState extends State<EditObatPage> {
 
   Future<void> _updateObat() async {
     final id = widget.obat['id'];
-    final url = Uri.parse('http://192.168.18.40:8080/api/obat/$id/update');
+    final url = Uri.parse('http://192.168.100.66:8080/api/obat/$id/update');
     final request = http.MultipartRequest('POST', url);
 
     // Menambahkan data yang akan diperbarui

@@ -15,8 +15,8 @@ class _AddAntrianState extends State<AddAntrian> {
   final TextEditingController searchController = TextEditingController();
   final FocusNode searchFocusNode = FocusNode();
 
-  final String apiPostAntrian = "http://192.168.18.40:8080/api/antrian/create";
-  final String apiGetAllPasien = "http://192.168.18.40:8080/api/pasien";
+  final String apiPostAntrian = "http://192.168.100.66:8080/api/antrian/create";
+  final String apiGetAllPasien = "http://192.168.100.66:8080/api/pasien";
 
   List<dynamic> pasienList = [];
   List<dynamic> filteredPasienList = [];
@@ -153,6 +153,25 @@ class _AddAntrianState extends State<AddAntrian> {
                 child: Column(
                   children: [
                     Container(
+                      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      decoration: BoxDecoration(
+        border: Border.all(color: Color(0xFF234DF0), width: 2),
+        borderRadius: const BorderRadius.all(Radius.circular(15)),
+        image: const DecorationImage(
+            image: AssetImage('assets/images/addantrian.png'), fit: BoxFit.fill),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            offset: const Offset(-1, 2),
+            blurRadius: 3,
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      width: double.infinity,
+      height: 180,
+    ),
+                    Container(
                       margin: const EdgeInsets.symmetric(horizontal: 16),
                       height: 50,
                       padding: const EdgeInsets.symmetric(
@@ -220,7 +239,7 @@ class _AddAntrianState extends State<AddAntrian> {
                                         EdgeInsets.symmetric(horizontal: 24),
                                     padding: const EdgeInsets.all(15),
                                     width: double.infinity,
-                                    height: 80,
+                                    // No fixed height to allow dynamic adjustment based on content
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: const BorderRadius.all(
@@ -248,27 +267,31 @@ class _AddAntrianState extends State<AddAntrian> {
                                           ),
                                         ),
                                         const SizedBox(width: 15),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              pasien['nama'],
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 20,
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                pasien['nama'],
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 20,
+                                                ),
+                                                // Allow the name text to wrap to new lines
+                                                softWrap: true,
                                               ),
-                                            ),
-                                            Text(
-                                              pasien['nrp'],
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 15,
+                                              Text(
+                                                pasien['nrp'],
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 15,
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -315,15 +338,16 @@ class _AddAntrianState extends State<AddAntrian> {
                                       Radius.circular(15)),
                                   image: DecorationImage(
                                       image: NetworkImage(
-                                          'http://192.168.18.40:8080/storage/' +
+                                          'http://192.168.100.66:8080/storage/' +
                                               selectedPasien!['image']),
                                       fit: BoxFit.fill)),
                             ),
                             const SizedBox(height: 15),
-                            setInfoPasien("Nama",
-                                "${selectedPasien!['nama']}"),
-                                setInfoPasien("Prodi", "${selectedPasien!['pasien_to_prodi']['nama']}"),
-                            setInfoPasien("Gender", "${selectedPasien!['gender']}"),
+                            setInfoPasien("Nama", "${selectedPasien!['nama']}"),
+                            setInfoPasien("Prodi",
+                                "${selectedPasien!['pasien_to_prodi']['nama']}"),
+                            setInfoPasien(
+                                "Gender", "${selectedPasien!['gender']}"),
                             setInfoPasien("Tanggal Lahir",
                                 "${selectedPasien!['tanggal_lahir']}"),
                             setInfoPasien(

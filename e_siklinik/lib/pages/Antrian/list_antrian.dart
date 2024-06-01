@@ -6,7 +6,7 @@ import 'add_antrian.dart';
 import 'package:e_siklinik/pages/Assessment/add_assessment.dart';
 
 class ListAntrianNew extends StatefulWidget {
-  const ListAntrianNew({super.key});
+  const ListAntrianNew({Key? key}) : super(key: key);
 
   @override
   State<ListAntrianNew> createState() => _ListAntrianNewState();
@@ -22,7 +22,10 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
   int counter = 0;
 
-  final String apiGetAntrian = "http://192.168.18.40:8080/api/antrian";
+  final String apiGetAntrian = "http://192.168.100.66:8080/api/antrian";
+
+  // Variabel untuk melacak apakah sedang loading data
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -30,25 +33,18 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
     _focusedDay = DateTime.now();
     _selectedDay = selectedDate;
     _getFinishedAssesmen();
-    _getAllAntrian();
+    _loadAntrianData();
   }
 
-  Future<void> _getFinishedAssesmen() async {
-    Uri finishedUrl =
-        Uri.parse('http://192.168.18.40:8080/api/antrian/finished-assesmen');
-    try {
-      final response = await http.get(finishedUrl);
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        finishedAssesmen = data['results'];
-      }
-    } catch (error) {
-      print('Error: $error');
-    }
-  }
+  // Fungsi untuk memuat data antrian
+  Future<void> _loadAntrianData() async {
+    // Menandakan bahwa aplikasi sedang memuat data
+    setState(() {
+      isLoading = true;
+    });
 
-  Future<void> _getAllAntrian() async {
     try {
+      // Memuat data antrian
       final response = await http.get(Uri.parse(apiGetAntrian));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -62,6 +58,25 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
         }
       } else {
         print("Failed to load antrian");
+      }
+    } catch (error) {
+      print('Error: $error');
+    } finally {
+      // Menandakan bahwa proses loading data telah selesai
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _getFinishedAssesmen() async {
+    Uri finishedUrl =
+        Uri.parse('http://192.168.100.66:8080/api/antrian/finished-assesmen');
+    try {
+      final response = await http.get(finishedUrl);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        finishedAssesmen = data['results'];
       }
     } catch (error) {
       print('Error: $error');
@@ -87,7 +102,7 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
   }
 
   Future<void> _refreshData() async {
-    await _getAllAntrian();
+    await _loadAntrianData();
   }
 
   @override
@@ -131,81 +146,89 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
           _buildCalendarHeader(),
           _buildCalendar(),
           Expanded(
-              child: filteredAntrianList.isEmpty
-                  ? Center(
-                      child: Image.asset(
-                        'assets/images/antrian_kosong.png',
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                  : ListView.builder(
-                      itemCount: filteredAntrianList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final antrian = filteredAntrianList[index];
-                        final antrianId = antrian['id'];
-                        bool antrianState = false;
-                        antrianState = antrian['status'] != 'Belum';
-                        return Card(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+            child: isLoading
+                ? Center(
+                    child: CircularProgressIndicator(), // Menampilkan loading indicator
+                  )
+                : filteredAntrianList.isEmpty
+                    ? Center(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 32),
+                          child: Image.asset(
+                            'assets/images/antrian_kosong.png',
+                            fit: BoxFit.cover,
                           ),
-                          elevation: 4,
-                          child: ListTile(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 12),
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.blue,
-                                child: Text(
-                                  antrian['no_antrian'].toString(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  antrianStateWidget(antrian['status']),
-                                  Text(
-                                    antrian['antrian_to_pasien']['nama'],
-                                    style: TextStyle(
-                                      fontSize: 18,
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: filteredAntrianList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final antrian = filteredAntrianList[index];
+                          final antrianId = antrian['id'];
+                          bool antrianState = false;
+                          antrianState = antrian['status'] != 'Belum';
+                          return Card(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            elevation: 4,
+                            child: ListTile(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 12),
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.blue,
+                                  child: Text(
+                                    antrian['no_antrian'].toString(),
+                                    style: const TextStyle(
+                                      color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                ],
-                              ),
-                              subtitle: Text(
-                                'Antrian Nomor: ${antrian['no_antrian']}',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey[600],
                                 ),
-                              ),
-                              trailing: antrianState
-                                  ? SizedBox(
-                                      width: 1,
-                                      height: 1,
-                                    )
-                                  : IconButton(
-                                      icon: Icon(Icons.add),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => AddAssessment(
-                                              antrianId: antrianId,
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    antrianStateWidget(antrian['status']),
+                                    Text(
+                                      antrian['antrian_to_pasien']['nama'],
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                subtitle: Text(
+                                  'Antrian Nomor: ${antrian['no_antrian']}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                                trailing: antrianState
+                                    ? SizedBox(
+                                        width: 1,
+                                        height: 1,
+                                      )
+                                    : IconButton(
+                                        icon: Icon(Icons.add),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => AddAssessment(
+                                                antrianId: antrianId,
+                                              ),
                                             ),
-                                          ),
-                                        );
-                                      },
-                                    )),
-                        );
-                      },
-                    )),
+                                          );
+                                        },
+                                      )),
+                          );
+                        },
+                      ),
+          ),
         ],
       ),
     );

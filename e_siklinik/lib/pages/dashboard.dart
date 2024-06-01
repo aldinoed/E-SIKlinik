@@ -53,7 +53,7 @@ class _DashboardState extends State<Dashboard> {
       }
 
       Uri url = Uri.parse(
-          'http://192.168.18.40:8080/api/jadwal_dokter/today/$dayName');
+          'http://192.168.100.66:8080/api/jadwal_dokter/today/$dayName');
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);
@@ -201,8 +201,8 @@ class _DashboardState extends State<Dashboard> {
                         },
                       ),
                       Box(
-                        title: 'Jadwal Antrean',
-                        desc: 'Mengatur Jadwal Antrean Pasien',
+                        title: 'Jadwal Antrian',
+                        desc: 'Mengatur Jadwal Antrian Pasien',
                         bgimage: 'assets/images/Utilities2.png',
                         icon: const Icon(Icons.people_alt,
                             size: 25, color: Color(0xFF234DF0)),

@@ -16,7 +16,7 @@ class DataDokter extends StatefulWidget {
 }
 
 class _DataDokterState extends State<DataDokter> {
-  final String apiGetAllDokter = "http://192.168.18.40:8080/api/dokter";
+  final String apiGetAllDokter = "http://192.168.100.66:8080/api/dokter";
   List<dynamic> dokterList = [];
   List<dynamic> filteredDokterList = [];
   bool isLoading = true; // flag to track loading state
@@ -198,7 +198,7 @@ Future<void> _disableDokter(int dokterId) async {
                                             builder: (context) => ShowDokter(
                                                 dokterId: dokterId)));
                                   },
-                                  icon: 'http://192.168.18.40:8080/storage/' +
+                                  icon: 'http://192.168.100.66:8080/storage/' +
                                       dokter['image'],
                                   nama: dokter['nama'] ?? '',
                                   onTapPop: () {

@@ -12,7 +12,7 @@ class ListObatPage extends StatefulWidget {
 }
 
 class _ListObatPageState extends State<ListObatPage> {
-  final String apiGetAllObat = "http://192.168.18.40:8080/api/obat";
+  final String apiGetAllObat = "http://192.168.100.66:8080/api/obat";
   List<dynamic> obatList = [];
 
   @override
@@ -71,7 +71,7 @@ class _ListObatPageState extends State<ListObatPage> {
                   child: ListTile(
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(
-                        'http://192.168.18.40:8080/storage/' + obat['image'],
+                        'http://192.168.100.66:8080/storage/' + obat['image'],
                       ),
                     ),
                     title: Text(obat['nama_obat'] ?? ''),
