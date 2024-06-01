@@ -29,6 +29,7 @@ class _DataObatState extends State<DataObat> {
         if (data != null && data['obats'] != null) {
           setState(() {
             obatList = data['obats'];
+            searchObat = obatList;
           });
         } else {
           print("No data received from API");
@@ -142,35 +143,48 @@ class _DataObatState extends State<DataObat> {
               itemCount: searchObat.length,
               itemBuilder: (BuildContext context, int index) {
                 final obat = searchObat[index];
-                return IntrinsicHeight(
-                  child: Card(
-                    elevation: 3,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: Colors.white,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ListTile(
-                            leading: CircleAvatar(
-                              radius: 10,
-                              backgroundColor: Colors.transparent,
-                              child: Image.asset(
-                                _getImage(obat['kategori_id']),
-                                width: 40,
-                                height: 40,
-                                fit: BoxFit.fill,
+                return Dismissible(
+                  key: Key(obat['id'].toString()),
+                  direction: DismissDirection.endToStart,
+                  onDismissed: (direction) {
+                    setState(() {
+                      obatList.removeWhere((item) => item['id'] == obat['id']);
+                      searchObat.removeAt(index);
+                    });
+                  },
+                  background: Container(
+                    color: Colors.red,
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Icon(Icons.delete, color: Colors.white),
+                  ),
+                  child: IntrinsicHeight(
+                    child: Card(
+                      elevation: 3,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.white,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ListTile(
+                              leading: CircleAvatar(
+                                radius: 10,
+                                backgroundColor: Colors.transparent,
+                                child: Image.asset(
+                                  _getImage(obat['kategori_id']),
+                                  width: 40,
+                                  height: 40,
+                                  fit: BoxFit.fill,
+                                ),
                               ),
-                            ),
-                            trailing: Container(
-                              child: IconButton(
+                              trailing: IconButton(
                                 onPressed: () {},
                                 icon: Icon(Icons.more_vert),
                               ),
                             ),
-                          ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Column(
@@ -186,11 +200,12 @@ class _DataObatState extends State<DataObat> {
                                 Text('Stok: ${obat['stock'] ?? '-'}')
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
                   ),
+                ),
                 );
               },
             ),
