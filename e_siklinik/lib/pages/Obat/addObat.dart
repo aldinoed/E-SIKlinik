@@ -394,8 +394,7 @@ class _AddObatNewState extends State<AddObatNew> {
                                                             context: context,
                                                             initialDate: DateTime
                                                                 .now(), //get today's date
-                                                            firstDate: DateTime(
-                                                                2000), //DateTime.now() - not to allow to choose before today.
+                                                            firstDate: DateTime.now(),
                                                             lastDate:
                                                                 DateTime(2101),
                                                           );
