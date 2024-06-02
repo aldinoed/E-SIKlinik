@@ -16,7 +16,8 @@ class DataJadwal extends StatefulWidget {
 }
 
 class _DataJadwalState extends State<DataJadwal> {
-  final String apiGetAllJadwalDokter = "http://192.168.43.246:8080/api/jadwal_dokter";
+  final String apiGetAllJadwalDokter =
+      "http://192.168.43.246:8080/api/jadwal_dokter";
   List<dynamic> jadwalList = [];
   List<dynamic> filteredJadwalList = [];
   bool isLoading = true; // flag to track loading state
@@ -84,7 +85,8 @@ class _DataJadwalState extends State<DataJadwal> {
   }
 
   void _deleteItem(int id) async {
-    Uri url = Uri.parse('http://192.168.43.246:8080/api/jadwal_dokter/delete/$id');
+    Uri url =
+        Uri.parse('http://192.168.43.246:8080/api/jadwal_dokter/delete/$id');
     final response = await http.delete(url);
 
     if (response.statusCode == 200) {
@@ -156,10 +158,21 @@ class _DataJadwalState extends State<DataJadwal> {
           : RefreshIndicator(
               onRefresh: _refreshData,
               child: jadwalList.isEmpty
-                  ? const Center(
-                      child: Text(
-                        'Tidak ada data Jadwal Dokter',
-                        style: TextStyle(fontSize: 18.0),
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/jadwal_dokter.png',
+                            fit: BoxFit.cover,
+                          ),
+                          Text(
+                            'Tidak ada data jadwal dokter',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          )
+                        ],
                       ),
                     )
                   : SafeArea(

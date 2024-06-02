@@ -53,7 +53,7 @@ class _CheckupListPageState extends State<CheckupListPage> {
         body: checkupList.isEmpty
             ? Center(
                 child: Text(
-                  'Checkup Kosong',
+                  'Checkup',
                   style: TextStyle(fontSize: 18.0),
                 ),
               )

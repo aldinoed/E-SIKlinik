@@ -21,13 +21,14 @@ class _AddDokterState extends State<AddDokter> {
   final TextEditingController imageController = TextEditingController();
   final TextEditingController tanggalLahirController = TextEditingController();
 
-  final String apiPostDokter = "http://192.168.43.246:8080/api/dokter/create";
-  final String apiGetAllJadwalDokter = "http://192.168.43.246:8080/api/jadwal_dokter";
+  final String apiPostDokter = "http://192.168.1.70:8080/api/dokter/create";
+  final String apiGetAllJadwalDokter =
+      "http://192.168.1.70:8080/api/jadwal_dokter";
 
   List<dynamic> dokterList = [];
   File? _imageFile;
   String? selectedGender;
-  final List<String> genders = ["Laki-laki", "Perempuan"];
+  final List<String> genders = ["Laki-Laki", "Perempuan"];
   bool isLoading = false;
 
   @override

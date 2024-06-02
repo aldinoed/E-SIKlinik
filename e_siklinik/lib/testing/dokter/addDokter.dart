@@ -21,7 +21,8 @@ class _AddDokterPageState extends State<AddDokterPage> {
   final TextEditingController tanggalLahirController = TextEditingController();
 
   final String apiPostDokter = "http://192.168.43.246:8080/api/dokter/create";
-  final String apiGetAllJadwalDokter = "http://192.168.43.246:8080/api/jadwal_dokter";
+  final String apiGetAllJadwalDokter =
+      "http://192.168.43.246:8080/api/jadwal_dokter";
 
   List<dynamic> dokterList = [];
   File? _imageFile;

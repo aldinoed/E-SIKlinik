@@ -179,10 +179,10 @@ class _SearchState extends State<Search> {
             child: CircularProgressIndicator(),
           )
         : limitedCheckupList.isEmpty
-            ? const Center(
-                child: Text(
-                  'Checkup Kosong',
-                  style: TextStyle(fontSize: 18.0),
+            ? Center(
+                child: Image.asset(
+                  'assets/images/error_checkup.png',
+                  fit: BoxFit.cover,
                 ),
               )
             : ListView.builder(

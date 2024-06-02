@@ -76,8 +76,8 @@ class _DataPasienState extends State<DataPasien> {
 
   Future<void> _disablePasien(int pasienId) async {
     try {
-      final response = await http
-          .put(Uri.parse("http://192.168.43.246:8080/api/pasien/disabled/$pasienId"));
+      final response = await http.put(Uri.parse(
+          "http://192.168.43.246:8080/api/pasien/disabled/$pasienId"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         print('Success: ${data['message']}');

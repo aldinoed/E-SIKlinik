@@ -46,8 +46,8 @@ class _CarouselJadwalState extends State<CarouselJadwal> {
           break;
       }
 
-      Uri url =
-          Uri.parse('http://192.168.43.246:8080/api/jadwal_dokter/today/$dayName');
+      Uri url = Uri.parse(
+          'http://192.168.43.246:8080/api/jadwal_dokter/today/$dayName');
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);
@@ -78,7 +78,7 @@ class _CarouselJadwalState extends State<CarouselJadwal> {
     _getJadwalToday();
   }
 
-  // final String apiGetAllJadwalDokter = "http://192.168.0.5:8080/api/jadwal_dokter";
+  // final String apiGetAllJadwalDokter = "http://192.168.1.70:8080/api/jadwal_dokter";
   // List<dynamic> jadwalList = [];
 
   // @override

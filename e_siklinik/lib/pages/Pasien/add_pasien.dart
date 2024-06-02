@@ -28,7 +28,7 @@ class _AddPasienState extends State<AddPasien> {
 
   List<dynamic> prodiList = [];
   String? selectedGender;
-  final List<String> genders = ["Laki-laki", "Perempuan"];
+  final List<String> genders = ["Laki-Laki", "Perempuan"];
   File? _imageFile;
   bool isLoading = false;
 

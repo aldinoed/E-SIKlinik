@@ -28,7 +28,8 @@ class _ShowPasienState extends State<ShowPasien> {
   Future<void> _getPasienDetail() async {
     try {
       final response = await http.get(
-        Uri.parse("http://192.168.43.246:8080/api/pasien/show/${widget.pasienId}"),
+        Uri.parse(
+            "http://192.168.43.246:8080/api/pasien/show/${widget.pasienId}"),
         headers: {'Content-Type': 'application/json'},
       ).timeout(const Duration(seconds: 30));
 

@@ -18,7 +18,7 @@ class _EditPasienState extends State<EditPasien> {
   final String apiGetAllProdi = "http://192.168.43.246:8080/api/prodi";
   List<dynamic> prodiList = [];
   String? selectedGender;
-  final List<String> genders = ["Laki-laki", "Perempuan"];
+  final List<String> genders = ["Laki-Laki", "Perempuan"];
   bool isLoading = false;
 
   final _formKey = GlobalKey<FormState>();

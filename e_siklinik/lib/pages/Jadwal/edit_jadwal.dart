@@ -68,7 +68,8 @@ class _EditJadwalState extends State<EditJadwal> {
     }
 
     final id = widget.jadwal['id'];
-    final url = Uri.parse('http://192.168.43.246:8080/api/jadwal_dokter/update/$id');
+    final url =
+        Uri.parse('http://192.168.43.246:8080/api/jadwal_dokter/update/$id');
     final request = http.MultipartRequest('POST', url);
 
     request.fields['hari'] = _hariController;

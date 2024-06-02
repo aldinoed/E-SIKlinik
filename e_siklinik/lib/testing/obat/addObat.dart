@@ -22,7 +22,8 @@ class _AddObatPageState extends State<AddObatPage> {
 
   final String apiPostObat = "http://192.168.43.246:8080/api/obat/insert";
 
-  final String apiGetAllKategori = "http://192.168.43.246:8080/api/kategori-obat";
+  final String apiGetAllKategori =
+      "http://192.168.43.246:8080/api/kategori-obat";
 
   List<dynamic> kategoriList = [];
 
