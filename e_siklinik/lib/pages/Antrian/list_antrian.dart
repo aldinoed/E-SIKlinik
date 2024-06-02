@@ -22,7 +22,7 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
   int counter = 0;
 
-  final String apiGetAntrian = "http://10.0.2.2:8000/api/antrian";
+  final String apiGetAntrian = "http://192.168.100.66:8080/api/antrian";
 
   // Variabel untuk melacak apakah sedang loading data
   bool isLoading = false;
@@ -75,7 +75,7 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
 
   Future<void> _getFinishedAssesmen() async {
     Uri finishedUrl =
-        Uri.parse('http://10.0.2.2:8000/api/antrian/finished-assesmen');
+        Uri.parse('http://192.168.100.66:8080/api/antrian/finished-assesmen');
     try {
       final response = await http.get(finishedUrl);
       if (response.statusCode == 200) {
@@ -176,72 +176,77 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
                         ),
                       )
                     : ListView.builder(
-                        itemCount: filteredAntrianList.length,
+                        itemCount: filteredAntrianList.length + 1,
                         itemBuilder: (BuildContext context, int index) {
-                          final antrian = filteredAntrianList[index];
-                          final antrianId = antrian['id'];
-                          bool antrianState = false;
-                          antrianState = antrian['status'] != 'Belum';
-                          return Card(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            elevation: 4,
-                            child: ListTile(
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 12),
-                                leading: CircleAvatar(
-                                  backgroundColor: Colors.blue,
-                                  child: Text(
-                                    antrian['no_antrian'].toString(),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                title: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    antrianStateWidget(antrian['status']),
-                                    Text(
-                                      antrian['antrian_to_pasien']['nama'],
-                                      style: TextStyle(
-                                        fontSize: 18,
+                          if (index == filteredAntrianList.length) {
+                            return const SizedBox(height: 50);
+                          } else {
+                            final antrian = filteredAntrianList[index];
+                            final antrianId = antrian['id'];
+                            bool antrianState = false;
+                            antrianState = antrian['status'] != 'Belum';
+                            return Card(
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              elevation: 4,
+                              child: ListTile(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 12),
+                                  leading: CircleAvatar(
+                                    backgroundColor: Colors.blue,
+                                    child: Text(
+                                      antrian['no_antrian'].toString(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                  ],
-                                ),
-                                subtitle: Text(
-                                  'Antrian Nomor: ${antrian['no_antrian']}',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey[600],
                                   ),
-                                ),
-                                trailing: antrianState
-                                    ? SizedBox(
-                                        width: 1,
-                                        height: 1,
-                                      )
-                                    : IconButton(
-                                        icon: Icon(Icons.add),
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AddAssessment(
-                                                antrianId: antrianId,
+                                  title: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      antrianStateWidget(antrian['status']),
+                                      Text(
+                                        antrian['antrian_to_pasien']['nama'],
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  subtitle: Text(
+                                    'Antrian Nomor: ${antrian['no_antrian']}',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                  trailing: antrianState
+                                      ? SizedBox(
+                                          width: 1,
+                                          height: 1,
+                                        )
+                                      : IconButton(
+                                          icon: Icon(Icons.add),
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AddAssessment(
+                                                  antrianId: antrianId,
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        },
-                                      )),
-                          );
+                                            );
+                                          },
+                                        )),
+                            );
+                          }
                         },
                       ),
           ),

@@ -17,10 +17,10 @@ class _AddAssesmentPageState extends State<AddAssesmentPage> {
   final TextEditingController antrianController = TextEditingController();
 
   final String apiPostAssesment =
-      "http://10.0.2.2:8000/api/checkup-assesmen/insert";
+      "http://192.168.100.66:8080/api/checkup-assesmen/insert";
   List<dynamic>? antrianDetail;
 
-  final String apiGetAllDokter = "http://10.0.2.2:8000/api/dokter";
+  final String apiGetAllDokter = "http://192.168.100.66:8080/api/dokter";
   List<dynamic> dokterList = [];
   File? _imageFile;
 
@@ -55,7 +55,7 @@ class _AddAssesmentPageState extends State<AddAssesmentPage> {
     try {
       final response = await http.get(
         Uri.parse(
-            "http://10.0.2.2:8000/api/antrian/show/${widget.antrianId}"),
+            "http://192.168.100.66:8080/api/antrian/show/${widget.antrianId}"),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
