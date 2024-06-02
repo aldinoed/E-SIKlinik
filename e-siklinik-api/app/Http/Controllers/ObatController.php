@@ -31,7 +31,7 @@ class ObatController extends Controller
       public function deletedObat()
       {
             $obat = Obat::with('obatToKategoriObat')->where('is_disabled', '=', true)->get();
-            return response()->json(['status' => 200, 'oabts' => $obat]);
+            return response()->json(['status' => 200, 'obats' => $obat]);
       }
       /**
        * Store a newly created resource in storage.
@@ -242,4 +242,21 @@ class ObatController extends Controller
 
             return response()->json(['message' => 'Data resep obat berhasil ditampilkan', 'detailResep' => $detailResep]);
       }
+
+
+      public function disableObat($id)
+      {
+            $obat = Obat::find($id);
+            if ($obat->is_disabled == false) {
+                  $obat->is_disabled = true;
+                  $obat->save();
+                  return response()->json(['message' => 'Success disable data obat']);
+            }
+            if ($obat->is_disabled == true) {
+                  $obat->is_disabled = false;
+                  $obat->save();
+                  return response()->json(['message' => 'Success aktifkan data obat']);
+            }
+      }
 }
+

@@ -30,7 +30,7 @@ class _ShowDokterState extends State<ShowDokter> {
     try {
       final response = await http.get(
         Uri.parse(
-            "http://192.168.100.66:8080/api/dokter/show/${widget.dokterId}"),
+            "http://192.168.0.107:8000/api/dokter/show/${widget.dokterId}"),
         headers: {'Content-Type': 'application/json'},
       ).timeout(const Duration(seconds: 30)); // Increased timeout duration
 
@@ -66,7 +66,7 @@ class _ShowDokterState extends State<ShowDokter> {
   Future<void> _getRiwayatDokter() async {
     try {
       final response = await http.get(Uri.parse(
-          "http://192.168.100.66:8080/api/riwayat-dokter/${widget.dokterId}"));
+          "http://192.168.0.107:8000/api/riwayat-dokter/${widget.dokterId}"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data != null && data['checkup'] != null) {
@@ -143,7 +143,7 @@ class _ShowDokterState extends State<ShowDokter> {
                           background: dokterDetail != null &&
                                   dokterDetail!['image'] != null
                               ? Image.network(
-                                  'http://192.168.100.66:8080/storage/' +
+                                  'http://192.168.0.107:8000/storage/' +
                                       dokterDetail!['image'],
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {
@@ -219,7 +219,9 @@ class _ShowDokterState extends State<ShowDokter> {
                                 ),
                                 const Text(
                                   "Pasien Terakhir",
-                                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 20),
                                 ),
                                 Container(
                                   margin: const EdgeInsets.only(top: 10),

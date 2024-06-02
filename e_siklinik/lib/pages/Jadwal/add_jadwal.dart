@@ -19,8 +19,8 @@ class _AddJadwalState extends State<AddJadwal> {
   final List<String> gender = ['Laki-Laki', 'Perempuan'];
 
   final String apiPostJadwalDokter =
-      "http://192.168.100.66:8080/api/jadwal_dokter/create";
-  final String apiGetAllDokter = "http://192.168.100.66:8080/api/dokter";
+      "http://192.168.0.107:8000/api/jadwal_dokter/create";
+  final String apiGetAllDokter = "http://192.168.0.107:8000/api/dokter";
   List<dynamic> dokterList = [];
   bool isLoading = false;
 

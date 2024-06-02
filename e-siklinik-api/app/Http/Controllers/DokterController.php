@@ -150,11 +150,18 @@ class DokterController extends Controller
       // Jadwal Dokter
 
       public function indexJadwal()
-      {
-            $jadwal_dokter = JadwalDokter::with('jadwalToDokter')->get();
+{
+    $jadwal_dokter = JadwalDokter::with(['jadwalToDokter' => function ($query) {
+        $query->where('is_disabled', false);
+    }])
+    ->whereHas('jadwalToDokter', function ($query) {
+        $query->where('is_disabled', false);
+    })
+    ->get();
 
-            return response()->json(['message' => 'Success tampil jadwal dokter', 'jadwal_dokter' => $jadwal_dokter]);
-      }
+    return response()->json(['message' => 'Success tampil jadwal dokter', 'jadwal_dokter' => $jadwal_dokter]);
+}
+
       public function jadwalToday(String $day)
       {
             try {

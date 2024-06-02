@@ -22,7 +22,7 @@ class _ShowCheckupDetailState extends State<ShowCheckupDetail> {
   Future<void> _getCheckupDetail() async {
     try {
       final response = await http.get(Uri.parse(
-          "http://192.168.100.66:8080/api/checkup-result/show/${widget.checkupId}"));
+          "http://192.168.0.107:8000/api/checkup-result/show/${widget.checkupId}"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data != null && data['results'] != null) {

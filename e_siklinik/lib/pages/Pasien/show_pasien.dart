@@ -29,7 +29,7 @@ class _ShowPasienState extends State<ShowPasien> {
     try {
       final response = await http.get(
         Uri.parse(
-            "http://192.168.100.66:8080/api/pasien/show/${widget.pasienId}"),
+            "http://192.168.0.107:8000/api/pasien/show/${widget.pasienId}"),
         headers: {'Content-Type': 'application/json'},
       ).timeout(const Duration(seconds: 30));
 
@@ -73,7 +73,7 @@ class _ShowPasienState extends State<ShowPasien> {
   Future<void> _getRiwayatCheckup() async {
     try {
       final response = await http.get(Uri.parse(
-          "http://192.168.100.66:8080/api/riwayat-pasien/${widget.pasienId}"));
+          "http://192.168.0.107:8000/api/riwayat-pasien/${widget.pasienId}"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data != null && data['checkup'] != null) {
@@ -138,7 +138,7 @@ class _ShowPasienState extends State<ShowPasien> {
                           background: pasienDetail != null &&
                                   pasienDetail!['image'] != null
                               ? Image.network(
-                                  'http://192.168.100.66:8080/storage/' +
+                                  'http://192.168.0.107:8000/storage/' +
                                       pasienDetail!['image'],
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {
@@ -226,7 +226,9 @@ class _ShowPasienState extends State<ShowPasien> {
                                 ),
                                 const Text(
                                   "Riwayat Checkup",
-                                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 20),
                                 ),
                                 Divider(),
                                 const SizedBox(

@@ -12,7 +12,7 @@ class AssesmentList extends StatefulWidget {
 
 class _AssesmentListState extends State<AssesmentList> {
   final String apiGetAllAssesment =
-      "http://192.168.100.66:8080/api/checkup-assesmen";
+      "http://192.168.0.107:8000/api/checkup-assesmen";
   List<dynamic> assesmentList = [];
 
   @override

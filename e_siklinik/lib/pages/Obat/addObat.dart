@@ -23,9 +23,9 @@ class _AddObatNewState extends State<AddObatNew> {
   final TextEditingController hargaController = TextEditingController();
   final TextEditingController imageController = TextEditingController();
 
-  final String apiPostObat = "http://192.168.100.66:8080/api/obat/insert";
+  final String apiPostObat = "http://192.168.0.107:8000/api/obat/insert";
 
-  final String apiGetAllKategori = "http://192.168.100.66:8080/api/kategori-obat";
+  final String apiGetAllKategori = "http://192.168.0.107:8000/api/kategori-obat";
 
   List<dynamic> kategoriList = [];
   String? _selectedKategori;
@@ -59,9 +59,6 @@ class _AddObatNewState extends State<AddObatNew> {
   }
 
   Future<void> addObat(BuildContext context) async {
-    setState(() {
-      isLoading = true;
-    });
     try {
       var request = http.MultipartRequest('POST', Uri.parse(apiPostObat));
       request.fields['nama_obat'] = namaObatController.text;
@@ -88,41 +85,14 @@ class _AddObatNewState extends State<AddObatNew> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Obat berhasil ditambahkan')),
         );
-        Navigator.pop(context, true);
-
-        // Clear input fields
-        // namaObatController.clear();
-        // tanggalKadaluarsaController.clear();
-        // stockController.clear();
-        // hargaController.clear();
-        // imageController.clear();
-        // _selectedKategori = null;
-        // _imageFile = null;
       } else {
         final errorData = json.decode(await response.stream.bytesToString());
         print('Gagal menambahkan obat: ${errorData['message']}');
       }
     } catch (error) {
       print('Error: $error');
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
     }
   }
-
-  String? _doctors;
-  String? _selectedDate;
-
-  List _mydoctor = [
-    "Clara",
-    "John",
-    "Rizal",
-    "Steve",
-    "Laurel",
-    "Bernard",
-    "Miechel"
-  ];
 
   @override
   Widget build(BuildContext context) {
