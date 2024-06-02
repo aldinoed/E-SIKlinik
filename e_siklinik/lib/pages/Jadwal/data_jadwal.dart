@@ -243,8 +243,9 @@ class _DataJadwalState extends State<DataJadwal> {
                                         },
                                         onTapDelete: () {
                                           showDeleteConfirmationDialog(context,
-                                              () => _deleteItem(jadwal['id']));
+                                              () => _deleteItem(jadwal['id']), 'delete');
                                         },
+                                        deleteOrRestoreData: 'Delete Data',
                                       ),
                                     );
                                   },

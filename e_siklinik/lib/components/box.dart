@@ -145,6 +145,7 @@ class BoxSearchPage extends StatelessWidget {
                         style: const TextStyle(fontWeight: FontWeight.w300),
                       ),
                       prodi,
+
                     ],
                   ),
                 ),

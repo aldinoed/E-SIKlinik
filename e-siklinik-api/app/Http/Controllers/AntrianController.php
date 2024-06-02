@@ -45,20 +45,27 @@ class AntrianController extends Controller
        * Store a newly created resource in storage.
        */
       public function store(Request $request)
-      {
+{
+    try {
+
+        $currentDate = date('Y-m-d');
+
+        $countToday = AntrianTable::whereDate('created_at', $currentDate)->count();
+
+        $noAntrian = $countToday + 1;
 
 
-            try {
-                  AntrianTable::create([
-                        'pasien_id' => $request->pasien_id,
-                        'no_antrian' => $request->no_antrian,
-                        'status' => 'Belum'
-                  ]);
-                  return response()->json(["status" => 200, "messasge" => "Nomor antrian "]);
-            } catch (Exception $exception) {
-                  return response()->json(["status" => 500, "messasge" => "Error: " . $exception]);
-            }
-      }
+        AntrianTable::create([
+            'pasien_id' => $request->pasien_id,
+            'no_antrian' => $noAntrian,
+            'status' => 'Belum'
+        ]);
+
+        return response()->json(["status" => 200, "message" => "Nomor antrian $noAntrian"]);
+    } catch (Exception $exception) {
+        return response()->json(["status" => 500, "message" => "Error: " . $exception->getMessage()]);
+    }
+}
 
       /**
        * Display the specified resource.

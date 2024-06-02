@@ -205,31 +205,31 @@ class _DataDokterState extends State<DataDokter> {
                                   nama: dokter['nama'] ?? '',
                                   onTapPop: () {
                                     showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        context: context,
-                                        builder: (context) => BuildSheet(
-                                              onTapEdit: () async {
-                                                final result =
-                                                    await Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                EditDokter(
-                                                                    dokter:
-                                                                        dokter)));
-                                                if (result == true) {
-                                                  Navigator.pop(
-                                                      context); // Menutup showModalBottomSheet
-                                                  _refreshData(); // Memuat ulang data jika perlu
-                                                }
-                                              },
-                                              onTapDelete: () {
-                                                showDeleteConfirmationDialog(
-                                                    context,
-                                                    () => _disableDokter(
-                                                        dokterId));
-                                              },
-                                            ));
+                                      isScrollControlled: true,
+                                      context: context,
+                                      builder: (context) => BuildSheet(
+                                        onTapEdit: () async {
+                                          final result = await Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EditDokter(
+                                                          dokter: dokter)));
+                                          if (result == true) {
+                                            Navigator.pop(
+                                                context); // Menutup showModalBottomSheet
+                                            _refreshData(); // Memuat ulang data jika perlu
+                                          }
+                                        },
+                                        onTapDelete: () {
+                                          showDeleteConfirmationDialog(
+                                              context,
+                                              () => _disableDokter(dokterId),
+                                              'delete');
+                                        },
+                                        deleteOrRestoreData: 'Delete Data',
+                                      ),
+                                    );
                                   },
                                 );
                               },

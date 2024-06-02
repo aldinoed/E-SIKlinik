@@ -174,21 +174,7 @@ class _AddAntrianState extends State<AddAntrian> {
                       width: double.infinity,
                       height: 180,
                     ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      height: 50,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 2),
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          color: Color(0xFFEFF0F3)),
-                      child: TextFormField(
-                        controller: noAntrianController,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                            hintText: "No Antrian", border: InputBorder.none),
-                      ),
-                    ),
+                   
                     if (selectedPasien == null) ...[
                       Container(
                         margin:

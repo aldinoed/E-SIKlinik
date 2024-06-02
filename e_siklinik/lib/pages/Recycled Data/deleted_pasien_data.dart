@@ -16,7 +16,8 @@ class DeletedPasienData extends StatefulWidget {
 }
 
 class _DeletedPasienDataState extends State<DeletedPasienData> {
-  final String apiGetAllPasien = "http://10.0.2.2:8000/api/pasien/deleted-pasien";
+  final String apiGetAllPasien =
+      "http://10.0.2.2:8000/api/pasien/deleted-pasien";
   List<dynamic> pasienList = [];
   List<dynamic> filteredPasienList = [];
   bool isLoading = true; // flag to track loading state
@@ -33,7 +34,6 @@ class _DeletedPasienDataState extends State<DeletedPasienData> {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data != null && data['data'].length > 0) {
-
           setState(() {
             pasienList = data['data'];
             filteredPasienList = List.from(pasienList);
@@ -64,15 +64,14 @@ class _DeletedPasienDataState extends State<DeletedPasienData> {
       isLoading = true;
     });
     await _getAllPasien();
-    setState(() {
-    });
+    setState(() {});
   }
 
   void _filterPasienList(String searchText) {
     setState(() {
       filteredPasienList = pasienList
           .where((pasien) =>
-          pasien['nama'].toLowerCase().contains(searchText.toLowerCase()))
+              pasien['nama'].toLowerCase().contains(searchText.toLowerCase()))
           .toList();
     });
   }
@@ -88,9 +87,7 @@ class _DeletedPasienDataState extends State<DeletedPasienData> {
       );
       Navigator.pop(context);
       _refreshData();
-      setState(() {
-
-      });
+      setState(() {});
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -99,6 +96,7 @@ class _DeletedPasienDataState extends State<DeletedPasienData> {
       );
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,101 +118,101 @@ class _DeletedPasienDataState extends State<DeletedPasienData> {
       ),
       body: isLoading
           ? const Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : RefreshIndicator(
-        onRefresh: _refreshData,
-        child: pasienList.isEmpty
-            ? const Center(
-          child: Text(
-            'Tidak ada data pasien',
-            style: TextStyle(fontSize: 18.0),
-          ),
-        )
-            : SafeArea(
-          child: Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(
-                    top: 16, right: 16, left: 16),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                width: double.infinity,
-                height: 50,
-                decoration: const BoxDecoration(
-                    color: Color(0xFFEFF0F3),
-                    borderRadius:
-                    BorderRadius.all(Radius.circular(30))),
-                child: Row(
-                  children: [
-                    Flexible(
-                      child: TextFormField(
-                        onChanged: _filterPasienList,
-                        maxLines: null,
-                        decoration: const InputDecoration(
-                          hintText: 'Search Here',
-                          border: InputBorder.none,
-                        ),
+              onRefresh: _refreshData,
+              child: pasienList.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'Tidak ada data pasien',
+                        style: TextStyle(fontSize: 18.0),
+                      ),
+                    )
+                  : SafeArea(
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(
+                                top: 16, right: 16, left: 16),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            width: double.infinity,
+                            height: 50,
+                            decoration: const BoxDecoration(
+                                color: Color(0xFFEFF0F3),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30))),
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  child: TextFormField(
+                                    onChanged: _filterPasienList,
+                                    maxLines: null,
+                                    decoration: const InputDecoration(
+                                      hintText: 'Search Here',
+                                      border: InputBorder.none,
+                                    ),
+                                  ),
+                                ),
+                                const Icon(Icons.search),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Flexible(
+                            child: ListView.builder(
+                              itemCount: filteredPasienList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final pasien = filteredPasienList[index];
+                                final pasienId = pasien['id'];
+                                return BoxPasien(
+                                  onTapBox: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ShowPasien(pasienId: pasienId),
+                                      ),
+                                    );
+                                  },
+                                  nama: pasien['nama'] ?? '',
+                                  nrp: pasien['nrp'] ?? '',
+                                  prodi: pasien['pasien_to_prodi'] != null
+                                      ? Text(
+                                          pasien['pasien_to_prodi']['nama'] ??
+                                              '',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w300),
+                                        )
+                                      : const Text("G ada prodi"),
+                                  icon: 'http://192.168.43.246:8080/storage/' +
+                                      pasien['image'],
+                                  onTapPop: () {
+                                    showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      context: context,
+                                      builder: (context) => BuildSheet(
+                                        onTapDelete: () {
+                                          showDeleteConfirmationDialog(context,
+                                              () {
+                                            _deleteItem(pasien['id']);
+                                          }, 'restore');
+                                          _refreshData();
+                                        },
+                                        deleteOrRestoreData: 'Restore Data',
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const Icon(Icons.search),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Flexible(
-                child: ListView.builder(
-                  itemCount: filteredPasienList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final pasien = filteredPasienList[index];
-                    final pasienId = pasien['id'];
-                    return BoxPasien(
-                      onTapBox: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ShowPasien(pasienId: pasienId),
-                          ),
-                        );
-                      },
-                      nama: pasien['nama'] ?? '',
-                      nrp: pasien['nrp'] ?? '',
-                      prodi: pasien['pasien_to_prodi'] != null
-                          ? Text(
-                        pasien['pasien_to_prodi']['nama'] ??
-                            '',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w300),
-                      )
-                          : const Text("G ada prodi"),
-                      icon: 'http://10.0.2.2:8000/storage/' +
-                          pasien['image'],
-                      onTapPop: () {
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          context: context,
-                          builder: (context) => BuildSheet(
-                            onTapDelete: () {
-                              showDeleteConfirmationDialog(context,
-                                      () {
-                                    _deleteItem(pasien['id']);
-                                  });
-                              _refreshData();
-                            },
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }
-

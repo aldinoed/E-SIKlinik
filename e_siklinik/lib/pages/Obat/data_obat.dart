@@ -254,8 +254,8 @@ class _DataObatState extends State<DataObat> {
                                                               context,
                                                               () =>
                                                                   _disableObat(
-                                                                      obat));
-                                                        },
+                                                                      obatId),'delete');
+                                                        }, deleteOrRestoreData: 'Delete Data',
                                                       ));
                                             },
                                             child: const Icon(Icons.more_vert),

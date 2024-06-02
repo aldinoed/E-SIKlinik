@@ -149,14 +149,13 @@ class _DeletedObatDataState extends State<DeletedObatData> {
                     itemCount: searchObat.length,
                     itemBuilder: (BuildContext context, int index) {
                       final obat = searchObat[index];
-                      final obatId = obat['id'];
                       return GestureDetector(
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ShowObat(
-                                  obatId: obatId,
+                                  obatId: obat,
                                 ),
                               ),
                             );

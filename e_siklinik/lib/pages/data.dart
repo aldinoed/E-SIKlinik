@@ -119,7 +119,7 @@ class _DataState extends State<Data> {
                           }),
                       Box(
                           title: "Data Terhapus",
-                          desc: "Data pasien, obat, dokter, dan jadwal yang terhapus",
+                          desc: "Data pasien, obat, dan dokter yang terhapus",
                           bgimage: 'assets/images/bgpolos.png',
                           icon: setIcon(
                               Entypo.back_in_time, const Color(0xFF234DF0)),
