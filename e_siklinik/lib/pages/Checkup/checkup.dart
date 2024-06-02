@@ -37,6 +37,7 @@ class _AddCheckupState extends State<AddCheckup> {
     super.initState();
     _getAssesmentDetail();
     _getAllObat();
+    print(assesmentDetail);
   }
 
   Future<void> _getAllObat() async {

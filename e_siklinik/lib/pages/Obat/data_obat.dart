@@ -8,7 +8,6 @@ import 'dart:convert';
 import 'package:e_siklinik/components/bottomsheet.dart';
 import 'package:e_siklinik/components/delete_confirmation.dart';
 
-
 class DataObat extends StatefulWidget {
   const DataObat({Key? key}) : super(key: key);
 
@@ -54,8 +53,8 @@ class _DataObatState extends State<DataObat> {
 
   Future<void> _disableObat(int obatId) async {
     try {
-      final response = await http.put(Uri.parse(
-          "http://192.168.43.246:8080/api/obat/disabled/$obatId"));
+      final response = await http.put(
+          Uri.parse("http://192.168.43.246:8080/api/obat/disabled/$obatId"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         print('Success: ${data['message']}');
@@ -218,31 +217,37 @@ class _DataObatState extends State<DataObat> {
                                       ),
                                       trailing: GestureDetector(
                                         onTap: () {
-                                    showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        context: context,
-                                        builder: (context) => BuildSheet(
-                                              onTapEdit: () async {
-                                                final result =
-                                                    await Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                UpdateObatNew(id: 'context',)));
-                                                if (result == true) {
-                                                  Navigator.pop(
-                                                      context); // Menutup showModalBottomSheet
-                                                  _refreshData(); // Memuat ulang data jika perlu
-                                                }
-                                              },
-                                              onTapDelete: () {
-                                                showDeleteConfirmationDialog(
-                                                    context,
-                                                    () => _disableObat(obat), 'delete');
-                                              },
-                                          deleteOrRestoreData: 'Delete Data',
-                                            ));
-                                  },
+                                          showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              context: context,
+                                              builder: (context) => BuildSheet(
+                                                    onTapEdit: () async {
+                                                      final result =
+                                                          await Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          UpdateObatNew(
+                                                                            id: 'context',
+                                                                          )));
+                                                      if (result == true) {
+                                                        Navigator.pop(
+                                                            context); // Menutup showModalBottomSheet
+                                                        _refreshData(); // Memuat ulang data jika perlu
+                                                      }
+                                                    },
+                                                    onTapDelete: () {
+                                                      showDeleteConfirmationDialog(
+                                                          context,
+                                                          () => _disableObat(
+                                                              obat),
+                                                          'delete');
+                                                    },
+                                                    deleteOrRestoreData:
+                                                        'Delete Data',
+                                                  ));
+                                        },
                                         child: Icon(Icons.more_vert),
                                       ),
                                     ),
