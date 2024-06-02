@@ -57,7 +57,7 @@ class _AddAssessmentState extends State<AddAssessment> {
     try {
       final response = await http.get(
         Uri.parse(
-            "http://192.168.1.70:8080/api/antrian/show/${widget.antrianId}"),
+            "http://192.168.43.246:8080/api/antrian/show/${widget.antrianId}"),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -193,7 +193,7 @@ class _AddAssessmentState extends State<AddAssessment> {
                                         Radius.circular(15)),
                                     image: DecorationImage(
                                         image: NetworkImage(
-                                            'http://192.168.1.70:8080/storage/' +
+                                            'http://192.168.43.246:8080/storage/' +
                                                 antrianDetail?[0]['image']),
                                         fit: BoxFit.fill)),
                               )

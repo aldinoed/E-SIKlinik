@@ -17,7 +17,7 @@ class DataObat extends StatefulWidget {
 }
 
 class _DataObatState extends State<DataObat> {
-  final String apiGetAllObat = "http://192.168.1.70:8080/api/obat";
+  final String apiGetAllObat = "http://192.168.43.246:8080/api/obat";
   List<dynamic> obatList = [];
   List<dynamic> searchObat = [];
   bool isLoading = true;
@@ -55,7 +55,7 @@ class _DataObatState extends State<DataObat> {
   Future<void> _disableObat(int obatId) async {
     try {
       final response = await http.put(Uri.parse(
-          "http://192.168.1.70:8080/api/obat/disabled/$obatId"));
+          "http://192.168.43.246:8080/api/obat/disabled/$obatId"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         print('Success: ${data['message']}');
@@ -238,8 +238,9 @@ class _DataObatState extends State<DataObat> {
                                               onTapDelete: () {
                                                 showDeleteConfirmationDialog(
                                                     context,
-                                                    () => _disableObat(obat));
+                                                    () => _disableObat(obat), 'delete');
                                               },
+                                          deleteOrRestoreData: 'Delete Data',
                                             ));
                                   },
                                         child: Icon(Icons.more_vert),
@@ -292,7 +293,7 @@ class _DataObatState extends State<DataObat> {
   }
 
   Future<void> _deleteObat(int id) async {
-    final String apiUrl = "http://192.168.1.70:8080/api/obat/$id";
+    final String apiUrl = "http://192.168.43.246:8080/api/obat/$id";
 
     try {
       final response = await http.delete(Uri.parse(apiUrl));

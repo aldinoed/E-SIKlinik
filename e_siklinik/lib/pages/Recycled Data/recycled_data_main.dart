@@ -108,7 +108,7 @@ class _RecycledDataMainState extends State<RecycledDataMain> {
                       ),
                       Box(
                         title: "Obat",
-                        desc: "Restore Data Obat",
+                        desc: "Data Obat Terhapus",
                         bgimage: 'assets/images/bgpolos.png',
                         icon: setIcon(RpgAwesome.pill, const Color(0xFF234DF0)),
                         onTapBox: () {

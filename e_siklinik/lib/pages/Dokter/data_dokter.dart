@@ -16,7 +16,7 @@ class DataDokter extends StatefulWidget {
 }
 
 class _DataDokterState extends State<DataDokter> {
-  final String apiGetAllDokter = "http://192.168.217.136:8000/api/dokter";
+  final String apiGetAllDokter = "http://192.168.43.246:8080/api/dokter";
   List<dynamic> dokterList = [];
   List<dynamic> filteredDokterList = [];
   bool isLoading = true; // flag to track loading state
@@ -226,9 +226,10 @@ class _DataDokterState extends State<DataDokter> {
                                                 showDeleteConfirmationDialog(
                                                     context,
                                                     () => _disableDokter(
-                                                        dokterId));
+                                                        dokterId), 'delete');
                                               },
-                                            ));
+                                          deleteOrRestoreData: 'Delete Data',
+                                            ),);
                                   },
                                 );
                               },

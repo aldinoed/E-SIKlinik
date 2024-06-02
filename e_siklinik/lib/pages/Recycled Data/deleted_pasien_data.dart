@@ -200,9 +200,10 @@ class _DeletedPasienDataState extends State<DeletedPasienData> {
                               showDeleteConfirmationDialog(context,
                                       () {
                                     _deleteItem(pasien['id']);
-                                  });
+                                  }, 'restore');
                               _refreshData();
                             },
+                            deleteOrRestoreData: 'Restore Data',
                           ),
                         );
                       },

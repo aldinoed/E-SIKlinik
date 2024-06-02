@@ -30,7 +30,7 @@ class _ShowDokterState extends State<ShowDokter> {
     try {
       final response = await http.get(
         Uri.parse(
-            "http://192.168.1.70:8080/api/dokter/show/${widget.dokterId}"),
+            "http://192.168.43.246:8080/api/dokter/show/${widget.dokterId}"),
         headers: {'Content-Type': 'application/json'},
       ).timeout(const Duration(seconds: 30)); // Increased timeout duration
 

@@ -234,8 +234,9 @@ class _DataPasienState extends State<DataPasien> {
                                         },
                                         onTapDelete: () {
                                           showDeleteConfirmationDialog(context,
-                                              () => _disablePasien(pasienId));
+                                              () => _disablePasien(pasienId), 'delete');
                                         },
+                                        deleteOrRestoreData: 'Delete Data',
                                       ),
                                     );
                                   },

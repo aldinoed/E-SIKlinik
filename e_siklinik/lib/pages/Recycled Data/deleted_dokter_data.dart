@@ -188,9 +188,11 @@ class _DeletedDokterDataState extends State<DeletedDokterData> {
                                 showDeleteConfirmationDialog(
                                     context,
                                         () => _enableDokter(
-                                        dokterId));
+                                        dokterId), 'restore');
                               },
-                            ));
+                              deleteOrRestoreData: 'Restore Data',
+                            )
+                        );
                       },
                     );
                   },
