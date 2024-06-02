@@ -5,6 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:e_siklinik/components/bottomsheet.dart';
+import 'package:e_siklinik/components/delete_confirmation.dart';
+
 
 class DataObat extends StatefulWidget {
   const DataObat({Key? key}) : super(key: key);
@@ -17,6 +20,7 @@ class _DataObatState extends State<DataObat> {
   final String apiGetAllObat = "http://192.168.100.66:8080/api/obat";
   List<dynamic> obatList = [];
   List<dynamic> searchObat = [];
+  bool isLoading = true;
 
   TextEditingController _searchController = TextEditingController();
 
@@ -38,6 +42,39 @@ class _DataObatState extends State<DataObat> {
       }
     } catch (error) {
       print('Error: $error');
+    }
+  }
+
+  Future<void> _refreshData() async {
+    setState(() {
+      isLoading = true;
+    });
+    await _getAllObat();
+  }
+
+  Future<void> _disableObat(int obatId) async {
+    try {
+      final response = await http.put(Uri.parse(
+          "http://192.168.1.70:8080/api/obat/disabled/$obatId"));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        print('Success: ${data['message']}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Success: ${data['message']}')),
+        );
+        _refreshData();
+      } else {
+        final errorData = json.decode(response.body);
+        print('Failed: ${errorData['message']}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed: ${errorData['message']}')),
+        );
+      }
+    } catch (error) {
+      print('Error: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $error')),
+      );
     }
   }
 
@@ -87,41 +124,6 @@ class _DataObatState extends State<DataObat> {
       default:
         return 'assets/images/OD.png';
     }
-  }
-
-  void _showBottomSheet(BuildContext context, dynamic obat) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          child: Wrap(
-            children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.edit),
-                title: Text('Edit'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          UpdateObatNew(id: obat['id'].toString()),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.delete),
-                title: Text('Delete'),
-                onTap: () {
-                  _deleteObat(obat['id']);
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
   }
 
   @override
@@ -216,8 +218,30 @@ class _DataObatState extends State<DataObat> {
                                       ),
                                       trailing: GestureDetector(
                                         onTap: () {
-                                          _showBottomSheet(context, obat);
-                                        },
+                                    showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        context: context,
+                                        builder: (context) => BuildSheet(
+                                              onTapEdit: () async {
+                                                final result =
+                                                    await Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                UpdateObatNew(id: 'context',)));
+                                                if (result == true) {
+                                                  Navigator.pop(
+                                                      context); // Menutup showModalBottomSheet
+                                                  _refreshData(); // Memuat ulang data jika perlu
+                                                }
+                                              },
+                                              onTapDelete: () {
+                                                showDeleteConfirmationDialog(
+                                                    context,
+                                                    () => _disableObat(obat));
+                                              },
+                                            ));
+                                  },
                                         child: Icon(Icons.more_vert),
                                       ),
                                     ),
