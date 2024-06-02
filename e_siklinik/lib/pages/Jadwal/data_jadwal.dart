@@ -17,7 +17,7 @@ class DataJadwal extends StatefulWidget {
 
 class _DataJadwalState extends State<DataJadwal> {
   final String apiGetAllJadwalDokter =
-      "http://10.0.2.2:8000/api/jadwal_dokter";
+      "http://192.168.0.107:8000/api/jadwal_dokter";
   List<dynamic> jadwalList = [];
   List<dynamic> filteredJadwalList = [];
   bool isLoading = true; // flag to track loading state
@@ -86,7 +86,7 @@ class _DataJadwalState extends State<DataJadwal> {
 
   void _deleteItem(int id) async {
     Uri url =
-        Uri.parse('http://10.0.2.2:8000/api/jadwal_dokter/delete/$id');
+        Uri.parse('http://192.168.0.107:8000/api/jadwal_dokter/delete/$id');
     final response = await http.delete(url);
 
     if (response.statusCode == 200) {
@@ -242,8 +242,10 @@ class _DataJadwalState extends State<DataJadwal> {
                                           }
                                         },
                                         onTapDelete: () {
-                                          showDeleteConfirmationDialog(context,
-                                              () => _deleteItem(jadwal['id']), 'delete');
+                                          showDeleteConfirmationDialog(
+                                              context,
+                                              () => _deleteItem(jadwal['id']),
+                                              'delete');
                                         },
                                         deleteOrRestoreData: 'Delete Data',
                                       ),

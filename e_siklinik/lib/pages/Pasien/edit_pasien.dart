@@ -15,7 +15,7 @@ class EditPasien extends StatefulWidget {
 }
 
 class _EditPasienState extends State<EditPasien> {
-  final String apiGetAllProdi = "http://10.0.2.2:8000/api/prodi";
+  final String apiGetAllProdi = "http://192.168.0.107:8000/api/prodi";
   List<dynamic> prodiList = [];
   String? selectedGender;
   final List<String> genders = ["Laki-Laki", "Perempuan"];
@@ -69,7 +69,7 @@ class _EditPasienState extends State<EditPasien> {
       isLoading = true;
     });
     final id = widget.pasien['id'];
-    final url = Uri.parse('http://10.0.2.2:8000/api/pasien/update/$id');
+    final url = Uri.parse('http://192.168.0.107:8000/api/pasien/update/$id');
     final request = http.MultipartRequest('POST', url);
 
     // Menambahkan data yang akan diperbarui

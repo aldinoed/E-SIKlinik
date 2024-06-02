@@ -82,6 +82,7 @@ Route::delete('/jadwal_dokter/delete/{id}', [DokterController::class, 'deleteJad
 //OBAT Controller
 Route::get('/obat', [ObatController::class, 'index'])->name('obat.index');
 Route::get('/obat/deleted-obat', [ObatController::class, 'deletedObat']);
+Route::put('/obat/disabled/{id}', [ObatController::class, 'disableObat']);
 Route::get('/kategori-obat', [ObatController::class, 'getKategori']);
 Route::post('/obat/insert', [ObatController::class, 'store'])->name('obat.store');
 Route::post('/kategori-obat/insert', [ObatController::class, 'storeKategoriObat']);

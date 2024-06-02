@@ -16,7 +16,7 @@ class DeletedObatData extends StatefulWidget {
 
 class _DeletedObatDataState extends State<DeletedObatData> {
   final String apiGetAllObat =
-      "http://10.0.2.2:8000/api/obat/deleted-obat";
+      "http://192.168.0.107:8000/api/obat/deleted-obat";
   List<dynamic> obatList = [];
   List<dynamic> searchObat = [];
 
@@ -50,6 +50,7 @@ class _DeletedObatDataState extends State<DeletedObatData> {
     _searchController.addListener(() {
       _searchObat(_searchController.text);
     });
+    print(obatList);
   }
 
   @override
@@ -155,7 +156,7 @@ class _DeletedObatDataState extends State<DeletedObatData> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ShowObat(
-                                  obatId: obat,
+                                  obatId: obat['id'],
                                 ),
                               ),
                             );

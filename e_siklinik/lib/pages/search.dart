@@ -15,7 +15,7 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   List<dynamic> checkupList = [];
   List<dynamic> filteredCheckupList = [];
-  final String apiGetCheckup = "http://10.0.2.2:8000/api/checkup-result";
+  final String apiGetCheckup = "http://192.168.0.107:8000/api/checkup-result";
   TextEditingController searchController = TextEditingController();
   bool isLoading = true;
 

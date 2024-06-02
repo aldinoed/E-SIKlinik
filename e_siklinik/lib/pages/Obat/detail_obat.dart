@@ -26,7 +26,7 @@ class _ShowObatState extends State<ShowObat> {
   Future<void> _getObatDetail() async {
     try {
       final response = await http.get(
-        Uri.parse("http://10.0.2.2:8000/api/obat/${widget.obatId}/show"),
+        Uri.parse("http://192.168.0.107:8000/api/obat/${widget.obatId}/show"),
         headers: {'Content-Type': 'application/json'},
       ).timeout(const Duration(seconds: 30));
 
@@ -126,7 +126,7 @@ class _ShowObatState extends State<ShowObat> {
                           background: obatDetail != null &&
                                   obatDetail!['image'] != null
                               ? Image.network(
-                                  'http://10.0.2.2:8000/storage/' +
+                                  'http://192.168.0.107:8000/storage/' +
                                       obatDetail!['image'],
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {

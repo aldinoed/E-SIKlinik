@@ -23,7 +23,8 @@ class _EditObatState extends State<EditObat> {
   String? _selectedKategori;
   final TextEditingController imageController = TextEditingController();
 
-  final String apiGetAllKategoriObat = "http://10.0.2.2:8000/api/kategori-obat";
+  final String apiGetAllKategoriObat =
+      "http://192.168.0.107:8000/api/kategori-obat";
   List<dynamic> kategoriObatList = [];
   File? _imageFile;
 
@@ -53,7 +54,7 @@ class _EditObatState extends State<EditObat> {
 
   Future<void> _updateObat() async {
     final id = widget.obat['id'];
-    final url = Uri.parse('http://10.0.2.2:8000/api/obat/$id/update');
+    final url = Uri.parse('http://192.168.0.107:8000/api/obat/$id/update');
     final request = http.MultipartRequest('POST', url);
 
     // Menambahkan data yang akan diperbarui
@@ -117,20 +118,20 @@ class _EditObatState extends State<EditObat> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.arrow_back_ios)),
-        backgroundColor: Colors.white,
-        elevation: 2,
-        shadowColor: Colors.black,
-        centerTitle: true,
-        title: const Text(
-          "Edit Obat",
-          style: TextStyle(fontWeight: FontWeight.w600),
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back_ios)),
+          backgroundColor: Colors.white,
+          elevation: 2,
+          shadowColor: Colors.black,
+          centerTitle: true,
+          title: const Text(
+            "Edit Obat",
+            style: TextStyle(fontWeight: FontWeight.w600),
+          ),
         ),
-      ),
         body: SingleChildScrollView(
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Card(
@@ -221,8 +222,8 @@ class _EditObatState extends State<EditObat> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               const Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: 10),
+                                                padding:
+                                                    EdgeInsets.only(left: 10),
                                                 child: Text(
                                                   'Kategori Obat',
                                                   style: TextStyle(
@@ -244,8 +245,12 @@ class _EditObatState extends State<EditObat> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               10.0),
-                                                      color: const Color.fromARGB(
-                                                          200, 235, 242, 255),
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              200,
+                                                              235,
+                                                              242,
+                                                              255),
                                                     ),
                                                     child: Padding(
                                                       padding:
@@ -255,13 +260,13 @@ class _EditObatState extends State<EditObat> {
                                                           DropdownButtonFormField<
                                                               String>(
                                                         isExpanded: true,
-                                                        icon: const ImageIcon(AssetImage(
-                                                            "assets/images/Dropdown.png")),
+                                                        icon: const ImageIcon(
+                                                            AssetImage(
+                                                                "assets/images/Dropdown.png")),
                                                         decoration:
                                                             const InputDecoration
                                                                 .collapsed(
-                                                                    hintText:
-                                                                        ""),
+                                                                hintText: ""),
                                                         hint: const Text(
                                                           "Pilih Kategori Obat",
                                                           style: TextStyle(
@@ -368,20 +373,22 @@ class _EditObatState extends State<EditObat> {
                                                             contentPadding:
                                                                 const EdgeInsets
                                                                     .symmetric(
-                                                                        horizontal:
-                                                                            10,
-                                                                        vertical:
-                                                                            5),
-                                                            suffixIcon: const Icon(
+                                                                    horizontal:
+                                                                        10,
+                                                                    vertical:
+                                                                        5),
+                                                            suffixIcon:
+                                                                const Icon(
                                                               Icons
                                                                   .calendar_today,
                                                               size: 20,
                                                             ), //icon of text field
                                                             labelText:
                                                                 "DD/MM/YYYY",
-                                                            labelStyle: const TextStyle(
-                                                                fontSize:
-                                                                    10), //label text of field
+                                                            labelStyle:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        10), //label text of field
                                                           ),
                                                           readOnly:
                                                               true, // when true user cannot edit text
@@ -639,10 +646,10 @@ class _EditObatState extends State<EditObat> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Padding(
-                                                    padding: EdgeInsets
-                                                        .symmetric(
-                                                        vertical: 10,
-                                                        horizontal: 20),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 10,
+                                                            horizontal: 20),
                                                     child: Text(
                                                       'Update',
                                                       style: TextStyle(
