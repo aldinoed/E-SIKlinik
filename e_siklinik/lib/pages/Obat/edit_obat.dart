@@ -6,7 +6,6 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
-
 class UpdateObatNew extends StatefulWidget {
   final String id;
 
@@ -23,10 +22,8 @@ class _UpdateObatNewState extends State<UpdateObatNew> {
   final TextEditingController stockController = TextEditingController();
   final TextEditingController hargaController = TextEditingController();
 
-  final String apiGetObatDetails =
-      "http://192.168.1.70:8080/api/obat/details";
-  final String apiGetAllKategori =
-      "http://192.168.1.70:8080/api/kategori-obat";
+  final String apiGetObatDetails = "http://10.0.2.2:8000/api/obat/details";
+  final String apiGetAllKategori = "http://10.0.2.2:8000/api/kategori-obat";
 
   List<dynamic> kategoriList = [];
   String? _selectedKategori;
@@ -85,53 +82,55 @@ class _UpdateObatNewState extends State<UpdateObatNew> {
   }
 
   Future<void> updateObat(BuildContext context) async {
-  try {
-    var request = http.MultipartRequest('POST', Uri.parse('http://192.168.1.70:8080/api/obat/insert'));
-    request.fields['id'] = widget.id;
-    request.fields['nama_obat'] = namaObatController.text;
-    request.fields['tanggal_kadaluarsa'] = tanggalKadaluarsaController.text;
-    request.fields['stock'] = stockController.text;
-    request.fields['harga'] = hargaController.text;
-    request.fields['kategori_id'] = _selectedKategori.toString();
+    try {
+      var request = http.MultipartRequest(
+          'POST', Uri.parse('http://10.0.2.2:8000/api/obat/insert'));
+      request.fields['id'] = widget.id;
+      request.fields['nama_obat'] = namaObatController.text;
+      request.fields['tanggal_kadaluarsa'] = tanggalKadaluarsaController.text;
+      request.fields['stock'] = stockController.text;
+      request.fields['harga'] = hargaController.text;
+      request.fields['kategori_id'] = _selectedKategori.toString();
 
-    var response = await request.send();
+      var response = await request.send();
 
-    if (response.statusCode == 200) {
-      final obat = json.decode(await response.stream.bytesToString())['obats'];
-      print('Obat berhasil diperbarui: $obat');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Obat berhasil diperbarui')),
-      );
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const DataObat()));
-    } else {
-      final errorData = json.decode(await response.stream.bytesToString());
-      print('Gagal memperbarui obat: ${errorData['message']}');
+      if (response.statusCode == 200) {
+        final obat =
+            json.decode(await response.stream.bytesToString())['obats'];
+        print('Obat berhasil diperbarui: $obat');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Obat berhasil diperbarui')),
+        );
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const DataObat()));
+      } else {
+        final errorData = json.decode(await response.stream.bytesToString());
+        print('Gagal memperbarui obat: ${errorData['message']}');
+      }
+    } catch (error) {
+      print('Error: $error');
     }
-  } catch (error) {
-    print('Error: $error');
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.arrow_back_ios)),
-        backgroundColor: Colors.white,
-        elevation: 2,
-        shadowColor: Colors.black,
-        centerTitle: true,
-        title: const Text(
-          "Edit Obat",
-          style: TextStyle(fontWeight: FontWeight.w600),
+        appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back_ios)),
+          backgroundColor: Colors.white,
+          elevation: 2,
+          shadowColor: Colors.black,
+          centerTitle: true,
+          title: const Text(
+            "Edit Obat",
+            style: TextStyle(fontWeight: FontWeight.w600),
+          ),
         ),
-      ),
-       body: SingleChildScrollView(
+        body: SingleChildScrollView(
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Card(
               elevation: 10,
@@ -361,17 +360,15 @@ class _UpdateObatNewState extends State<UpdateObatNew> {
                                                           labelText:
                                                               "DD/MM/YYYY",
                                                           labelStyle: TextStyle(
-                                                              fontSize:
-                                                                  10),
+                                                              fontSize: 10),
                                                         ),
-                                                        readOnly:
-                                                            true,
+                                                        readOnly: true,
                                                         onTap: () async {
                                                           DateTime? pickedDate =
                                                               await showDatePicker(
                                                             context: context,
-                                                            initialDate: DateTime
-                                                                .now(),
+                                                            initialDate:
+                                                                DateTime.now(),
                                                             firstDate:
                                                                 DateTime.now(),
                                                             lastDate:
@@ -525,7 +522,7 @@ class _UpdateObatNewState extends State<UpdateObatNew> {
                                 child: Padding(
                                   padding: const EdgeInsets.only(
                                       top: 9, bottom: 9, left: 20),
-                                  child: TextField(                                   
+                                  child: TextField(
                                     decoration: InputDecoration.collapsed(
                                       filled: true,
                                       fillColor: const Color.fromARGB(
@@ -609,7 +606,9 @@ class _UpdateObatNewState extends State<UpdateObatNew> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        UpdateObatNew(id: 'context',);
+                                        UpdateObatNew(
+                                          id: 'context',
+                                        );
                                       },
                                       child: SizedBox(
                                         child: Card(
@@ -651,7 +650,6 @@ class _UpdateObatNewState extends State<UpdateObatNew> {
                                   ],
                                 ))
                           ]))))
-        ]))
-    );
+        ])));
   }
 }

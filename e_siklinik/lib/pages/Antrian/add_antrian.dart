@@ -15,8 +15,8 @@ class _AddAntrianState extends State<AddAntrian> {
   final TextEditingController searchController = TextEditingController();
   final FocusNode searchFocusNode = FocusNode();
 
-  final String apiPostAntrian = "http://192.168.43.246:8080/api/antrian/create";
-  final String apiGetAllPasien = "http://192.168.43.246:8080/api/pasien";
+  final String apiPostAntrian = "http://10.0.2.2:8000/api/antrian/create";
+  final String apiGetAllPasien = "http://10.0.2.2:8000/api/pasien";
 
   List<dynamic> pasienList = [];
   List<dynamic> filteredPasienList = [];
@@ -174,21 +174,7 @@ class _AddAntrianState extends State<AddAntrian> {
                       width: double.infinity,
                       height: 180,
                     ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      height: 50,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 2),
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          color: Color(0xFFEFF0F3)),
-                      child: TextFormField(
-                        controller: noAntrianController,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                            hintText: "No Antrian", border: InputBorder.none),
-                      ),
-                    ),
+                   
                     if (selectedPasien == null) ...[
                       Container(
                         margin:
@@ -341,7 +327,7 @@ class _AddAntrianState extends State<AddAntrian> {
                                       Radius.circular(15)),
                                   image: DecorationImage(
                                       image: NetworkImage(
-                                          'http://192.168.43.246:8080/storage/' +
+                                          'http://10.0.2.2:8000/storage/' +
                                               selectedPasien!['image']),
                                       fit: BoxFit.fill)),
                             ),

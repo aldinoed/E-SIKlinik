@@ -29,8 +29,7 @@ class _ShowDokterState extends State<ShowDokter> {
   Future<void> _getDokterDetail() async {
     try {
       final response = await http.get(
-        Uri.parse(
-            "http://192.168.1.70:8080/api/dokter/show/${widget.dokterId}"),
+        Uri.parse("http://10.0.2.2:8000/api/dokter/show/${widget.dokterId}"),
         headers: {'Content-Type': 'application/json'},
       ).timeout(const Duration(seconds: 30)); // Increased timeout duration
 
@@ -66,7 +65,7 @@ class _ShowDokterState extends State<ShowDokter> {
   Future<void> _getRiwayatDokter() async {
     try {
       final response = await http.get(Uri.parse(
-          "http://192.168.43.246:8080/api/riwayat-dokter/${widget.dokterId}"));
+          "http://10.0.2.2:8000/api/riwayat-dokter/${widget.dokterId}"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data != null && data['checkup'] != null) {
@@ -143,7 +142,7 @@ class _ShowDokterState extends State<ShowDokter> {
                           background: dokterDetail != null &&
                                   dokterDetail!['image'] != null
                               ? Image.network(
-                                  'http://192.168.43.246:8080/storage/' +
+                                  'http://10.0.2.2:8000/storage/' +
                                       dokterDetail!['image'],
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {

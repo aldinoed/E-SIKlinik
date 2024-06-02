@@ -19,7 +19,7 @@ class _DetailObatState extends State<DetailObat> {
   String? gambar;
 
   Future<void> _getObat() async {
-    final response = await http.get(Uri.parse('http://192.168.1.70:8080/api/show'));
+    final response = await http.get(Uri.parse('http://10.0.2.2:8000/api/show'));
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       setState(() {

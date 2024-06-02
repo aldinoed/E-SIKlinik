@@ -20,7 +20,8 @@ class _CategoryChartPageState extends State<CategoryChartPage> {
   }
 
   Future<void> _fetchAntrianData() async {
-    final response = await http.get(Uri.parse('http://192.168.1.70:8080/api/antrianCount'));
+    final response =
+        await http.get(Uri.parse('http://10.0.2.2:8000/api/antrianCount'));
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body)['antrian'];
       setState(() {
@@ -32,55 +33,44 @@ class _CategoryChartPageState extends State<CategoryChartPage> {
     }
   }
 
-@override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+      ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : Center(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Card(
-                  elevation: 4.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.0),
+              child: SfCartesianChart(
+                primaryXAxis: CategoryAxis(
+                  axisLabelFormatter: (AxisLabelRenderDetails details) {
+                    final date = DateTime.parse(details.text);
+                    final formattedDate = DateFormat('MMM d').format(date);
+                    return ChartAxisLabel(formattedDate, details.textStyle);
+                  },
+                ),
+                primaryYAxis: NumericAxis(
+                  interval: 1, // Ensure only integers are shown
+                  axisLabelFormatter: (AxisLabelRenderDetails details) {
+                    final intValue = int.parse(details.text.split('.')[0]);
+                    return ChartAxisLabel('$intValue', details.textStyle);
+                  },
+                ),
+                tooltipBehavior: TooltipBehavior(enable: true),
+                series: <CartesianSeries>[
+                  LineSeries<Antrian, String>(
+                    dataSource: _antrianList,
+                    xValueMapper: (Antrian data, _) => data.tanggal,
+                    yValueMapper: (Antrian data, _) => data.jumlahAntrian,
+                    dataLabelSettings: DataLabelSettings(isVisible: true),
+                    enableTooltip: true,
                   ),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 2, // Adjust this to your needs
-                    color: Colors.white,
-                    child: SfCartesianChart(
-                      // primaryXAxis: CategoryAxis(),
-                      primaryXAxis: CategoryAxis(
-                        axisLabelFormatter: (AxisLabelRenderDetails details) {
-                          final date = DateTime.parse(details.text);
-                          final formattedDate = DateFormat('MMM d').format(date);
-                          return ChartAxisLabel(formattedDate, details.textStyle);
-                        },
-                      ),
-                      primaryYAxis: NumericAxis(
-                        interval: 1, // Ensure only integers are shown
-                        axisLabelFormatter: (AxisLabelRenderDetails details) {
-                          final intValue = int.parse(details.text.split('.')[0]);
-                          return ChartAxisLabel('$intValue', details.textStyle);
-                        },
-                      ),
-                      tooltipBehavior: TooltipBehavior(enable: true),
-                      series: <CartesianSeries>[
-                        LineSeries<Antrian, String>(
-                          dataSource: _antrianList,
-                          xValueMapper: (Antrian data, _) => data.tanggal,
-                          yValueMapper: (Antrian data, _) => data.jumlahAntrian,
-                          dataLabelSettings: DataLabelSettings(isVisible: true),
-                          enableTooltip: true,
-                        ),
-                      ],
-                      zoomPanBehavior: ZoomPanBehavior(
-                        enablePinching: true,
-                        zoomMode: ZoomMode.x,
-                        enableDoubleTapZooming: true,
-                      ),
-                    ),
-                  ),
+                ],
+                zoomPanBehavior: ZoomPanBehavior(
+                  enablePinching: true,
+                  zoomMode: ZoomMode.x,
+                  enableDoubleTapZooming: true,
                 ),
               ),
             ),

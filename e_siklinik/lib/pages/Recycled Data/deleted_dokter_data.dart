@@ -14,7 +14,8 @@ class DeletedDokterData extends StatefulWidget {
 }
 
 class _DeletedDokterDataState extends State<DeletedDokterData> {
-  final String apiGetAllDokter = "http://192.168.43.246:8080/api/dokter/deleted-dokter";
+  final String apiGetAllDokter =
+      "http://10.0.2.2:8000/api/dokter/deleted-dokter";
   List<dynamic> dokterList = [];
   List<dynamic> filteredDokterList = [];
   bool isLoading = true; // flag to track loading state
@@ -68,14 +69,15 @@ class _DeletedDokterDataState extends State<DeletedDokterData> {
     setState(() {
       filteredDokterList = dokterList
           .where((dokter) =>
-          dokter['nama'].toLowerCase().contains(searchText.toLowerCase()))
+              dokter['nama'].toLowerCase().contains(searchText.toLowerCase()))
           .toList();
     });
   }
 
   Future<void> _enableDokter(int dokterId) async {
     try {
-      final response = await http.put(Uri.parse("http://192.168.43.246:8080/api/dokter/aktif/$dokterId"));
+      final response = await http
+          .put(Uri.parse("http://10.0.2.2:8000/api/dokter/aktif/$dokterId"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         print('Success: ${data['message']}');
@@ -97,6 +99,7 @@ class _DeletedDokterDataState extends State<DeletedDokterData> {
       );
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,88 +121,88 @@ class _DeletedDokterDataState extends State<DeletedDokterData> {
       ),
       body: isLoading
           ? const Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : RefreshIndicator(
-        onRefresh: _refreshData,
-        child: dokterList.isEmpty
-            ? const Center(
-          child: Text(
-            'Tidak ada data Dokter',
-            style: TextStyle(fontSize: 18.0),
-          ),
-        )
-            : SafeArea(
-          child: Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(
-                    top: 16, right: 16, left: 16),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                width: double.infinity,
-                height: 50,
-                decoration: const BoxDecoration(
-                    color: Color(0xFFEFF0F3),
-                    borderRadius:
-                    BorderRadius.all(Radius.circular(30))),
-                child: Row(
-                  children: [
-                    Flexible(
-                      child: TextFormField(
-                        onChanged: _filterDokterList,
-                        maxLines: null,
-                        decoration: const InputDecoration(
-                          hintText: 'Search Here',
-                          border: InputBorder.none,
-                        ),
+              onRefresh: _refreshData,
+              child: dokterList.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'Tidak ada data Dokter',
+                        style: TextStyle(fontSize: 18.0),
+                      ),
+                    )
+                  : SafeArea(
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(
+                                top: 16, right: 16, left: 16),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            width: double.infinity,
+                            height: 50,
+                            decoration: const BoxDecoration(
+                                color: Color(0xFFEFF0F3),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30))),
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  child: TextFormField(
+                                    onChanged: _filterDokterList,
+                                    maxLines: null,
+                                    decoration: const InputDecoration(
+                                      hintText: 'Search Here',
+                                      border: InputBorder.none,
+                                    ),
+                                  ),
+                                ),
+                                const Icon(Icons.search),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Flexible(
+                            child: ListView.builder(
+                              itemCount: filteredDokterList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final dokter = filteredDokterList[index];
+                                final dokterId =
+                                    dokter['id']; // Dapatkan id dokter di sini
+                                return BoxDokter(
+                                  onTapBox: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ShowDokter(
+                                                dokterId: dokterId)));
+                                  },
+                                  icon: 'http://10.0.2.2:8000/storage/' +
+                                      dokter['image'],
+                                  nama: dokter['nama'] ?? '',
+                                  onTapPop: () {
+                                    showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        context: context,
+                                        builder: (context) => BuildSheet(
+                                              onTapDelete: () {
+                                                showDeleteConfirmationDialog(
+                                                    context,
+                                                    () => _enableDokter(
+                                                        dokterId));
+                                              },
+                                            ));
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const Icon(Icons.search),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Flexible(
-                child: ListView.builder(
-                  itemCount: filteredDokterList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final dokter = filteredDokterList[index];
-                    final dokterId =
-                    dokter['id']; // Dapatkan id dokter di sini
-                    return BoxDokter(
-                      onTapBox: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ShowDokter(
-                                    dokterId: dokterId)));
-                      },
-                      icon: 'http://192.168.43.246:8080/storage/' +
-                          dokter['image'],
-                      nama: dokter['nama'] ?? '',
-                      onTapPop: () {
-                        showModalBottomSheet(
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (context) => BuildSheet(
-                              onTapDelete: () {
-                                showDeleteConfirmationDialog(
-                                    context,
-                                        () => _enableDokter(
-                                        dokterId));
-                              },
-                            ));
-                      },
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }
