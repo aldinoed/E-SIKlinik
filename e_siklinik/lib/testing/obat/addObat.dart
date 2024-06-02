@@ -20,10 +20,10 @@ class _AddObatPageState extends State<AddObatPage> {
   final TextEditingController imageController = TextEditingController();
   final TextEditingController kategoriController = TextEditingController();
 
-  final String apiPostObat = "http://192.168.217.136:8000/api/obat/insert";
+  final String apiPostObat = "http://192.168.1.70:8080/api/obat/insert";
 
   final String apiGetAllKategori =
-      "http://192.168.217.136:8000/api/kategori-obat";
+      "http://192.168.1.70:8080/api/kategori-obat";
 
   List<dynamic> kategoriList = [];
 

@@ -1,409 +1,657 @@
+import 'package:e_siklinik/pages/Obat/data_obat.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
-class EditObat extends StatefulWidget {
-  final int id;
-  final String namaObat;
-  final String tanggalKadaluarsa;
-  final int stock;
-  final int harga;
-  final String gambar;
 
-  EditObat({
-    required this.id,
-    required this.namaObat,
-    required this.tanggalKadaluarsa,
-    required this.stock,
-    required this.harga,
-    required this.gambar,
-  });
+class UpdateObatNew extends StatefulWidget {
+  final String id;
+
+  const UpdateObatNew({Key? key, required this.id}) : super(key: key);
 
   @override
-  _EditObatState createState() => _EditObatState();
+  _UpdateObatNewState createState() => _UpdateObatNewState();
 }
 
-class _EditObatState extends State<EditObat> {
+class _UpdateObatNewState extends State<UpdateObatNew> {
   final TextEditingController namaObatController = TextEditingController();
   final TextEditingController tanggalKadaluarsaController =
       TextEditingController();
   final TextEditingController stockController = TextEditingController();
   final TextEditingController hargaController = TextEditingController();
-  final TextEditingController imageController = TextEditingController();
 
-  File? _imageFile;
+  final String apiGetObatDetails =
+      "http://192.168.1.70:8080/api/obat/details";
+  final String apiGetAllKategori =
+      "http://192.168.1.70:8080/api/kategori-obat";
+
+  List<dynamic> kategoriList = [];
+  String? _selectedKategori;
 
   @override
   void initState() {
     super.initState();
-    namaObatController.text = widget.namaObat;
-    tanggalKadaluarsaController.text = widget.tanggalKadaluarsa;
-    stockController.text = widget.stock.toString();
-    hargaController.text = widget.harga.toString();
+    _getObatDetails();
+    _getAllKategori();
   }
 
-  Future<void> _updateObat() async {
-    final apiUpdateObat =
-        "http://127.0.0.1:8000/api/obat/update/${widget.id}";
+  Future<void> _getObatDetails() async {
+    try {
+      final response = await http.get(
+        Uri.parse('$apiGetObatDetails/${widget.id}'),
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data != null) {
+          setState(() {
+            namaObatController.text = data['nama_obat'];
+            tanggalKadaluarsaController.text = data['tanggal_kadaluarsa'];
+            stockController.text = data['stock'];
+            hargaController.text = data['harga'];
+            _selectedKategori = data['kategori_id'].toString();
+          });
+        } else {
+          print("No data received from API");
+        }
+      } else {
+        print("Failed to load obat details");
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+  }
 
-    var request = http.MultipartRequest('PUT', Uri.parse(apiUpdateObat));
+  Future<void> _getAllKategori() async {
+    try {
+      final response = await http.get(Uri.parse(apiGetAllKategori));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data != null && data['kategori'] != null) {
+          setState(() {
+            kategoriList = data['kategori'];
+          });
+        } else {
+          print("No data received from API");
+        }
+      } else {
+        print("Failed to load kategori obat");
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+  }
+
+  Future<void> updateObat(BuildContext context) async {
+  try {
+    var request = http.MultipartRequest('POST', Uri.parse('http://192.168.1.70:8080/api/obat/insert'));
+    request.fields['id'] = widget.id;
     request.fields['nama_obat'] = namaObatController.text;
     request.fields['tanggal_kadaluarsa'] = tanggalKadaluarsaController.text;
     request.fields['stock'] = stockController.text;
     request.fields['harga'] = hargaController.text;
-
-    if (_imageFile!= null) {
-      request.files.add(
-        await http.MultipartFile.fromPath(
-          'image',
-          _imageFile!.path,
-        ),
-      );
-    }
+    request.fields['kategori_id'] = _selectedKategori.toString();
 
     var response = await request.send();
 
     if (response.statusCode == 200) {
+      final obat = json.decode(await response.stream.bytesToString())['obats'];
+      print('Obat berhasil diperbarui: $obat');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Obat berhasil diperbarui')),
       );
-      Navigator.pop(context);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const DataObat()));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Gagal memperbarui obat')),
-      );
+      final errorData = json.decode(await response.stream.bytesToString());
+      print('Gagal memperbarui obat: ${errorData['message']}');
     }
+  } catch (error) {
+    print('Error: $error');
   }
+}
 
-  Future<void> _selectImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile!= null) {
-      setState(() {
-        _imageFile = File(pickedFile.path);
-        imageController.text = _imageFile!.path.split('/').last;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Obat'),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
+        backgroundColor: Colors.white,
+        elevation: 2,
+        shadowColor: Colors.black,
+        centerTitle: true,
+        title: const Text(
+          "Edit Obat",
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Card(
-                child: Container(
+       body: SingleChildScrollView(
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Card(
+              elevation: 10,
+              child: Container(
+                  width: MediaQuery.of(context).size.width / 1.1,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
                     color: Colors.white,
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(
-                            'Nama Obat',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          width: MediaQuery.of(context).size.width / 1.1,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: const Color.fromARGB(200, 235, 242, 255),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 9, bottom: 9, left: 20),
-                              child: TextField(
-                                controller: namaObatController,
-                                decoration: InputDecoration.collapsed(
-                                  filled: true,
-                                  fillColor: const Color.fromARGB(
-                                      200, 235, 242, 255),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  hintText: 'Masukkan Nama Obat',
-                                  hintStyle: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 15,
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: Text(
+                                    'Nama Obat',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(
-                            'Tanggal Kadaluarsa',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          width: MediaQuery.of(context).size.width / 1.1,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: const Color.fromARGB(200, 235, 242, 255),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 9, bottom: 9, left: 20),
-                              child: TextField(
-                                controller: tanggalKadaluarsaController,
-                                decoration: InputDecoration.collapsed(
-                                  filled: true,
-                                  fillColor: const Color.fromARGB(
-                                      200, 235, 242, 255),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  hintText: 'Masukkan Tanggal Kadaluarsa',
-                                  hintStyle: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(
-                            'Stock',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          width: MediaQuery.of(context).size.width / 1.1,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: const Color.fromARGB(200, 235, 242, 255),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 9, bottom: 9, left: 20),
-                              child: TextField(
-                                controller: stockController,
-                                decoration: InputDecoration.collapsed(
-                                  filled: true,
-                                  fillColor: const Color.fromARGB(
-                                      200, 235, 242, 255),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  hintText: 'Masukkan Stock',
-                                  hintStyle: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(
-                            'Harga',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          width: MediaQuery.of(context).size.width / 1.1,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),color: const Color.fromARGB(200, 235, 242, 255),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 9, bottom: 9, left: 20),
-                              child: TextField(
-                                controller: hargaController,
-                                decoration: InputDecoration.collapsed(
-                                  filled: true,
-                                  fillColor: const Color.fromARGB(
-                                      200, 235, 242, 255),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  hintText: 'Masukkan Harga',
-                                  hintStyle: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(
-                            'Gambar',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          width: MediaQuery.of(context).size.width / 1.1,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: const Color.fromARGB(200, 235, 242, 255),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 9, bottom: 9, left: 20),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 100,
-                                    height: 100,
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.1,
+                                  child: Container(
                                     decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(10.0),
-                                      image: DecorationImage(
-                                        image: _imageFile != null
-                                            ? FileImage(File(_imageFile!.path))
-                                            : NetworkImage(widget.gambar) as ImageProvider,
-                                        fit: BoxFit.cover,
-                                      ),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color: const Color.fromARGB(
+                                          200, 235, 242, 255),
                                     ),
-                                  ),
-                                  SizedBox(width: 10),
-                                  Expanded(
-                                    child: TextField(
-                                      controller: imageController,
-                                      enabled: false,
-                                      decoration: InputDecoration.collapsed(
-                                        filled: true,
-                                        fillColor: const Color.fromARGB(
-                                            200, 235, 242, 255),
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide.none,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        hintText: 'Pilih Gambar',
-                                        hintStyle: const TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 15,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 9, bottom: 9, left: 20),
+                                      child: TextField(
+                                        controller: namaObatController,
+                                        decoration: InputDecoration.collapsed(
+                                          filled: true,
+                                          fillColor: const Color.fromARGB(
+                                              200, 235, 242, 255),
+                                          border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          hintText: 'Nama Obat',
+                                          hintStyle: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 15),
                                         ),
                                       ),
                                     ),
                                   ),
-                                  IconButton(
-                                    icon: Icon(Icons.image),
-                                    onPressed: _selectImage,
-                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 10),
+                                              child: Text(
+                                                'Kategori Obat',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                  fontFamily: 'Urbanist',
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              child: Card(
+                                                child: Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      2.5,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.0),
+                                                    color: Color.fromARGB(
+                                                        200, 235, 242, 255),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child:
+                                                        DropdownButtonFormField<
+                                                            String>(
+                                                      isExpanded: true,
+                                                      icon: ImageIcon(AssetImage(
+                                                          "assets/images/Dropdown.png")),
+                                                      decoration:
+                                                          InputDecoration
+                                                              .collapsed(
+                                                                  hintText: ""),
+                                                      hint: Text(
+                                                        "Pilih Kategori Obat",
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              'Urbanist',
+                                                          fontSize: 16,
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                      value: _selectedKategori,
+                                                      items: kategoriList.map<
+                                                              DropdownMenuItem<
+                                                                  String>>(
+                                                          (kategori) {
+                                                        return DropdownMenuItem<
+                                                            String>(
+                                                          child: Container(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            constraints:
+                                                                BoxConstraints(
+                                                                    minHeight:
+                                                                        48.0),
+                                                            child: Text(
+                                                              kategori[
+                                                                  'nama_kategori'],
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    'Urbanist',
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          value: kategori['id']
+                                                              .toString(),
+                                                        );
+                                                      }).toList(),
+                                                      onChanged: (value) {
+                                                        setState(() {
+                                                          _selectedKategori =
+                                                              value;
+                                                        });
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Column(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                            child: Text(
+                                              'Tanggal Kadaluarsa',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            child: Card(
+                                              child: Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    2.5,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                  color: Color.fromARGB(
+                                                      200, 235, 242, 255),
+                                                ),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                      height: 40,
+                                                      child: TextField(
+                                                        controller:
+                                                            tanggalKadaluarsaController,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          border:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide.none,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                          ),
+                                                          contentPadding:
+                                                              EdgeInsets
+                                                                  .symmetric(
+                                                                      horizontal:
+                                                                          10,
+                                                                      vertical:
+                                                                          5),
+                                                          suffixIcon: Icon(
+                                                            Icons
+                                                                .calendar_today,
+                                                            size: 20,
+                                                          ),
+                                                          labelText:
+                                                              "DD/MM/YYYY",
+                                                          labelStyle: TextStyle(
+                                                              fontSize:
+                                                                  10),
+                                                        ),
+                                                        readOnly:
+                                                            true,
+                                                        onTap: () async {
+                                                          DateTime? pickedDate =
+                                                              await showDatePicker(
+                                                            context: context,
+                                                            initialDate: DateTime
+                                                                .now(),
+                                                            firstDate:
+                                                                DateTime.now(),
+                                                            lastDate:
+                                                                DateTime(2101),
+                                                          );
+                                                          if (pickedDate !=
+                                                              null) {
+                                                            print(pickedDate);
+                                                            String
+                                                                formattedDate =
+                                                                DateFormat(
+                                                                        'yyyy-MM-dd')
+                                                                    .format(
+                                                                        pickedDate);
+                                                            print(
+                                                                formattedDate);
+                                                            setState(() {
+                                                              tanggalKadaluarsaController
+                                                                      .text =
+                                                                  formattedDate;
+                                                            });
+                                                          } else {
+                                                            print(
+                                                                "Date is not selected");
+                                                          }
+                                                        },
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  )
                                 ],
                               ),
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _updateObat,
-                child: Text('Simpan'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(200, 255, 242, 220),
-                  foregroundColor: Colors.black,
-                  shadowColor: const Color.fromARGB(255, 160, 170, 180),
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 100, vertical: 15),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                'Stok Obat',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              width: MediaQuery.of(context).size.width / 1.1,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color:
+                                      const Color.fromARGB(200, 235, 242, 255),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 9, bottom: 9, left: 20),
+                                  child: TextField(
+                                    controller: stockController,
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration.collapsed(
+                                      filled: true,
+                                      fillColor: const Color.fromARGB(
+                                          200, 235, 242, 255),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      hintText: 'Masukkan Stok Obat',
+                                      hintStyle: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                'Harga Obat',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              width: MediaQuery.of(context).size.width / 1.1,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color:
+                                      const Color.fromARGB(200, 235, 242, 255),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 9, bottom: 9, left: 20),
+                                  child: TextField(
+                                    controller: hargaController,
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration.collapsed(
+                                      filled: true,
+                                      fillColor: const Color.fromARGB(
+                                          200, 235, 242, 255),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      hintText: 'Masukkan Harga Obat',
+                                      hintStyle: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                'Gambar Obat',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              width: MediaQuery.of(context).size.width / 1.1,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color:
+                                      const Color.fromARGB(200, 235, 242, 255),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 9, bottom: 9, left: 20),
+                                  child: TextField(                                   
+                                    decoration: InputDecoration.collapsed(
+                                      filled: true,
+                                      fillColor: const Color.fromARGB(
+                                          200, 235, 242, 255),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      hintText: 'Pilih Gambar',
+                                      hintStyle: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    readOnly: true,
+                                    onTap: () async {
+                                      final picker = ImagePicker();
+                                      final pickedFile = await picker.pickImage(
+                                        source: ImageSource.gallery,
+                                      );
+
+                                      if (pickedFile != null) {
+                                        setState(() {
+                                          // _imageFile = File(pickedFile.path);
+                                          // imageController.text =
+                                          //     _imageFile!.path.split('/').last;
+                                        });
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: SizedBox(
+                                        child: Card(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              border: Border.all(
+                                                  width: 2, color: Colors.blue),
+                                              color: Colors.white,
+                                            ),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      vertical: 10,
+                                                      horizontal: 20),
+                                                  child: Text(
+                                                    'Cancel',
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.blue,
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        UpdateObatNew(id: 'context',);
+                                      },
+                                      child: SizedBox(
+                                        child: Card(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              border: Border.all(
+                                                  width: 2, color: Colors.blue),
+                                              color: Colors.blue,
+                                            ),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      vertical: 10,
+                                                      horizontal: 20),
+                                                  child: Text(
+                                                    'Submit',
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ))
+                          ]))))
+        ]))
     );
   }
-
-  // void selectImage() async {
-  //   final picker = ImagePicker();
-  //     final pickedFile = await picker.pickImage(
-  //       source: ImageSource.gallery,
-  //     );
-  //     if (pickedFile != null) {
-  //       setState(() {
-  //         _imageFile = File(pickedFile.path);
-  //         imageController.text =
-  //         _imageFile!.path.split('/').last;
-  //       });
-  //     }
-  // }
-
-  // void _updateObat() async {
-  // if (namaController.text.isEmpty ||
-  //     hargaController.text.isEmpty ||
-  //     _imageFile == null) {
-  //   Get.snackbar('Error', 'Mohon lengkapi semua field');
-  // } else {
-  //   final obat = Obat(
-  //     id: widget.id,
-  //     nama: namaController.text,
-  //     tanggalKadaluarsa: tanggalKadaluarsaController.text
-  //     stock: int.parse(stockController.text),
-  //     harga: int.parse(hargaController.text),
-  //     gambar: imageController.text,
-  //   );
-  //   await obatController.updateObat(obat);
-  //   Get.back();
-  //   Get.snackbar('Sukses', 'Data obat berhasil diubah');
-  // }
-  // }
 }

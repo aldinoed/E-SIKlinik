@@ -19,7 +19,7 @@ class _DetailObatState extends State<DetailObat> {
   String? gambar;
 
   Future<void> _getObat() async {
-    final response = await http.get(Uri.parse('http://127.0.0.1:8000/api/obat/'));
+    final response = await http.get(Uri.parse('http://192.168.1.70:8080/api/show'));
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       setState(() {
@@ -45,10 +45,11 @@ class _DetailObatState extends State<DetailObat> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.arrow_back_ios)),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
         backgroundColor: Colors.white,
         elevation: 2,
         shadowColor: Colors.black,
@@ -60,20 +61,51 @@ class _DetailObatState extends State<DetailObat> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               width: double.infinity,
               height: 200,
-              child: Image.network(gambar ?? ''),
+              margin: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey.withOpacity(0.3), // Placeholder color
+              ),
+              child: Image.network(
+                gambar ?? 'https://via.placeholder.com/200', // Placeholder URL
+                fit: BoxFit.cover,
+              ),
             ),
-            SizedBox(height: 16),
-            Text(namaObat ?? ''),
-            SizedBox(height: 8),
-            Text(tanggalKadaluarsa ?? ''),
-            SizedBox(height: 8),
-            Text('Stok: $stock'),
-            SizedBox(height: 8),
-            Text('Harga: $harga'),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    namaObat ?? 'Nama Obat',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Tanggal Kadaluarsa: ${tanggalKadaluarsa ?? "-"}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    'Stok: ${stock ?? "-"}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    'Harga: ${harga ?? "-"}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

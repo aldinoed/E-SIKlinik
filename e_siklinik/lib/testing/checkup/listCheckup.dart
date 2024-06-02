@@ -15,7 +15,7 @@ class CheckupListPage extends StatefulWidget {
 
 class _CheckupListPageState extends State<CheckupListPage> {
   List<dynamic> checkupList = [];
-  final String apiGetCheckup = "http://192.168.217.136:8000/api/checkup-result";
+  final String apiGetCheckup = "http://192.168.1.70:8080/api/checkup-result";
 
   @override
   void initState() {

@@ -54,7 +54,7 @@ class _DashboardState extends State<Dashboard> {
       }
 
       Uri url = Uri.parse(
-          'http://192.168.217.136:8000/api/jadwal_dokter/today/$dayName');
+          'http://192.168.1.70:8080/api/jadwal_dokter/today/$dayName');
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);

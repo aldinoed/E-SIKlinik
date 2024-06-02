@@ -1,10 +1,8 @@
 import 'package:e_siklinik/pages/Obat/addObat.dart';
-import 'package:e_siklinik/pages/Obat/add_obat.dart';
-import 'package:e_siklinik/testing/obat/addObat.dart';
+import 'package:e_siklinik/pages/Obat/edit_obat.dart';
 import 'package:e_siklinik/pages/Obat/detail_obat.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -16,7 +14,7 @@ class DataObat extends StatefulWidget {
 }
 
 class _DataObatState extends State<DataObat> {
-  final String apiGetAllObat = "http://192.168.217.136:8000/api/obat";
+  final String apiGetAllObat = "http://192.168.1.70:8080/api/obat";
   List<dynamic> obatList = [];
   List<dynamic> searchObat = [];
 
@@ -71,23 +69,58 @@ class _DataObatState extends State<DataObat> {
   }
 
   String _getImage(int kategoriObat) {
-    if (kategoriObat == 1) {
-      return 'assets/images/OB.png';
-    } else if (kategoriObat == 2) {
-      return 'assets/images/OBT.png';
-    } else if (kategoriObat == 3) {
-      return 'assets/images/OK.png';
-    } else if (kategoriObat == 4) {
-      return 'assets/images/ON.png';
-    } else if (kategoriObat == 5) {
-      return 'assets/images/OJ.png';
-    } else if (kategoriObat == 6) {
-      return 'assets/images/OH.png';
-    } else if (kategoriObat == 7) {
-      return 'assets/images/OF.png';
-    } else {
-      return 'assets/images/OD.png';
+    switch (kategoriObat) {
+      case 1:
+        return 'assets/images/OB.png';
+      case 2:
+        return 'assets/images/OBT.png';
+      case 3:
+        return 'assets/images/OK.png';
+      case 4:
+        return 'assets/images/ON.png';
+      case 5:
+        return 'assets/images/OJ.png';
+      case 6:
+        return 'assets/images/OH.png';
+      case 7:
+        return 'assets/images/OF.png';
+      default:
+        return 'assets/images/OD.png';
     }
+  }
+
+  void _showBottomSheet(BuildContext context, dynamic obat) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.edit),
+                title: Text('Edit'),
+                onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UpdateObatNew(id: obat['id'].toString()),
+                  ),
+                );
+              },
+              ),
+              ListTile(
+                leading: Icon(Icons.delete),
+                title: Text('Delete'),
+                onTap: () {
+                _deleteObat(obat['id']);
+                Navigator.pop(context);
+              },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -153,79 +186,59 @@ class _DataObatState extends State<DataObat> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) => DetailObat(
-                                  id: index,
-                                ),
-                              ),
+                              MaterialPageRoute(builder: ((context) => DetailObat(id: obat['id']))),
                             );
                           },
-                          child: Dismissible(
-                            key: Key(obat['id'].toString()),
-                            direction: DismissDirection.endToStart,
-                            onDismissed: (direction) {
-                              setState(() {
-                                obatList.removeWhere(
-                                    (item) => item['id'] == obat['id']);
-                                searchObat.removeAt(index);
-                              });
-                            },
-                            background: Container(
-                              color: Colors.red,
-                              alignment: Alignment.centerRight,
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Icon(Icons.delete, color: Colors.white),
-                            ),
-                            child: IntrinsicHeight(
-                              child: Card(
-                                elevation: 3,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    color: Colors.white,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      ListTile(
-                                        leading: CircleAvatar(
-                                          radius: 10,
-                                          backgroundColor: Colors.transparent,
-                                          child: Image.asset(
-                                            _getImage(obat['kategori_id']),
-                                            width: 40,
-                                            height: 40,
-                                            fit: BoxFit.fill,
-                                          ),
-                                        ),
-                                        trailing: IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(Icons.more_vert),
+                          child: IntrinsicHeight(
+                            child: Card(
+                              elevation: 3,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: Colors.white,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ListTile(
+                                      leading: CircleAvatar(
+                                        radius: 10,
+                                        backgroundColor: Colors.transparent,
+                                        child: Image.asset(
+                                          _getImage(obat['kategori_id']),
+                                          width: 40,
+                                          height: 40,
+                                          fit: BoxFit.fill,
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(obat['nama_obat'],
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20)),
-                                            Text(
-                                                'EXP: ${obat['tanggal_kadaluarsa'] ?? '-'}'),
-                                            Text(
-                                                'Stok: ${obat['stock'] ?? '-'}')
-                                          ],
-                                        ),
+                                      trailing: GestureDetector(
+                                        onTap: () {
+                                          _showBottomSheet(context, obat);
+                                        },
+                                        child: Icon(Icons.more_vert),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(obat['nama_obat'],
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20)),
+                                          Text(
+                                              'EXP: ${obat['tanggal_kadaluarsa'] ?? '-'}'),
+                                          Text(
+                                              'Stok: ${obat['stock'] ?? '-'}')
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -250,5 +263,23 @@ class _DataObatState extends State<DataObat> {
         ),
       ),
     );
+  }
+
+
+Future<void> _deleteObat(int id) async {
+  final String apiUrl = "http://192.168.1.70:8080/api/obat/$id";
+
+  try {
+    final response = await http.delete(Uri.parse(apiUrl));
+
+    if (response.statusCode == 200) {
+      print("Data obat dengan ID $id berhasil dihapus.");
+      _getAllObat();
+    } else {
+      print("Gagal menghapus data obat dengan ID $id. Status code: ${response.statusCode}");
+    }
+  } catch (error) {
+    print("Error: $error");
+  }
   }
 }

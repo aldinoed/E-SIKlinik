@@ -9,7 +9,7 @@ class ProdiListScreen extends StatefulWidget {
 
 class _ProdiListScreenState extends State<ProdiListScreen> {
   List<dynamic> prodiList = [];
-  final String apiGetAllProdi = "http://192.168.217.136:8000/api/prodi";
+  final String apiGetAllProdi = "http://192.168.1.70:8080/api/prodi";
 
   @override
   void initState() {
