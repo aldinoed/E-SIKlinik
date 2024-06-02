@@ -105,7 +105,7 @@ class BoxSearchPage extends StatelessWidget {
         GestureDetector(
           onTap: onTapBox,
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 8),
+            margin: const EdgeInsets.only(left: 8, right: 8, top: 9, bottom: 8),
             padding: const EdgeInsets.all(15),
             width: double.infinity,
             decoration: BoxDecoration(
@@ -151,9 +151,6 @@ class BoxSearchPage extends StatelessWidget {
               ],
             ),
           ),
-        ),
-        const SizedBox(
-          height: 15,
         ),
       ],
     );

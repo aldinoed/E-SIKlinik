@@ -3,11 +3,11 @@ import 'package:e_siklinik/pages/Obat/edit_obat.dart';
 import 'package:e_siklinik/pages/Obat/detail_obat.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:e_siklinik/components/bottomsheet.dart';
 import 'package:e_siklinik/components/delete_confirmation.dart';
-
 
 class DataObat extends StatefulWidget {
   const DataObat({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class DataObat extends StatefulWidget {
 }
 
 class _DataObatState extends State<DataObat> {
-  final String apiGetAllObat = "http://192.168.100.66:8080/api/obat";
+  final String apiGetAllObat = "http://10.0.2.2:8000/api/obat";
   List<dynamic> obatList = [];
   List<dynamic> searchObat = [];
   bool isLoading = true;
@@ -54,8 +54,8 @@ class _DataObatState extends State<DataObat> {
 
   Future<void> _disableObat(int obatId) async {
     try {
-      final response = await http.put(Uri.parse(
-          "http://192.168.1.70:8080/api/obat/disabled/$obatId"));
+      final response = await http
+          .put(Uri.parse("http://10.0.2.2:8000/api/obat/disabled/$obatId"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         print('Success: ${data['message']}');
@@ -144,147 +144,170 @@ class _DataObatState extends State<DataObat> {
           style: TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
-      body: Column(
-        children: [
-          Container(
-            color: Colors.white,
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: const Color.fromARGB(200, 235, 242, 255),
-                  labelText: 'Cari Obat',
-                  labelStyle: TextStyle(
-                      color: Colors.grey, fontWeight: FontWeight.bold),
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(30)),
-                  suffixIcon: Icon(Icons.search),
+      body: SafeArea(
+        child: obatList.isEmpty
+            ? Center(
+                child: Image.asset(
+                  'assets/images/obat_kosong.png',
+                  fit: BoxFit.cover,
                 ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: searchObat.isEmpty
-                ? Center(
-                    child: Image.asset(
-                      'assets/images/obat_kosong.png',
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                : GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 8.0,
-                      crossAxisSpacing: 8.0,
-                      childAspectRatio: MediaQuery.of(context).size.width /
-                          (MediaQuery.of(context).size.height / 2.5),
-                    ),
-                    itemCount: searchObat.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final obat = searchObat[index];
-                      return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: ((context) =>
-                                      DetailObat(id: obat['id']))),
-                            );
-                          },
-                          child: IntrinsicHeight(
-                            child: Card(
-                              elevation: 3,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: Colors.white,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ListTile(
-                                      leading: CircleAvatar(
-                                        radius: 10,
-                                        backgroundColor: Colors.transparent,
-                                        child: Image.asset(
-                                          _getImage(obat['kategori_id']),
-                                          width: 40,
-                                          height: 40,
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                      trailing: GestureDetector(
-                                        onTap: () {
-                                    showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        context: context,
-                                        builder: (context) => BuildSheet(
-                                              onTapEdit: () async {
-                                                final result =
-                                                    await Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                UpdateObatNew(id: 'context',)));
-                                                if (result == true) {
-                                                  Navigator.pop(
-                                                      context); // Menutup showModalBottomSheet
-                                                  _refreshData(); // Memuat ulang data jika perlu
-                                                }
-                                              },
-                                              onTapDelete: () {
-                                                showDeleteConfirmationDialog(
-                                                    context,
-                                                    () => _disableObat(obat));
-                                              },
-                                            ));
-                                  },
-                                        child: Icon(Icons.more_vert),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(obat['nama_obat'],
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20)),
-                                          Text(
-                                              'EXP: ${obat['tanggal_kadaluarsa'] ?? '-'}'),
-                                          Text('Stok: ${obat['stock'] ?? '-'}')
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+              )
+            : Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(
+                        top: 16, right: 16, left: 16, bottom: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    width: double.infinity,
+                    height: 50,
+                    decoration: const BoxDecoration(
+                        color: Color(0xFFEFF0F3),
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    child: Row(
+                      children: [
+                        Flexible(
+                          child: TextField(
+                            controller: _searchController,
+                            maxLines: null,
+                            decoration: const InputDecoration(
+                              hintText: 'Search Here',
+                              border: InputBorder.none,
                             ),
-                          ));
-                    },
+                          ),
+                        ),
+                        const Icon(Icons.search),
+                      ],
+                    ),
                   ),
-          ),
-        ],
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 8.0,
+                          crossAxisSpacing: 8.0,
+                          childAspectRatio: MediaQuery.of(context).size.width /
+                              (MediaQuery.of(context).size.height / 2.5),
+                        ),
+                        itemCount: searchObat.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final obat = searchObat[index];
+                          final obatId = obat['id'];
+                          return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: ((context) => ShowObat(
+                                            obatId: obatId,
+                                          ))),
+                                );
+                              },
+                              child: IntrinsicHeight(
+                                child: Card(
+                                  elevation: 3,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color: Colors.white,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        ListTile(
+                                          leading: CircleAvatar(
+                                            radius: 10,
+                                            backgroundColor: Colors.transparent,
+                                            child: Image.asset(
+                                              _getImage(obat['kategori_id']),
+                                              width: 40,
+                                              height: 40,
+                                              fit: BoxFit.fill,
+                                            ),
+                                          ),
+                                          trailing: GestureDetector(
+                                            onTap: () {
+                                              showModalBottomSheet(
+                                                  isScrollControlled: true,
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      BuildSheet(
+                                                        onTapEdit: () async {
+                                                          final result = await Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      EditObat(
+                                                                          obat:
+                                                                              obat)));
+                                                          if (result == true) {
+                                                            Navigator.pop(
+                                                                context); // Menutup showModalBottomSheet
+                                                            _refreshData(); // Memuat ulang data jika perlu
+                                                          }
+                                                        },
+                                                        onTapDelete: () {
+                                                          showDeleteConfirmationDialog(
+                                                              context,
+                                                              () =>
+                                                                  _disableObat(
+                                                                      obat));
+                                                        },
+                                                      ));
+                                            },
+                                            child: const Icon(Icons.more_vert),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(obat['nama_obat'],
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 20)),
+                                              Text(
+                                                  'EXP: ${obat['tanggal_kadaluarsa'] ?? '-'}'),
+                                              Text(
+                                                  'Stok: ${obat['stock'] ?? '-'}')
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ));
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue,
-        shape: CircleBorder(),
+        backgroundColor: const Color(0xFF234DF0),
+        shape: const CircleBorder(),
         foregroundColor: Colors.black,
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: ((context) => AddObatNew())));
+        onPressed: () async {
+          final result = await Navigator.push(context,
+              MaterialPageRoute(builder: ((context) => const AddObatNew())));
+          if (result == true) {
+            _refreshData();
+          }
         },
-        child: Icon(
+        child: const Icon(
           Icons.add,
-          size: 40,
+          size: 35,
           color: Colors.white,
         ),
       ),
@@ -292,7 +315,7 @@ class _DataObatState extends State<DataObat> {
   }
 
   Future<void> _deleteObat(int id) async {
-    final String apiUrl = "http://192.168.100.66:8080/api/obat/$id";
+    final String apiUrl = "http://10.0.2.2:8000/api/obat/$id";
 
     try {
       final response = await http.delete(Uri.parse(apiUrl));

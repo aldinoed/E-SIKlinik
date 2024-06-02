@@ -12,7 +12,7 @@ class AssesmentPage extends StatefulWidget {
 
 class _AssesmentPageState extends State<AssesmentPage> {
   final String apiGetAllAssesment =
-      "http://192.168.100.66:8080/api/checkup-assesmen";
+      "http://10.0.2.2:8000/api/checkup-assesmen";
   List<dynamic> assesmentList = [];
   bool isLoading = true; // flag to track loading state
 

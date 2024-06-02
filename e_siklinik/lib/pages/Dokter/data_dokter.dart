@@ -16,7 +16,7 @@ class DataDokter extends StatefulWidget {
 }
 
 class _DataDokterState extends State<DataDokter> {
-  final String apiGetAllDokter = "http://192.168.100.66:8080/api/dokter";
+  final String apiGetAllDokter = "http://10.0.2.2:8000/api/dokter";
   List<dynamic> dokterList = [];
   List<dynamic> filteredDokterList = [];
   bool isLoading = true; // flag to track loading state
@@ -78,7 +78,7 @@ class _DataDokterState extends State<DataDokter> {
   Future<void> _disableDokter(int dokterId) async {
     try {
       final response = await http.put(Uri.parse(
-          "http://192.168.100.66:8080/api/dokter/disabled/$dokterId"));
+          "http://10.0.2.2:8000/api/dokter/disabled/$dokterId"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         print('Success: ${data['message']}');
@@ -121,6 +121,7 @@ class _DataDokterState extends State<DataDokter> {
         },
         child: const Icon(
           Icons.add,
+          size: 35,
           color: Colors.white,
         ),
       ),
@@ -199,7 +200,7 @@ class _DataDokterState extends State<DataDokter> {
                                             builder: (context) => ShowDokter(
                                                 dokterId: dokterId)));
                                   },
-                                  icon: 'http://192.168.100.66:8080/storage/' +
+                                  icon: 'http://10.0.2.2:8000/storage/' +
                                       dokter['image'],
                                   nama: dokter['nama'] ?? '',
                                   onTapPop: () {

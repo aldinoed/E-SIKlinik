@@ -44,6 +44,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: 
         ControlPage());
         // haveCookie ? const ControlPage() : const LoginPage());
