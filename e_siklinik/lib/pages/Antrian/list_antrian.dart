@@ -22,7 +22,7 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
   int counter = 0;
 
-  final String apiGetAntrian = "http://192.168.43.246:8080/api/antrian";
+  final String apiGetAntrian = "http://192.168.100.66:8080/api/antrian";
 
   // Variabel untuk melacak apakah sedang loading data
   bool isLoading = false;
@@ -49,10 +49,12 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data != null && data['antrian'] != null) {
-          setState(() {
-            antrianList = data['antrian'];
-            _filterAntrianByDate();
-          });
+          if (mounted) {
+            setState(() {
+              antrianList = data['antrian'];
+              _filterAntrianByDate();
+            });
+          }
         } else {
           print("No data received from API");
         }
@@ -62,21 +64,27 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
     } catch (error) {
       print('Error: $error');
     } finally {
-      // Menandakan bahwa proses loading data telah selesai
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        // Menandakan bahwa proses loading data telah selesai
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
   Future<void> _getFinishedAssesmen() async {
     Uri finishedUrl =
-        Uri.parse('http://192.168.43.246:8080/api/antrian/finished-assesmen');
+        Uri.parse('http://192.168.100.66:8080/api/antrian/finished-assesmen');
     try {
       final response = await http.get(finishedUrl);
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        finishedAssesmen = data['results'];
+        if (mounted) {
+          setState(() {
+            finishedAssesmen = data['results'];
+          });
+        }
       }
     } catch (error) {
       print('Error: $error');
@@ -103,6 +111,12 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
 
   Future<void> _refreshData() async {
     await _loadAntrianData();
+  }
+
+  @override
+  void dispose() {
+    // Cleanup resources if needed
+    super.dispose();
   }
 
   @override

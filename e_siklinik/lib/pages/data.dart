@@ -22,49 +22,51 @@ class _DataState extends State<Data> {
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9FB),
       body: SafeArea(
-          maintainBottomViewPadding: true,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            offset: const Offset(-1, 2),
-                            blurRadius: 3,
-                            spreadRadius: 0,
-                          ),
-                        ],
-                        border: Border.all(
-                            color: const Color(0xFF234DF0), width: 2),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(15)),
-                        image: const DecorationImage(
-                            image: AssetImage('assets/images/BannerData.jpeg'),
-                            fit: BoxFit.fill)),
-                    width: double.infinity,
-                    height: 150,
-                    child: const Center(),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Text(
-                    "Database",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                  ),
-                  Column(
-                    children: [
-                      const SizedBox(
-                        height: 8,
+        maintainBottomViewPadding: true,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 27),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 8,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        offset: const Offset(-1, 2),
+                        blurRadius: 3,
+                        spreadRadius: 0,
                       ),
+                    ],
+                    border: Border.all(
+                        color: const Color(0xFF234DF0), width: 2),
+                    borderRadius:
+                        const BorderRadius.all(Radius.circular(15)),
+                    image: const DecorationImage(
+                        image: AssetImage('assets/images/BannerData.jpeg'),
+                        fit: BoxFit.fill)),
+                width: double.infinity,
+                height: 150,
+                child: const Center(),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
+                "Database",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              const Divider(),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
                       Box(
                         title: "Pasien",
                         desc: "Add, Edit, Delete Data\nPasien",
@@ -127,15 +129,17 @@ class _DataState extends State<Data> {
                                 MaterialPageRoute(
                                     builder: (context) => const RecycledDataMain()));
                           }),
+                          const SizedBox(
+                            height: 70,
+                          )
                     ],
                   ),
-                  const SizedBox(
-                    height: 70,
-                  )
-                ],
+                ),
               ),
-            ),
-          )),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

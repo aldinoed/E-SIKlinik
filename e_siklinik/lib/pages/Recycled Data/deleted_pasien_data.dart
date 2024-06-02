@@ -16,7 +16,7 @@ class DeletedPasienData extends StatefulWidget {
 }
 
 class _DeletedPasienDataState extends State<DeletedPasienData> {
-  final String apiGetAllPasien = "http://192.168.43.246:8080/api/pasien/deleted-pasien";
+  final String apiGetAllPasien = "http://192.168.100.66:8080/api/pasien/deleted-pasien";
   List<dynamic> pasienList = [];
   List<dynamic> filteredPasienList = [];
   bool isLoading = true; // flag to track loading state
@@ -78,7 +78,7 @@ class _DeletedPasienDataState extends State<DeletedPasienData> {
   }
 
   void _deleteItem(int id) async {
-    Uri url = Uri.parse('http://192.168.43.246:8080/api/pasien/aktif/$id');
+    Uri url = Uri.parse('http://192.168.100.66:8080/api/pasien/aktif/$id');
     final response = await http.put(url);
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -189,7 +189,7 @@ class _DeletedPasienDataState extends State<DeletedPasienData> {
                             fontWeight: FontWeight.w300),
                       )
                           : const Text("G ada prodi"),
-                      icon: 'http://192.168.43.246:8080/storage/' +
+                      icon: 'http://192.168.100.66:8080/storage/' +
                           pasien['image'],
                       onTapPop: () {
                         showModalBottomSheet(

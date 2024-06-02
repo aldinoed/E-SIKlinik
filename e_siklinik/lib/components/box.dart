@@ -432,7 +432,6 @@ class BoxJadwal extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 16),
           padding: const EdgeInsets.all(15),
           width: double.infinity,
-          height: 100,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: const BorderRadius.all(Radius.circular(15)),

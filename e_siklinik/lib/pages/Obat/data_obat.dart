@@ -14,7 +14,7 @@ class DataObat extends StatefulWidget {
 }
 
 class _DataObatState extends State<DataObat> {
-  final String apiGetAllObat = "http://192.168.43.246:8080/api/obat";
+  final String apiGetAllObat = "http://192.168.100.66:8080/api/obat";
   List<dynamic> obatList = [];
   List<dynamic> searchObat = [];
 
@@ -268,7 +268,7 @@ class _DataObatState extends State<DataObat> {
   }
 
   Future<void> _deleteObat(int id) async {
-    final String apiUrl = "http://192.168.1.70:8080/api/obat/$id";
+    final String apiUrl = "http://192.168.100.66:8080/api/obat/$id";
 
     try {
       final response = await http.delete(Uri.parse(apiUrl));

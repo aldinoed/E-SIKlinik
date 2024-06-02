@@ -16,7 +16,7 @@ class DeletedObatData extends StatefulWidget {
 }
 
 class _DeletedObatDataState extends State<DeletedObatData> {
-  final String apiGetAllObat = "http://192.168.43.246:8080/api/obat/deleted-obat";
+  final String apiGetAllObat = "http://192.168.100.66:8080/api/obat/deleted-obat";
   List<dynamic> obatList = [];
   List<dynamic> searchObat = [];
 

@@ -54,7 +54,7 @@ class _DashboardState extends State<Dashboard> {
       }
 
       Uri url = Uri.parse(
-          'http://192.168.43.246:8080/api/jadwal_dokter/today/$dayName');
+          'http://192.168.100.66:8080/api/jadwal_dokter/today/$dayName');
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);
@@ -108,12 +108,10 @@ class _DashboardState extends State<Dashboard> {
                       child: const CarouselBanner(),
                     ),
                   ),
-                  Container(
-                    child: const CarouselJadwal(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: const Text(
+                  const CarouselJadwal(),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Text(
                       "Data Pengunjung",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
@@ -123,68 +121,6 @@ class _DashboardState extends State<Dashboard> {
                     height: 300,
                     child: CategoryChartPage(),
                   ),
-                  // Container(
-                  //   margin: const EdgeInsets.only(bottom: 20),
-                  //   width: double.infinity,
-                  //   height: 160,
-                  //   child: Column(
-                  //     children: [
-                  //       Row(
-                  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //         children: [
-                  //           const Text(
-                  //             "Jadwal Antrian",
-                  //             style: TextStyle(
-                  //                 fontSize: 20, fontWeight: FontWeight.w600),
-                  //           ),
-                  //           TextButton(
-                  //               onPressed: () {},
-                  //               child: const Text(
-                  //                 "Tampilkan Semua",
-                  //                 style: TextStyle(color: Colors.grey),
-                  //               ))
-                  //         ],
-                  //       ),
-                  //       Container(
-                  //         margin: EdgeInsets.symmetric(horizontal: 4),
-                  //         padding: const EdgeInsets.all(15),
-                  //         width: double.infinity,
-                  //         height: 100,
-                  //         decoration: BoxDecoration(
-                  //             color: Colors.white,
-                  //             borderRadius:
-                  //                 const BorderRadius.all(Radius.circular(15)),
-                  //             boxShadow: [
-                  //               BoxShadow(
-                  //                 color: Colors.grey.withOpacity(0.5),
-                  //                 offset: const Offset(-1, 2),
-                  //                 blurRadius: 3,
-                  //                 spreadRadius: 0,
-                  //               ),
-                  //             ],
-                  //             image: const DecorationImage(
-                  //                 image:
-                  //                     AssetImage('assets/images/Schedule.png'),
-                  //                 fit: BoxFit.fill)),
-                  //         child: const Column(
-                  //           mainAxisAlignment: MainAxisAlignment.center,
-                  //           crossAxisAlignment: CrossAxisAlignment.start,
-                  //           children: [
-                  //             Text(
-                  //               "Andru Falah Arifin",
-                  //               style: TextStyle(
-                  //                   fontSize: 18, fontWeight: FontWeight.w600),
-                  //             ),
-                  //             Text(
-                  //               "3122500038",
-                  //               style: TextStyle(fontWeight: FontWeight.w600),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
                   const SizedBox(
                     height: 16,
                   ),

@@ -13,8 +13,8 @@ class _CreateAntrianPageState extends State<CreateAntrianPage> {
   final TextEditingController pasienIdController = TextEditingController();
   final TextEditingController noAntrianController = TextEditingController();
 
-  final String apiPostAntrian = "http://192.168.43.246:8080/api/antrian/create";
-  final String apiGetAllPasien = "http://192.168.43.246:8080/api/pasien";
+  final String apiPostAntrian = "http://192.168.100.66:8080/api/antrian/create";
+  final String apiGetAllPasien = "http://192.168.100.66:8080/api/pasien";
 
   List<dynamic> pasienList = [];
 

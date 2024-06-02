@@ -24,9 +24,9 @@ class _UpdateObatNewState extends State<UpdateObatNew> {
   final TextEditingController hargaController = TextEditingController();
 
   final String apiGetObatDetails =
-      "http://192.168.1.70:8080/api/obat/details";
+      "http://192.168.100.66:8080/api/obat/details";
   final String apiGetAllKategori =
-      "http://192.168.1.70:8080/api/kategori-obat";
+      "http://192.168.100.66:8080/api/kategori-obat";
 
   List<dynamic> kategoriList = [];
   String? _selectedKategori;
@@ -86,7 +86,7 @@ class _UpdateObatNewState extends State<UpdateObatNew> {
 
   Future<void> updateObat(BuildContext context) async {
   try {
-    var request = http.MultipartRequest('POST', Uri.parse('http://192.168.1.70:8080/api/obat/insert'));
+    var request = http.MultipartRequest('POST', Uri.parse('http://192.168.100.66:8080/api/obat/insert'));
     request.fields['id'] = widget.id;
     request.fields['nama_obat'] = namaObatController.text;
     request.fields['tanggal_kadaluarsa'] = tanggalKadaluarsaController.text;

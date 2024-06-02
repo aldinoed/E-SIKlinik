@@ -15,8 +15,8 @@ class _AddAntrianState extends State<AddAntrian> {
   final TextEditingController searchController = TextEditingController();
   final FocusNode searchFocusNode = FocusNode();
 
-  final String apiPostAntrian = "http://192.168.43.246:8080/api/antrian/create";
-  final String apiGetAllPasien = "http://192.168.43.246:8080/api/pasien";
+  final String apiPostAntrian = "http://192.168.100.66:8080/api/antrian/create";
+  final String apiGetAllPasien = "http://192.168.100.66:8080/api/pasien";
 
   List<dynamic> pasienList = [];
   List<dynamic> filteredPasienList = [];
@@ -341,7 +341,7 @@ class _AddAntrianState extends State<AddAntrian> {
                                       Radius.circular(15)),
                                   image: DecorationImage(
                                       image: NetworkImage(
-                                          'http://192.168.43.246:8080/storage/' +
+                                          'http://192.168.100.66:8080/storage/' +
                                               selectedPasien!['image']),
                                       fit: BoxFit.fill)),
                             ),
