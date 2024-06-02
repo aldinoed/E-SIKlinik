@@ -1,26 +1,39 @@
+import 'package:e_siklinik/pages/Recycled%20Data/deleted_dokter_data.dart';
+import 'package:e_siklinik/pages/Recycled%20Data/deleted_jadwal_data.dart';
+import 'package:e_siklinik/pages/Recycled%20Data/deleted_obat_data.dart';
+import "package:e_siklinik/pages/Recycled%20Data/deleted_pasien_data.dart";
+import "package:flutter/material.dart";
 import 'package:e_siklinik/components/box.dart';
-import 'package:e_siklinik/pages/Dokter/data_dokter.dart';
-import 'package:e_siklinik/pages/Jadwal/data_jadwal.dart';
-import 'package:e_siklinik/pages/Obat/data_obat.dart';
-import 'package:e_siklinik/pages/Pasien/data_pasien.dart';
-import 'package:e_siklinik/pages/Recycled%20Data/recycled_data_main.dart';
-import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:fluttericon/rpg_awesome_icons.dart';
 import 'package:fluttericon/entypo_icons.dart';
 
-class Data extends StatefulWidget {
-  const Data({super.key});
+class RecycledDataMain extends StatefulWidget {
+  const RecycledDataMain({super.key});
 
   @override
-  State<Data> createState() => _DataState();
+  State<RecycledDataMain> createState() => _RecycledDataMainState();
 }
 
-class _DataState extends State<Data> {
+class _RecycledDataMainState extends State<RecycledDataMain> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9FB),
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
+        backgroundColor: Colors.white,
+        elevation: 2,
+        shadowColor: Colors.black,
+        centerTitle: true,
+        title: const Text(
+          "Data Terhapus",
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
+      ),
       body: SafeArea(
           maintainBottomViewPadding: true,
           child: Padding(
@@ -67,7 +80,7 @@ class _DataState extends State<Data> {
                       ),
                       Box(
                         title: "Pasien",
-                        desc: "Add, Edit, Delete Data\nPasien",
+                        desc: "Restore Data Pasien",
                         bgimage: 'assets/images/bgpolos.png',
                         icon: setIcon(
                             Icons.person_outline, const Color(0xFF234DF0)),
@@ -75,12 +88,13 @@ class _DataState extends State<Data> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const DataPasien()));
+                                  builder: (context) =>
+                                      const DeletedPasienData()));
                         },
                       ),
                       Box(
                         title: "Dokter",
-                        desc: "Add, Edit, Delete Data\nDokter",
+                        desc: "Restore Data Dokter",
                         bgimage: 'assets/images/bgpolos.png',
                         icon: setIcon(
                             FontAwesome.stethoscope, const Color(0xFF234DF0)),
@@ -88,45 +102,23 @@ class _DataState extends State<Data> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const DataDokter()));
+                                  builder: (context) =>
+                                      const DeletedDokterData()));
                         },
                       ),
                       Box(
                         title: "Obat",
-                        desc: "Add, Edit, Delete Data\nObat",
+                        desc: "Restore Data Obat",
                         bgimage: 'assets/images/bgpolos.png',
                         icon: setIcon(RpgAwesome.pill, const Color(0xFF234DF0)),
                         onTapBox: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const DataObat()));
+                                  builder: (context) =>
+                                      const DeletedObatData()));
                         },
                       ),
-                      Box(
-                          title: "Jadwal Dokter",
-                          desc: "Add, Edit, Delete Data\nJadwal Dokter",
-                          bgimage: 'assets/images/bgpolos.png',
-                          icon: setIcon(
-                              Entypo.back_in_time, const Color(0xFF234DF0)),
-                          onTapBox: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const DataJadwal()));
-                          }),
-                      Box(
-                          title: "Data Terhapus",
-                          desc: "Data pasien, obat, dokter, dan jadwal yang terhapus",
-                          bgimage: 'assets/images/bgpolos.png',
-                          icon: setIcon(
-                              Entypo.back_in_time, const Color(0xFF234DF0)),
-                          onTapBox: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const RecycledDataMain()));
-                          }),
                     ],
                   ),
                   const SizedBox(
@@ -138,17 +130,18 @@ class _DataState extends State<Data> {
           )),
     );
   }
-}
 
-Widget setIcon(IconData iconData, Color iconColor) {
-  return Container(
-    padding: const EdgeInsets.all(5),
-    decoration: ShapeDecoration(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        color: const Color(0xFFDDEAFF)),
-    child: Icon(
-      iconData,
-      color: iconColor,
-    ),
-  );
+  Widget setIcon(IconData iconData, Color iconColor) {
+    return Container(
+      padding: const EdgeInsets.all(5),
+      decoration: ShapeDecoration(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          color: const Color(0xFFDDEAFF)),
+      child: Icon(
+        iconData,
+        color: iconColor,
+      ),
+    );
+  }
 }

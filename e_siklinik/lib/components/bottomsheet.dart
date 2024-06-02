@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 
 class BuildSheet extends StatelessWidget {
-  final VoidCallback onTapEdit;
+  final VoidCallback? onTapEdit;
   final VoidCallback onTapDelete;
   const BuildSheet(
-      {super.key, required this.onTapEdit, required this.onTapDelete});
+      {super.key, this.onTapEdit, required this.onTapDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class BuildSheet extends StatelessWidget {
           padding: const EdgeInsets.all(30),
           child: Column(
             children: [
-              GestureDetector(
+              onTapEdit != null?GestureDetector(
                 onTap: onTapEdit,
                 child: Row(
                   children: [
@@ -46,11 +46,11 @@ class BuildSheet extends StatelessWidget {
                     const Text(
                       "Edit Data",
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                      TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                     )
                   ],
                 ),
-              ),
+              ) : Container(),
               const SizedBox(
                 height: 15,
               ),
