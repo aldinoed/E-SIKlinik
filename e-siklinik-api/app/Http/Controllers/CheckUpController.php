@@ -318,7 +318,7 @@ class CheckUpController extends Controller
 
       public function storeCheckupWithResepObat(Request $request)
 {
-    DB::beginTransaction();
+
 
     try {
         $path = null;
@@ -382,7 +382,7 @@ class CheckUpController extends Controller
             }
         }
     } catch (Exception $exception) {
-        DB::rollBack();
+        
         return response()->json(["status" => 500, "message" => "Error: " . $exception->getMessage()]);
     }
 }
