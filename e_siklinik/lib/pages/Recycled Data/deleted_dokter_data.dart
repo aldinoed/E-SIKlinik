@@ -15,7 +15,7 @@ class DeletedDokterData extends StatefulWidget {
 
 class _DeletedDokterDataState extends State<DeletedDokterData> {
   final String apiGetAllDokter =
-      "http://192.168.239.136:8000/api/dokter/deleted-dokter";
+      "http://10.0.2.2:8000/api/dokter/deleted-dokter";
   List<dynamic> dokterList = [];
   List<dynamic> filteredDokterList = [];
   bool isLoading = true; // flag to track loading state
@@ -76,8 +76,8 @@ class _DeletedDokterDataState extends State<DeletedDokterData> {
 
   Future<void> _enableDokter(int dokterId) async {
     try {
-      final response = await http.put(
-          Uri.parse("http://192.168.239.136:8000/api/dokter/aktif/$dokterId"));
+      final response = await http
+          .put(Uri.parse("http://10.0.2.2:8000/api/dokter/aktif/$dokterId"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         print('Success: ${data['message']}');
@@ -179,7 +179,7 @@ class _DeletedDokterDataState extends State<DeletedDokterData> {
                                             builder: (context) => ShowDokter(
                                                 dokterId: dokterId)));
                                   },
-                                  icon: 'http://192.168.239.136:8000/storage/' +
+                                  icon: 'http://10.0.2.2:8000/storage/' +
                                       dokter['image'],
                                   nama: dokter['nama'] ?? '',
                                   onTapPop: () {

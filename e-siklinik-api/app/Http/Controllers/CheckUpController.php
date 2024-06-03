@@ -318,7 +318,7 @@ class CheckUpController extends Controller
 
       public function storeCheckupWithResepObat(Request $request)
 {
-
+    DB::beginTransaction();
 
     try {
         $path = null;
@@ -344,18 +344,17 @@ class CheckUpController extends Controller
             foreach ($resepObatList as $resep) {
                 // Find the obat record
                 $obat = Obat::findOrFail($resep['obat_id']);
-
                     $obat->stock -= 1;
-                    $obat->save();
 
-                    if ($obat->stock == 0 || $obat->stock == 1){
-                    $obat->is_disabled = true;
-                    $obat->save();
-                    }
+                    if ($obat->stock == 0 ){
+                        $obat->is_disabled = true;
+                  }
 
-                else {
-                    throw new Exception("Stock for obat ID " . $resep['obat_id'] . " is not sufficient.", 500);
-                }
+                  $obat->save();
+
+
+
+
 
                 // Create the detail resep obat record
                 DetailResepObat::create([
@@ -382,7 +381,7 @@ class CheckUpController extends Controller
             }
         }
     } catch (Exception $exception) {
-        
+        DB::rollBack();
         return response()->json(["status" => 500, "message" => "Error: " . $exception->getMessage()]);
     }
 }

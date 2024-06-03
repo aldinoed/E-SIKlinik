@@ -18,8 +18,7 @@ class DeletedObatData extends StatefulWidget {
 }
 
 class _DeletedObatDataState extends State<DeletedObatData> {
-  final String apiGetAllObat =
-      "http://192.168.239.136:8000/api/obat/deleted-obat";
+  final String apiGetAllObat = "http://10.0.2.2:8000/api/obat/deleted-obat";
   List<dynamic> obatList = [];
   List<dynamic> searchObat = [];
   bool isLoading = false;
@@ -84,7 +83,7 @@ class _DeletedObatDataState extends State<DeletedObatData> {
   Future<void> _enableObat(int obatId) async {
     try {
       final response = await http
-          .put(Uri.parse("http://192.168.239.136:8000/api/obat/aktif/$obatId"));
+          .put(Uri.parse("http://10.0.2.2:8000/api/obat/aktif/$obatId"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         print('Success: ${data['message']}');

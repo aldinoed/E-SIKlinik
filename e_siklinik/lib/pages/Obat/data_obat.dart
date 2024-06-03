@@ -17,9 +17,7 @@ class DataObat extends StatefulWidget {
 }
 
 class _DataObatState extends State<DataObat> {
-
-  final String apiGetAllObat = "http://192.168.239.136:8000/api/obat";
-
+  final String apiGetAllObat = "http://10.0.2.2:8000/api/obat";
 
   List<dynamic> obatList = [];
   List<dynamic> searchObat = [];
@@ -57,11 +55,8 @@ class _DataObatState extends State<DataObat> {
 
   Future<void> _disableObat(int obatId) async {
     try {
-
-      final response = await http.put(
-          Uri.parse("http://192.168.239.136:8000/api/obat/disabled/$obatId"));
-
-      
+      final response = await http
+          .put(Uri.parse("http://10.0.2.2:8000/api/obat/disabled/$obatId"));
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -324,9 +319,8 @@ class _DataObatState extends State<DataObat> {
     );
   }
 
-
   Future<void> _deleteObat(int id) async {
-    final String apiUrl = "http://192.168.239.136:8000/api/obat/$id";
+    final String apiUrl = "http://10.0.2.2:8000/api/obat/$id";
 
     try {
       final response = await http.delete(Uri.parse(apiUrl));
@@ -342,5 +336,4 @@ class _DataObatState extends State<DataObat> {
       print("Error: $error");
     }
   }
-
 }

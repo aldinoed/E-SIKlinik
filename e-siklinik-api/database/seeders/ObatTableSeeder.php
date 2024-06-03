@@ -40,7 +40,7 @@ class ObatTableSeeder extends Seeder
                 'stock' => $faker->numberBetween(10, 100),
                 'harga' => $faker->numberBetween(5000, 100000),
                 'kategori_id' => $faker->numberBetween(1, 7),
-                'image' => $imagePath,
+                'image' => 'image',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

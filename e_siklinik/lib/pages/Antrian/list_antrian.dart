@@ -22,7 +22,7 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
   int counter = 0;
 
-  final String apiGetAntrian = "http://192.168.239.136:8000/api/antrian";
+  final String apiGetAntrian = "http://10.0.2.2:8000/api/antrian";
 
   // Variabel untuk melacak apakah sedang loading data
   bool isLoading = false;
@@ -75,7 +75,7 @@ class _ListAntrianNewState extends State<ListAntrianNew> {
 
   Future<void> _getFinishedAssesmen() async {
     Uri finishedUrl =
-        Uri.parse('http://192.168.239.136:8000/api/antrian/finished-assesmen');
+        Uri.parse('http://10.0.2.2:8000/api/antrian/finished-assesmen');
     try {
       final response = await http.get(finishedUrl);
       if (response.statusCode == 200) {
