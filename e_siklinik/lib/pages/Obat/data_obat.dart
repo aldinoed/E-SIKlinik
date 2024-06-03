@@ -17,7 +17,10 @@ class DataObat extends StatefulWidget {
 }
 
 class _DataObatState extends State<DataObat> {
-  final String apiGetAllObat = "http://10.0.2.2:8000/api/obat";
+
+  final String apiGetAllObat = "http://192.168.239.136:8000/api/obat";
+
+
   List<dynamic> obatList = [];
   List<dynamic> searchObat = [];
   bool isLoading = true;
@@ -54,8 +57,12 @@ class _DataObatState extends State<DataObat> {
 
   Future<void> _disableObat(int obatId) async {
     try {
-      final response = await http
-          .put(Uri.parse("http://10.0.2.2:8000/api/obat/disabled/$obatId"));
+
+      final response = await http.put(
+          Uri.parse("http://192.168.239.136:8000/api/obat/disabled/$obatId"));
+
+      
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         print('Success: ${data['message']}');
@@ -181,7 +188,8 @@ class _DataObatState extends State<DataObat> {
                   ),
                   Expanded(
                     child: GridView.builder(
-                      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
+                      padding:
+                          const EdgeInsets.only(left: 16, right: 16, bottom: 8),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         mainAxisSpacing: 8.0,
@@ -236,16 +244,14 @@ class _DataObatState extends State<DataObat> {
                                             showModalBottomSheet(
                                               isScrollControlled: true,
                                               context: context,
-                                              builder: (context) =>
-                                                  BuildSheet(
+                                              builder: (context) => BuildSheet(
                                                 onTapEdit: () async {
                                                   final result =
                                                       await Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          EditObat(
-                                                              obat: obat),
+                                                          EditObat(obat: obat),
                                                     ),
                                                   );
                                                   if (result == true) {
@@ -256,8 +262,8 @@ class _DataObatState extends State<DataObat> {
                                                 onTapDelete: () {
                                                   showDeleteConfirmationDialog(
                                                       context,
-                                                      () => _disableObat(
-                                                          obatId),
+                                                      () =>
+                                                          _disableObat(obatId),
                                                       'delete');
                                                 },
                                                 deleteOrRestoreData:
@@ -278,11 +284,13 @@ class _DataObatState extends State<DataObat> {
                                           fontSize: 20,
                                         ),
                                         maxLines: 1, // Limit the text to 1 line
-                                        overflow: TextOverflow.ellipsis, // Handle overflow with ellipsis
+                                        overflow: TextOverflow
+                                            .ellipsis, // Handle overflow with ellipsis
                                       ),
                                     ),
                                     const SizedBox(height: 5),
-                                    Text('EXP: ${obat['tanggal_kadaluarsa'] ?? '-'}'),
+                                    Text(
+                                        'EXP: ${obat['tanggal_kadaluarsa'] ?? '-'}'),
                                     Text('Stok: ${obat['stock'] ?? '-'}')
                                   ],
                                 ),
@@ -315,4 +323,24 @@ class _DataObatState extends State<DataObat> {
       ),
     );
   }
+
+
+  Future<void> _deleteObat(int id) async {
+    final String apiUrl = "http://192.168.239.136:8000/api/obat/$id";
+
+    try {
+      final response = await http.delete(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        print("Data obat dengan ID $id berhasil dihapus.");
+        _getAllObat();
+      } else {
+        print(
+            "Gagal menghapus data obat dengan ID $id. Status code: ${response.statusCode}");
+      }
+    } catch (error) {
+      print("Error: $error");
+    }
+  }
+
 }
