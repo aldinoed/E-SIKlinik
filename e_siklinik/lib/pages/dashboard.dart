@@ -53,8 +53,8 @@ class _DashboardState extends State<Dashboard> {
           break;
       }
 
-      Uri url =
-          Uri.parse('http://10.0.2.2:8000/api/jadwal_dokter/today/$dayName');
+      Uri url = Uri.parse(
+          'http://192.168.239.136:8000/api/jadwal_dokter/today/$dayName');
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);
@@ -109,20 +109,45 @@ class _DashboardState extends State<Dashboard> {
                     ),
                   ),
                   const CarouselJadwal(),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 10),
-                    child: Text(
+                  SizedBox(
+                    height: 5,
+                  ),
+                  ExpansionTile(
+                    initiallyExpanded: true,
+                    shape: const Border(),
+                    title: const Text(
                       "Data Pengunjung",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                     ),
-                  ),
-                  Container(
-                    height: 300,
-                    child: CategoryChartPage(),
+                    onExpansionChanged: (bool expanded) {},
+                    tilePadding: const EdgeInsets.all(0),
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(
+                            left: 8, right: 8, top: 9, bottom: 8),
+                        padding: const EdgeInsets.all(15),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              offset: const Offset(-1, 2),
+                              blurRadius: 3,
+                              spreadRadius: 0,
+                            ),
+                          ],
+                        ),
+                        height: 300,
+                        child: CategoryChartPage(),
+                      ),
+                    ],
                   ),
                   const SizedBox(
-                    height: 16,
+                    height: 10,
                   ),
                   const Text(
                     "Utilities",

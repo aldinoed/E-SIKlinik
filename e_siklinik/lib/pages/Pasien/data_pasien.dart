@@ -16,7 +16,7 @@ class DataPasien extends StatefulWidget {
 }
 
 class _DataPasienState extends State<DataPasien> {
-  final String apiGetAllPasien = "http://10.0.2.2:8000/api/pasien";
+  final String apiGetAllPasien = "http://192.168.239.136:8000/api/pasien";
   List<dynamic> pasienList = [];
   List<dynamic> filteredPasienList = [];
   bool isLoading = true; // flag to track loading state
@@ -76,8 +76,8 @@ class _DataPasienState extends State<DataPasien> {
 
   Future<void> _disablePasien(int pasienId) async {
     try {
-      final response = await http
-          .put(Uri.parse("http://10.0.2.2:8000/api/pasien/disabled/$pasienId"));
+      final response = await http.put(Uri.parse(
+          "http://192.168.239.136:8000/api/pasien/disabled/$pasienId"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         print('Success: ${data['message']}');
@@ -210,7 +210,7 @@ class _DataPasienState extends State<DataPasien> {
                                               fontWeight: FontWeight.w300),
                                         )
                                       : const Text("G ada prodi"),
-                                  icon: 'http://10.0.2.2:8000/storage/' +
+                                  icon: 'http://192.168.239.136:8000/storage/' +
                                       pasien['image'],
                                   onTapPop: () {
                                     showModalBottomSheet(
