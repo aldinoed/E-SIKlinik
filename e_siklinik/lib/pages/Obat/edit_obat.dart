@@ -23,7 +23,7 @@ class _EditObatState extends State<EditObat> {
   String? _selectedKategori;
   final TextEditingController imageController = TextEditingController();
 
-  final String apiGetAllKategoriObat = "http://192.168.0.107:8000/api/kategori-obat";
+  final String apiGetAllKategoriObat = "http://10.0.2.2:8000/api/kategori-obat";
   List<dynamic> kategoriObatList = [];
   File? _imageFile;
 
@@ -53,7 +53,7 @@ class _EditObatState extends State<EditObat> {
 
   Future<void> _updateObat() async {
     final id = widget.obat['id'];
-    final url = Uri.parse('http://192.168.0.107:8000/api/obat/$id/update');
+    final url = Uri.parse('http://10.0.2.2:8000/api/obat/$id/update');
     final request = http.MultipartRequest('POST', url);
 
     // Menambahkan data yang akan diperbarui

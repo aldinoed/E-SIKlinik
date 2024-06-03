@@ -28,7 +28,8 @@ class BuildSheet extends StatelessWidget {
           padding: const EdgeInsets.all(30),
           child: Column(
             children: [
-              onTapEdit != null?GestureDetector(
+              onTapEdit != null
+              ? GestureDetector(
                 onTap: onTapEdit,
                 child: Row(
                   children: [

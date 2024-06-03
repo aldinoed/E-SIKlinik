@@ -17,7 +17,7 @@ class DataObat extends StatefulWidget {
 }
 
 class _DataObatState extends State<DataObat> {
-  final String apiGetAllObat = "http://192.168.0.107:8000/api/obat";
+  final String apiGetAllObat = "http://10.0.2.2:8000/api/obat";
   List<dynamic> obatList = [];
   List<dynamic> searchObat = [];
   bool isLoading = true;
@@ -55,7 +55,7 @@ class _DataObatState extends State<DataObat> {
   Future<void> _disableObat(int obatId) async {
     try {
       final response = await http
-          .put(Uri.parse("http://192.168.0.107:8000/api/obat/disabled/$obatId"));
+          .put(Uri.parse("http://10.0.2.2:8000/api/obat/disabled/$obatId"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         print('Success: ${data['message']}');
@@ -314,23 +314,5 @@ class _DataObatState extends State<DataObat> {
         ),
       ),
     );
-  }
-
-  Future<void> _deleteObat(int id) async {
-    final String apiUrl = "http://192.168.0.107:8000/api/obat/$id";
-
-    try {
-      final response = await http.delete(Uri.parse(apiUrl));
-
-      if (response.statusCode == 200) {
-        print("Data obat dengan ID $id berhasil dihapus.");
-        _getAllObat();
-      } else {
-        print(
-            "Gagal menghapus data obat dengan ID $id. Status code: ${response.statusCode}");
-      }
-    } catch (error) {
-      print("Error: $error");
-    }
   }
 }
